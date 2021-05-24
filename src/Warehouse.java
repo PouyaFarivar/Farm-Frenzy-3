@@ -13,5 +13,6 @@ public class Warehouse extends GamePlay
         this.animal.add(a);
         this.product.add(p);
     }
+    public Warehouse(){}
     public void SellGoods(){}
 }

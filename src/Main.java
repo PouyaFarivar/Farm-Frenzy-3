@@ -1,3 +1,6 @@
 public class Main {
-    int LESGOOO = 100 ;
+    public static void main(String[] args) {
+        Processor processor = new Processor() ;
+        processor.run();
+    }
 }

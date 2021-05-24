@@ -5,7 +5,7 @@ public class Product extends GamePlay
     int time_present;
     boolean available;
 
-    public void movetostorage()
+    public void moveToStorage()
     {}
 
 }
