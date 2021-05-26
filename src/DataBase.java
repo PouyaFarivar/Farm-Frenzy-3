@@ -4,6 +4,9 @@ import java.util.LinkedList;
 public class DataBase {
     private LinkedList <User> users ;
     private LinkedList <Level> levels ;
+    private LinkedList <Domestic> domestics ;
+    private LinkedList <Defender> defenders ;
+    private LinkedList <Predator> predators ;
 
     DataBase(){}
 
@@ -19,16 +22,20 @@ public class DataBase {
         return null ;
     }
 
-    public int checkUser(String userName) { //0 = dont exist 1 = user
-        for (User user : users) {
-            if (user.getUserName().equals(userName)) {
-                return 1;
+    public Level getLevelByNum (int num){
+        for (Level level : levels){
+            if (level.getLevelNum() == num){
+                return level ;
             }
         }
-        return 0;
+        return null ;
     }
 
+    public LinkedList<Level> getLevels() {
+        return levels;
+    }
 
-
-
+    public LinkedList<User> getUsers() {
+        return users;
+    }
 }

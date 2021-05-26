@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 
 public class Game {
+    private Level level ;
     private int turn ;
     private int coins ;
     private LinkedList<Product> products ;
@@ -12,7 +13,9 @@ public class Game {
     private Well well ;
     private Warehouse warehouse ;
     private Truck truck ;
+
     Game (Level level){
+        this.level = level ;
         products = new LinkedList<>() ;
         grasses = new LinkedList<>() ;
         workshops = new LinkedList<>() ;
@@ -24,6 +27,12 @@ public class Game {
         truck = new Truck() ;
         turn = 0 ;
         coins = 0 ;
+        for (Workshop workshop : this.level.getWorkshops()){
+            this.workshops.add(workshop);
+        }
+        for (Domestic domestic : this.level.getStartingAnimals()){
+            this.domestics.add(domestic);
+        }
 
     }
 }
