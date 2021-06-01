@@ -1,84 +1,105 @@
 public class Animal extends GamePlay
 {
-    int SizeInWarehouse;
-    int price_for_purchase;
-    int price_for_sale;
+    private String name ;
+    private int type  ;//1 = DOMESTIC 2 = DEFENDER 3 = PREDATOR
+    private int SizeInWarehouse;
+    private int price_for_purchase;
+    private int price_for_sale ;
 
-    public Animal(int pr_purchase, int pr_sale)
-    {
+    public Animal(String name , int type , int pr_purchase , int price_for_sale , int x , int y) {
+        super(x , y);
+        this.name = name ;
+        this.type = type ;
         this.price_for_purchase=pr_purchase;
-        this.price_for_sale=pr_sale;
+        this.price_for_sale = price_for_sale ;
     }
 
+    public Animal(){}
 
+
+    public int getPrice_for_purchase() {
+        return price_for_purchase;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public int getSizeInWarehouse() {
+        return SizeInWarehouse;
+    }
 }
 class Domestic extends Animal{
-    Product product;
+    String productName;
     int lives;
 
-    public Domestic(int pr_purchase, int pr_sale)
-    {
-        super(pr_purchase, pr_sale);
+    public Domestic(String name , String productName , int pr_purchase , int x , int y) {
+        super(name, 1, pr_purchase, 0 , x , y);
+        this.productName = productName;
+        lives = 10;
+
     }
 
-    class Hen extends Domestic{
-        Egg egg=new Egg();
+    static class Hen extends Domestic{
 
-        public Hen(int pr_purchase, int pr_sale)
-        {
-            super(pr_purchase, pr_sale);
+        public  Hen(int x , int y){
+            super("hen" , "egg" , 100 , x , y);
         }
     }
-    class Ostrich extends Domestic{
-        Feather feather= new Feather();
+   static class Ostrich extends Domestic{
 
-        public Ostrich(int pr_purchase, int pr_sale)
-        {
-            super(pr_purchase, pr_sale);
+        public Ostrich(int x , int y){
+            super("ostrich" , "feather" , 200 , x , y);
         }
+
+
     }
 
-    class Buffalo extends Domestic{
-        Milk milk=new Milk();
-        public Buffalo(int pr_purchase, int pr_sale)
-        {
-            super(pr_purchase, pr_sale);
+    static class Buffalo extends Domestic{
+
+        public Buffalo(int x ,int y){
+            super("buffalo" , "milk" , 400 ,x ,y);
         }
     }
 
 }
 class Predator extends Animal{
-    Cage cage;
-    double speed;
-    boolean in_cage=false;
-    int time_captured;
+    int speed ;
+    int cageToStop ;
+    boolean in_cage ;
+    int time_captured ;
 
-    public Predator(int pr_purchase, int pr_sale)
+    public Predator(String name , int pr_sell ,int x , int y , int speed , int cageToStop)
     {
-        super(pr_purchase, pr_sale);
+        super(name , 3, 0 , pr_sell , x , y );
+        this.speed = speed ;
+        this.cageToStop = cageToStop ;
+        in_cage = false ;
+        time_captured = 0 ;
     }
 
     void escape(){};
     void destroyProduct(){};
 
-    class Lion extends Predator{
+    static class Lion extends Predator{
 
-        public Lion(int pr_purchase, int pr_sale)
+        public Lion(int x , int y)
         {
-            super(pr_purchase, pr_sale);
+            super("lion" , 150 , x ,y ,1 , 3);
         }
     }
-    class Bear extends Predator{
-        public Bear(int pr_purchase, int pr_sale)
+    static class Bear extends Predator{
+        public Bear(int x ,int y)
         {
-            super(pr_purchase, pr_sale);
+            super("bear" , 200 , x , y , 1 , 4);
         }
     }
-    class Tiger extends Predator{
+    static class Tiger extends Predator{
 
-        public Tiger(int pr_purchase, int pr_sale)
+        public Tiger(int x , int y)
         {
-            super(pr_purchase, pr_sale);
+            super("tiger" , 250, x, y , 2 , 4);
+
         }
     }
     public void ruin_product(){
@@ -86,22 +107,25 @@ class Predator extends Animal{
 
 }
 class Defender extends Animal{
-    public Defender(int pr_purchase, int pr_sale)
+    public Defender(String name , int pr_purchase , int x , int y)
     {
-        super(pr_purchase, pr_sale);
+        super(name, 2 , pr_purchase , 0 ,x, y);
     }
 
-    class Cat extends Defender{
-        public Cat(int pr_purchase, int pr_sale)
+
+    static class Cat extends Defender{
+        public Cat(int x , int y)
         {
-            super(pr_purchase, pr_sale);
+            super("cat" , 150 , x , y);
         }
+
     };
-    class Dog extends Defender{
-        public Dog(int pr_purchase, int pr_sale)
+    static class Dog extends Defender{
+        public Dog(int x , int y)
         {
-            super(pr_purchase, pr_sale);
+            super("dog", 100 , x, y);
         }
+
     };
 
 }

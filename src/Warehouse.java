@@ -2,17 +2,54 @@ import java.util.ArrayList;
 
 public class Warehouse extends GamePlay
 {
-    int counter;
-    final int capacity=30;
-    ArrayList<Product> product;
-    ArrayList<Animal>  animal;
-    public Warehouse(Product p,Animal a)
+    private int counter;
+    private final int capacity=30;
+    private ArrayList<Product> products;
+    private ArrayList<Predator>  predators ;
+
+    public Warehouse(Product p,Predator a)
     {
-        this.product=new ArrayList<Product>();
-        this.animal=new ArrayList<Animal>();
-        this.animal.add(a);
-        this.product.add(p);
+        this.products=new ArrayList<Product>();
+        this.predators=new ArrayList<Predator>();
+        this.predators.add(a);
+        this.products.add(p);
     }
-    public Warehouse(){}
+    public Warehouse(){
+        counter = 0 ;
+        this.products=new ArrayList<Product>();
+        this.predators=new ArrayList<Predator>();
+    }
     public void SellGoods(){}
+
+    public Product getProduct (String name){
+        for (Product product : products){
+            product.getName().equals(name);
+            return product ;
+        }
+        return null;
+    }
+
+    public int remainingSpace (){
+        return capacity - counter ;
+    }
+
+    public ArrayList<Predator> getPredators() {
+        return predators;
+    }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
 }

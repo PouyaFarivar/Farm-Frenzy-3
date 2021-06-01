@@ -126,8 +126,98 @@ public class Processor {
         Game game = new Game(level) ;
         Scanner scanner = new Scanner(System.in);
         Matcher matcher ;
-        boolean turn ;
+        boolean turn = false ;
         String action = "" ;
+        while (true){
+            action = scanner.nextLine() ;
+            if ((matcher = getCommandMatcher(action , "buy ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
+                String name = matcher.group(1) ;
+                int possible = game.buyAnimal(name) ;
+                switch (possible){
+                    case 0 :
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1 :
+                        System.out.println("Wrong animal name.");
+                        break;
+                    case 2 :
+                        System.out.println("Not enough coins.");
+                        break;
+                    default:
+                        break;
+                }
+            }else if ((matcher = getCommandMatcher(action , "pickup (\\d+) (\\d+)")).find()){
+                int x = Integer.parseInt(matcher.group(1)) ;
+                int y = Integer.parseInt(matcher.group(2)) ;
+                int possible = game.pickup(x , y);
+                switch (possible){
+                    case 0 :
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1 :
+                        System.out.println("Not enough space in ware House.");
+                        break;
+                    case 2 :
+                        System.out.println("Given coordinates is empty.");
+                        break;
+                    default:
+                        break;
+                }
+            }else if (action.equals("well")){
+                int possible = game.fillWell() ;
+                switch (possible){
+                    case 0 :
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1 :
+                        System.out.println("Well is not empty yet.");
+                        break;
+                    default:
+                        break;
+                }
+            }else if ((matcher = getCommandMatcher(action , "plant (\\d+) (\\d+)")).find()){
+                int x = Integer.parseInt(matcher.group(1)) ;
+                int y = Integer.parseInt(matcher.group(2)) ;
+                int possible = game.plantGrass(x , y);
+                switch (possible){
+                    case 0 :
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1 :
+                        System.out.println("Given coordinates already have grass.");
+                        break;
+                    default:
+                        break;
+                }
+            }else if ((matcher = getCommandMatcher(action , "build ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
+                String name = matcher.group(1);
+                int possible = game.buildWorkShop(name);
+                switch (possible){
+                    case 0 :
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1 :
+                        System.out.println("You cant build this workShop in this level.");
+                        break;
+                    case 2 :
+                        System.out.println("You dont have enough coins");
+                        break;
+                    case 3 :
+                        System.out.println("WorkShop already built.");
+                        break;
+                    default:
+                        break;
+                }
+            }else if ((matcher = getCommandMatcher(action , "work ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
+                String name = matcher.group(1);
+                int possible = game.work(name);
+            }
+            else if ((matcher = getCommandMatcher(action , "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
+                String name = matcher.group(1) ;
+
+            }
+        }
+
     }
 
     public void settings (){}

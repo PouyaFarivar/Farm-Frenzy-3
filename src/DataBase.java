@@ -1,17 +1,43 @@
+import java.io.*;
 import java.security.PublicKey;
 import java.util.LinkedList;
 
 public class DataBase {
     private LinkedList <User> users ;
     private LinkedList <Level> levels ;
-    private LinkedList <Domestic> domestics ;
-    private LinkedList <Defender> defenders ;
-    private LinkedList <Predator> predators ;
 
     DataBase(){}
 
-    public void save(){}
-    public void load(){}
+    public void save() {
+        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
+        Gson gson = builder.create();
+        String databaseString = gson.toJson(this) ;
+        wirte("dataBase.json" , databaseString);
+    }
+
+    public void load() {
+        Gson gson = new Gson() ;
+        try {
+            dataBase = gson.fromJson(new FileReader("resource\\dataBase.json") , dataBase.getClass());
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private void wirte(String fileName, String nemune) {
+        try {
+            File file = new File("resource\\" + fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fileWriter = new FileWriter(file) ;
+            fileWriter.write(nemune);
+            fileWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public User getUserByUserName (String userName){
         for (User user : users){

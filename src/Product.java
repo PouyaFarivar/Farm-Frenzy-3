@@ -1,13 +1,18 @@
 public class Product extends GamePlay
 {
+    String name  ;
     int price;
     int size;
     int time_present;
     boolean available;
 
-    public void moveToStorage()
-    {}
+    public String getName() {
+        return name;
+    }
 
+    public int getSize() {
+        return size;
+    }
 }
 class Egg extends Product{}
 class Feather extends Product{}
