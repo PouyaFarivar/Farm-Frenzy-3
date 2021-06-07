@@ -28,6 +28,10 @@ public class Animal extends GamePlay
     public int getSizeInWarehouse() {
         return SizeInWarehouse;
     }
+
+    public String getName() {
+        return name;
+    }
 }
 class Domestic extends Animal{
     String productName;
@@ -64,22 +68,42 @@ class Domestic extends Animal{
 
 }
 class Predator extends Animal{
-    int speed ;
-    int cageToStop ;
-    boolean in_cage ;
-    int time_captured ;
+    private int speed ;
+    private int cageToStop ;
+    private int time_captured ;
+    private Cage cage ;
+    private boolean captured ;
 
     public Predator(String name , int pr_sell ,int x , int y , int speed , int cageToStop)
     {
         super(name , 3, 0 , pr_sell , x , y );
         this.speed = speed ;
         this.cageToStop = cageToStop ;
-        in_cage = false ;
         time_captured = 0 ;
+        cage = new Cage() ;
+        captured = false ;
     }
 
     void escape(){};
     void destroyProduct(){};
+
+    public boolean isCaptured() {
+        return captured;
+    }
+
+    public Cage getCage() {
+        return cage;
+    }
+
+    public int getCageToStop() {
+        return cageToStop;
+    }
+
+
+    public void setCaptured(boolean captured) {
+        this.captured = captured;
+    }
+
 
     static class Lion extends Predator{
 

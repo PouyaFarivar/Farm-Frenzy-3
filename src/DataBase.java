@@ -1,12 +1,15 @@
 import java.io.*;
-import java.security.PublicKey;
 import java.util.LinkedList;
+import com.google.gson.* ;
 
 public class DataBase {
     private LinkedList <User> users ;
     private LinkedList <Level> levels ;
 
-    DataBase(){}
+    DataBase(){
+        users = new LinkedList<>() ;
+        levels = new LinkedList<>() ;
+    }
 
     public void save() {
         GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
@@ -15,19 +18,10 @@ public class DataBase {
         wirte("dataBase.json" , databaseString);
     }
 
-    public void load() {
-        Gson gson = new Gson() ;
-        try {
-            dataBase = gson.fromJson(new FileReader("resource\\dataBase.json") , dataBase.getClass());
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
-    }
-
 
     private void wirte(String fileName, String nemune) {
         try {
-            File file = new File("resource\\" + fileName);
+            File file = new File("resources\\" + fileName);
             if (!file.exists()) {
                 file.createNewFile();
             }

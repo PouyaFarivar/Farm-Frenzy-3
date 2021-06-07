@@ -1,3 +1,7 @@
+import com.google.gson.Gson;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,12 +14,13 @@ public class Processor {
     }
 
     public void run (){
-        dataBase.load();
+        load();
         while (true){
             User user = getUser() ;
             if (user == null){
                 break;
             }
+            dataBase.save();
             Level level = menu(user);
             if (level !=  null){
                 play(user , level);
@@ -42,7 +47,7 @@ public class Processor {
                 sign = 1 ;
             } else if (action.toLowerCase().contains("sign up")) {
                 sign = 2 ;
-            } else if ((matcher = getCommandMatcher(action , "log in ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+            } else if ((matcher = getCommandMatcher(action , "username ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
                 userName = matcher.group(1);
                 if (sign == 0){
                     System.out.println("First choose if you want to sign in or sign up .");
@@ -74,6 +79,8 @@ public class Processor {
                 }else if (sign == 2){
                     done = true ;
                 }
+            }else if (action.equals("exit")){
+                return null ;
             }else{
                 System.out.println("Invalid Input.");
             }
@@ -96,6 +103,7 @@ public class Processor {
         int levelNum = 0 ;
         String action = "" ;
         boolean done = false ;
+        System.out.println("Menu :");
         while (done == false){
             action = scanner.nextLine();
             if ((matcher = getCommandMatcher(action , "start (\\d+)")).find()) {
@@ -211,10 +219,83 @@ public class Processor {
             }else if ((matcher = getCommandMatcher(action , "work ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
                 String name = matcher.group(1);
                 int possible = game.work(name);
-            }
-            else if ((matcher = getCommandMatcher(action , "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
+                switch (possible){
+                    case 0 :
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1 :
+                        System.out.println("Wrong workShop name.");
+                        break;
+                    case 2 :
+                        System.out.println("WorkShop not built.");
+                        break;
+                    case 3 :
+                        System.out.println("WorkShop is working already.");
+                        break;
+                    case 4 :
+                        System.out.println("not enough entry product.");
+                    default:
+                        break;
+                }
+            }else if ((matcher = getCommandMatcher(action , "cage (\\d+) (\\d+)")).find()){
+                int x = Integer.parseInt(matcher.group(1));
+                int y = Integer.parseInt(matcher.group(2));
+                int possible = game.buildCage(x , y);
+                switch (possible){
+                    case 0 :
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1 :
+                        System.out.println("No predator at the given coordinates.");
+                        break;
+                    case 2 :
+                        System.out.println("The Predator at the given coordinates is already captured.");
+                        break;
+                    default:
+                        break;
+                }
+            }else if ((matcher = getCommandMatcher(action , "truck load ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+                String name = matcher.group(1);
+                int possible = -1;
+                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
+                    possible = game.moveToTruckPredator(name);
+                } else {
+                    possible = game.moveToTruckProduct(name);
+                }
+                switch (possible) {
+                    case 0:
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1:
+                        System.out.println("No such product in ware house.");
+                        break;
+                    case 2:
+                        System.out.println("Not enough space in Truck inventory.");
+                        break;
+                    default:
+                        break;
+                }
+            } else if ((matcher = getCommandMatcher(action , "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
                 String name = matcher.group(1) ;
-
+                int possible = -1 ;
+                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
+                    possible = game.unloadFromTruckPredator(name);
+                } else {
+                    possible = game.unloadFromTruckProduct(name);
+                }
+                switch (possible) {
+                    case 0:
+                        System.out.println("Operation successful.");
+                        break;
+                    case 1:
+                        System.out.println("No such product in Truck.");
+                        break;
+                    case 2:
+                        System.out.println("Not enough space in Ware house.");
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -222,9 +303,20 @@ public class Processor {
 
     public void settings (){}
 
+    public void load() {
+        Gson gson = new Gson() ;
+        try {
+            dataBase = gson.fromJson(new FileReader("resources\\dataBase.json") , dataBase.getClass());
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
     private Matcher getCommandMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input.trim());
     }
+
+
 
 }

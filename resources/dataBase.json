@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "userName": "pouya",
+      "password": "2020",
+      "coin": 0,
+      "maximumLevel": 0,
+      "levelTime": {}
+    }
+  ],
+  "levels": []
+}

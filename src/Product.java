@@ -1,3 +1,5 @@
+import java.util.regex.Matcher;
+
 public class Product extends GamePlay
 {
     String name  ;
@@ -5,6 +7,16 @@ public class Product extends GamePlay
     int size;
     int time_present;
     boolean available;
+    final int givenTime = 10 ;
+
+    Product(String name , int price ){
+        this.name = name ;
+        this.price = price ;
+        time_present = 0 ;
+        available = true ;
+    }
+
+    Product(){}
 
     public String getName() {
         return name;
@@ -13,14 +25,51 @@ public class Product extends GamePlay
     public int getSize() {
         return size;
     }
+    static class Egg extends Product{
+        Egg(){
+            super("egg" , 15);
+        }
+    }
+    static class Feather extends Product{
+        Feather(){
+            super("feather" , 20);
+        }
+    }
+    static class Milk extends Product{
+        Milk(){
+            super("milk" , 25);
+        }
+    }
+    static class Flour extends Product{
+        Flour(){
+            super("flour" , 40);
+        }
+    }
+    static class Fabric extends Product{
+        Fabric(){
+            super("fabric" , 50);
+        }
+    }
+    static class Bread extends Product{
+        Bread(){
+            super("bread" , 80);
+        }
+    }
+    static class PacketMilk extends Product{
+        PacketMilk(){
+            super("packetMilk" , 60);
+        }
+    }
+    static class Clothing extends Product{
+        Clothing(){
+            super("clothing" , 100);
+        }
+    }
+    static class IceCream extends Product{
+        IceCream(){
+            super("iceCream" , 120);
+        }
+    }
 }
-class Egg extends Product{}
-class Feather extends Product{}
-class Milk extends Product{}
-class Flour extends Product{}
-class Fabric extends Product{}
-class Bread extends Product{}
-class PacketMilk extends Product{}
-class Clothing extends Product{}
-class IceCream extends Product{}
+
 

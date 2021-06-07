@@ -147,20 +147,136 @@ public class Game {
         }
     }
 
-    public int work(String name){
+    public int work(String name){// 0 = done 1 = no such work shop 2 = workshop not built 3 = already working 4 = no entry product
         Workshop workshop = getWorkShopByName(name);
+        if (workshop == null){
+            return 1 ;
+        }else if (workshop.getLevel() == 0){
+            return 2 ;
+        }else if (workshop.getWorking() >= 0){
+            return 3 ;
+        }else {
+            Product product = getProductFromWareHouse(name) ;
+            if (product == null){
+                return 4 ;
+            }else{
+                workshop.setWorking(0);
+                warehouse.getProducts().remove(product) ;
+                warehouse.setCounter(warehouse.getCounter() - product.getSize());
+                return 0 ;
 
+            }
+        }
+    }
+
+    public int buildCage(int x ,int y){// 0 = done 1 = no predator 2 = already captured
+        Predator predator = getPredator(x , y);
+        if (predator == null){
+            return 1 ;
+        }else {
+            if (predator.isCaptured()== false){
+                predator.getCage().setStrength(predator.getCage().getStrength() + 1);
+                if (predator.getCage().getStrength() == predator.getCageToStop()){
+                    predator.setCaptured(true);
+                }
+                return 0 ;
+            }else {
+                return 2 ;
+            }
+        }
 
     }
 
-    public int moveToTruckProduct (String productName){
+    public int moveToTruckProduct (String productName){// 0 = done 1 = no such product in ware house 2 = not enough space
        Product product =  warehouse.getProduct(productName);
+       if (product == null){
+           return 1 ;
+       }else{
+           if (product.getSize()>truck.getLeftSpace()){
+               return 2 ;
+           }else {
+               truck.getProducts().add(product);
+               warehouse.getProducts().remove(product);
+               truck.setCounter(truck.getCounter() + product.getSize());
+               warehouse.setCounter(warehouse.getCounter() - product.getSize());
+               return  0 ;
+           }
+       }
+    }
+
+    public int moveToTruckPredator (String predatorName){// 0 = done 1 = no such predator in ware house 2 = not enough space
+        Predator predator =  warehouse.getPredator(predatorName);
+        if (predator == null){
+            return 1 ;
+        }else{
+            if (predator.getSizeInWarehouse()>truck.getLeftSpace()){
+                return 2 ;
+            }else {
+                truck.getPredators().add(predator);
+                warehouse.getPredators().remove(predator);
+                truck.setCounter(truck.getCounter() + predator.getSizeInWarehouse());
+                warehouse.setCounter(warehouse.getCounter() - predator.getSizeInWarehouse());
+                return  0 ;
+            }
+        }
+    }
+
+    public int unloadFromTruckProduct(String name){// 0 = done 1 = sno such product 2 = not enough space in ware house
+        Product product = truck.getProduct(name) ;
+        if (product == null){
+            return 1 ;
+        }else {
+            if (product.getSize() > warehouse.remainingSpace()){
+                return 2 ;
+            }else {
+                warehouse.getProducts().add(product);
+                truck.getProducts().remove(product);
+                warehouse.setCounter(warehouse.getCounter() + product.getSize());
+                truck.setCounter(truck.getCounter() + product.getSize());
+                return 0 ;
+            }
+        }
+    }
+
+    public int unloadFromTruckPredator(String name){// 0 = done 1 = sno such product 2 = not enough space in ware house
+        Predator predator = truck.getPredator(name) ;
+        if (predator == null){
+            return 1 ;
+        }else {
+            if (predator.getSizeInWarehouse() > warehouse.remainingSpace()){
+                return 2 ;
+            }else {
+                warehouse.getPredators().add(predator);
+                truck.getProducts().remove(predator);
+                warehouse.setCounter(warehouse.getCounter() + predator.getSizeInWarehouse());
+                truck.setCounter(truck.getCounter() + predator.getSizeInWarehouse());
+                return 0 ;
+            }
+        }
     }
 
     public Workshop getWorkShopByName(String name){
         for (Workshop workshop : workshops){
             if (workshop.getName().equals(name)){
                 return workshop ;
+            }
+        }
+        return null ;
+    }
+
+    Product getProductFromWareHouse(String name){
+        for (Product product : warehouse.getProducts()){
+            if(product.getName().equals(name)){
+                return product ;
+            }
+        }
+        return null ;
+    }
+
+    Predator getPredator(int x , int y){
+        for (Predator predator : predators){
+            if (predator.getX() == x && predator.getY() == y){
+                return predator ;
             }
         }
         return null ;

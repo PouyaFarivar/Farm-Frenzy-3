@@ -29,6 +29,14 @@ public class Warehouse extends GamePlay
         return null;
     }
 
+    public Predator getPredator(String name){
+        for (Predator predator : predators){
+            predator.getName().equals(name);
+            return predator ;
+        }
+        return null;
+    }
+
     public int remainingSpace (){
         return capacity - counter ;
     }
