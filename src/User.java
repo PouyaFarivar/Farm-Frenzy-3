@@ -6,7 +6,7 @@ public class User {
     private String password ;
     private int coin ;
     private int maximumLevel ;
-    private HashMap <Level , Integer> levelTime ;
+    private HashMap <Integer , Integer> levelTime ;// level num , turn
 
     User (String userName , String password ){
         this.userName = userName ;
@@ -28,5 +28,21 @@ public class User {
 
     public int getMaximumLevel() {
         return maximumLevel;
+    }
+
+    public HashMap<Integer, Integer> getLevelTime() {
+        return levelTime;
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public void setMaximumLevel(int maximumLevel) {
+        this.maximumLevel = maximumLevel;
     }
 }

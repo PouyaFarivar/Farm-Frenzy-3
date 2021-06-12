@@ -37,4 +37,16 @@ public class Level {
     public LinkedList<Domestic> getStartingAnimals() {
         return startingAnimals;
     }
+
+    public int getGoalCoins() {
+        return goalCoins;
+    }
+
+    public HashMap<String, Integer> getAnimalAchievement() {
+        return animalAchievement;
+    }
+
+    public HashMap<String, Integer> getProductAchievement() {
+        return productAchievement;
+    }
 }

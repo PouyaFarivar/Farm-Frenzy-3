@@ -16,7 +16,10 @@ public class Processor {
     public void run (){
         load();
         while (true){
-            User user = getUser() ;
+            User user = new User() ;
+            if (user == null) {
+                user = getUser();
+            }
             if (user == null){
                 break;
             }
@@ -134,171 +137,212 @@ public class Processor {
         Game game = new Game(level) ;
         Scanner scanner = new Scanner(System.in);
         Matcher matcher ;
-        boolean turn = false ;
+        int turn = 0 ;
         String action = "" ;
         while (true){
-            action = scanner.nextLine() ;
-            if ((matcher = getCommandMatcher(action , "buy ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
-                String name = matcher.group(1) ;
-                int possible = game.buyAnimal(name) ;
-                switch (possible){
-                    case 0 :
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1 :
-                        System.out.println("Wrong animal name.");
-                        break;
-                    case 2 :
-                        System.out.println("Not enough coins.");
-                        break;
-                    default:
-                        break;
+            if (turn == 0) {
+                action = scanner.nextLine();
+                if ((matcher = getCommandMatcher(action, "buy ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+                    String name = matcher.group(1);
+                    int possible = game.buyAnimal(name);
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("Wrong animal name.");
+                            break;
+                        case 2:
+                            System.out.println("Not enough coins.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if ((matcher = getCommandMatcher(action, "pickup (\\d+) (\\d+)")).find()) {
+                    int x = Integer.parseInt(matcher.group(1));
+                    int y = Integer.parseInt(matcher.group(2));
+                    int possible = game.pickup(x, y);
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("Not enough space in ware House.");
+                            break;
+                        case 2:
+                            System.out.println("Given coordinates is empty.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (action.equals("well")) {
+                    int possible = game.fillWell();
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("Well is not empty yet.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if ((matcher = getCommandMatcher(action, "plant (\\d+) (\\d+)")).find()) {
+                    int x = Integer.parseInt(matcher.group(1));
+                    int y = Integer.parseInt(matcher.group(2));
+                    int possible = game.plantGrass(x, y);
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("Given coordinates already have grass.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if ((matcher = getCommandMatcher(action, "build ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+                    String name = matcher.group(1);
+                    int possible = game.buildWorkShop(name);
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("You cant build this workShop in this level.");
+                            break;
+                        case 2:
+                            System.out.println("You dont have enough coins");
+                            break;
+                        case 3:
+                            System.out.println("WorkShop already built.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if ((matcher = getCommandMatcher(action, "work ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+                    String name = matcher.group(1);
+                    int possible = game.work(name);
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("Wrong workShop name.");
+                            break;
+                        case 2:
+                            System.out.println("WorkShop not built.");
+                            break;
+                        case 3:
+                            System.out.println("WorkShop is working already.");
+                            break;
+                        case 4:
+                            System.out.println("not enough entry product.");
+                        default:
+                            break;
+                    }
+                } else if ((matcher = getCommandMatcher(action, "cage (\\d+) (\\d+)")).find()) {
+                    int x = Integer.parseInt(matcher.group(1));
+                    int y = Integer.parseInt(matcher.group(2));
+                    int possible = game.buildCage(x, y);
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("No predator at the given coordinates.");
+                            break;
+                        case 2:
+                            System.out.println("The Predator at the given coordinates is already captured.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if ((matcher = getCommandMatcher(action, "truck load ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+                    String name = matcher.group(1);
+                    int possible = -1;
+                    if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
+                        possible = game.moveToTruckPredator(name);
+                    } else {
+                        possible = game.moveToTruckProduct(name);
+                    }
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("No such product in ware house.");
+                            break;
+                        case 2:
+                            System.out.println("Not enough space in Truck inventory.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if ((matcher = getCommandMatcher(action, "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+                    String name = matcher.group(1);
+                    int possible = -1;
+                    if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
+                        possible = game.unloadFromTruckPredator(name);
+                    } else {
+                        possible = game.unloadFromTruckProduct(name);
+                    }
+                    switch (possible) {
+                        case 0:
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1:
+                            System.out.println("No such product in Truck.");
+                            break;
+                        case 2:
+                            System.out.println("Not enough space in Ware house.");
+                            break;
+                        default:
+                            break;
+                    }
+                }else if (action.contains("truck go")){
+                    int possible = game.truckGo() ;
+                    switch (possible){
+                        case 0 :
+                            System.out.println("Operation successful.");
+                            break;
+                        case 1 :
+                            System.out.println("Truck is empty.");
+                            break;
+                        case 2 :
+                            System.out.println("Truck is already in move.");
+                            break;
+                        default:
+                            break;
+                    }
+                } else if ((matcher= getCommandMatcher(action, "turn (\\d+)")).find()) {
+                    turn = Integer.parseInt(matcher.group(1)) ;
+                }else if (action.contains("exit")){
+                    break;
                 }
-            }else if ((matcher = getCommandMatcher(action , "pickup (\\d+) (\\d+)")).find()){
-                int x = Integer.parseInt(matcher.group(1)) ;
-                int y = Integer.parseInt(matcher.group(2)) ;
-                int possible = game.pickup(x , y);
-                switch (possible){
-                    case 0 :
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1 :
-                        System.out.println("Not enough space in ware House.");
-                        break;
-                    case 2 :
-                        System.out.println("Given coordinates is empty.");
-                        break;
-                    default:
-                        break;
-                }
-            }else if (action.equals("well")){
-                int possible = game.fillWell() ;
-                switch (possible){
-                    case 0 :
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1 :
-                        System.out.println("Well is not empty yet.");
-                        break;
-                    default:
-                        break;
-                }
-            }else if ((matcher = getCommandMatcher(action , "plant (\\d+) (\\d+)")).find()){
-                int x = Integer.parseInt(matcher.group(1)) ;
-                int y = Integer.parseInt(matcher.group(2)) ;
-                int possible = game.plantGrass(x , y);
-                switch (possible){
-                    case 0 :
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1 :
-                        System.out.println("Given coordinates already have grass.");
-                        break;
-                    default:
-                        break;
-                }
-            }else if ((matcher = getCommandMatcher(action , "build ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
-                String name = matcher.group(1);
-                int possible = game.buildWorkShop(name);
-                switch (possible){
-                    case 0 :
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1 :
-                        System.out.println("You cant build this workShop in this level.");
-                        break;
-                    case 2 :
-                        System.out.println("You dont have enough coins");
-                        break;
-                    case 3 :
-                        System.out.println("WorkShop already built.");
-                        break;
-                    default:
-                        break;
-                }
-            }else if ((matcher = getCommandMatcher(action , "work ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
-                String name = matcher.group(1);
-                int possible = game.work(name);
-                switch (possible){
-                    case 0 :
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1 :
-                        System.out.println("Wrong workShop name.");
-                        break;
-                    case 2 :
-                        System.out.println("WorkShop not built.");
-                        break;
-                    case 3 :
-                        System.out.println("WorkShop is working already.");
-                        break;
-                    case 4 :
-                        System.out.println("not enough entry product.");
-                    default:
-                        break;
-                }
-            }else if ((matcher = getCommandMatcher(action , "cage (\\d+) (\\d+)")).find()){
-                int x = Integer.parseInt(matcher.group(1));
-                int y = Integer.parseInt(matcher.group(2));
-                int possible = game.buildCage(x , y);
-                switch (possible){
-                    case 0 :
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1 :
-                        System.out.println("No predator at the given coordinates.");
-                        break;
-                    case 2 :
-                        System.out.println("The Predator at the given coordinates is already captured.");
-                        break;
-                    default:
-                        break;
-                }
-            }else if ((matcher = getCommandMatcher(action , "truck load ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
-                String name = matcher.group(1);
-                int possible = -1;
-                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
-                    possible = game.moveToTruckPredator(name);
-                } else {
-                    possible = game.moveToTruckProduct(name);
-                }
-                switch (possible) {
-                    case 0:
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1:
-                        System.out.println("No such product in ware house.");
-                        break;
-                    case 2:
-                        System.out.println("Not enough space in Truck inventory.");
-                        break;
-                    default:
-                        break;
-                }
-            } else if ((matcher = getCommandMatcher(action , "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
-                String name = matcher.group(1) ;
-                int possible = -1 ;
-                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
-                    possible = game.unloadFromTruckPredator(name);
-                } else {
-                    possible = game.unloadFromTruckProduct(name);
-                }
-                switch (possible) {
-                    case 0:
-                        System.out.println("Operation successful.");
-                        break;
-                    case 1:
-                        System.out.println("No such product in Truck.");
-                        break;
-                    case 2:
-                        System.out.println("Not enough space in Ware house.");
-                        break;
-                    default:
-                        break;
+            }else {
+                int possible = game.goTurn();
+                if (possible == 0) {
+                    turn = turn - 1;
+                    if (turn == 0) {
+                        System.out.println("Time passed.");
+                    }
+                }else {
+                    if (user.getLevelTime().containsKey(game.getLevel().getLevelNum())) {
+                        if (user.getLevelTime().get(game.getLevel().getLevelNum()) > game.getTurn()) {
+                            user.getLevelTime().put(game.getLevel().getLevelNum(), game.getTurn());
+                            user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
+                        }
+                    }else {
+                        user.getLevelTime().put(game.getLevel().getLevelNum() , game.getTurn()) ;
+                        user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
+                        user.setMaximumLevel(game.getLevel().getLevelNum());
+                    }
+                    System.out.println("Victory");
+                    break;
                 }
             }
         }
-
     }
 
     public void settings (){}

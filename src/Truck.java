@@ -7,11 +7,13 @@ public class Truck extends GamePlay
     final int capacity=15;
     final int operation_time=10;
     private int counter ;
+    private int time ;
 
     Truck(){
         predators = new LinkedList<>() ;
         products = new LinkedList<>() ;
         counter = 0 ;
+        time = -1 ;
     }
 
     public int getLeftSpace(){
@@ -48,8 +50,16 @@ public class Truck extends GamePlay
         return counter;
     }
 
+    public int getTime() {
+        return time;
+    }
+
     public void setCounter(int counter) {
         this.counter = counter;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 }
 

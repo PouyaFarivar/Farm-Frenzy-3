@@ -25,6 +25,19 @@ public class Product extends GamePlay
     public int getSize() {
         return size;
     }
+
+    public int getTime_present() {
+        return time_present;
+    }
+
+    public int getGivenTime() {
+        return givenTime;
+    }
+
+    public void setTime_present(int time_present) {
+        this.time_present = time_present;
+    }
+
     static class Egg extends Product{
         Egg(){
             super("egg" , 15);

@@ -63,6 +63,10 @@ public class Workshop extends GamePlay
         return price;
     }
 
+    public int getOperation_time() {
+        return operation_time;
+    }
+
     public void setLevel(int level) {
         this.level = level;
     }

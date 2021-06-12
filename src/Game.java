@@ -1,5 +1,8 @@
 import javax.xml.namespace.QName;
+import java.time.Period;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 
 public class Game {
@@ -12,6 +15,7 @@ public class Game {
     private LinkedList<Defender> defenders ;
     private LinkedList<Domestic> domestics ;
     private LinkedList<Predator> predators ;
+    private HashMap <String , Integer> productHistory ;
     private Well well ;
     private Warehouse warehouse ;
     private Truck truck ;
@@ -26,6 +30,7 @@ public class Game {
         defenders = new LinkedList<>() ;
         domestics = new LinkedList<>() ;
         predators = new LinkedList<>() ;
+        productHistory = new HashMap<>() ;
         well = new Well() ;
         warehouse = new Warehouse() ;
         truck = new Truck() ;
@@ -80,7 +85,8 @@ public class Game {
                     warehouse.getProducts().add(product);
                     warehouse.setCounter(warehouse.getCounter() + product.getSize());
                     products.remove(product);
-                    productMap[x][y] = null;
+                    productMap[x-1][y-1] = null;
+                    productHistory.put(product.getName() , productHistory.get(product.getName()) + 1);
                 }else {
                     return 1;
                 }
@@ -120,10 +126,10 @@ public class Game {
     }
 
     public int plantGrass(int x , int y){// 0 = done 1 = coordinate not free
-        if (grassMap[x][y] == null || grassMap[x][y].getHealth() == 0){
+        if (grassMap[x-1][y-1] == null || grassMap[x-1][y-1].getHealth() == 0){
             Grass grass = new Grass(x , y);
             grasses.add(grass) ;
-            grassMap[x][y] = grass ;
+            grassMap[x-1][y-1] = grass ;
             return 0 ;
         }else {
             return 1 ;
@@ -255,6 +261,145 @@ public class Game {
         }
     }
 
+    public int truckGo (){// 0 = done 1 = empty 2 = already moving
+        if (truck.getTime() == -1){
+            if (truck.getCounter() > 0) {
+                truck.setTime(0);
+                return 0;
+            }else {
+                return 1 ;
+            }
+        }else {
+            return 2 ;
+        }
+    }
+
+    public int goTurn(){
+        for (Domestic domestic : domestics){
+            doTurnDomestic(domestic);
+        }
+        for (Predator predator : predators){
+            doTurnPredator(predator);
+        }
+        for (Defender defender : defenders){
+            doTurnDefender(defender) ;
+        }
+        for (Product product : products){
+            doTurnProduct(product);
+        }
+        for (Workshop workshop : workshops){
+            doTurnWorkShop(workshop);
+        }
+        doTurnTruck(truck);
+        return checkWinLoss();
+    }
+
+    public void doTurnDomestic(Domestic domestic){
+        //TODO
+    }
+
+    public void doTurnPredator(Predator predator){
+        //TODO
+
+    }
+
+    public void doTurnDefender(Defender defender){
+        //TODO
+
+    }
+
+    public void doTurnProduct(Product product){
+        if (product.getTime_present() < product.getGivenTime()){
+            product.setTime_present(product.getTime_present() + 1);
+        }else if (product.getTime_present() == product.givenTime){
+            products.remove(product);
+            productMap[product.getX()-1][product.getY()-1] = null ;
+        }
+    }
+
+    public void doTurnWorkShop (Workshop workshop){
+        if (workshop.getLevel() > 0){
+            if (workshop.getWorking() < workshop.getOperation_time()){
+                workshop.setWorking(workshop.getWorking() + 1);
+            }
+            if (workshop.getWorking() == workshop.getOperation_time()){
+                Product product = new Product() ;
+                workshop.setWorking(-1);
+                if (workshop.getOutputProduct().equals("flour")){
+                    product = new Product.Flour() ;
+                }else if (workshop.getOutputProduct().equals("fabric")){
+                    product = new Product.Fabric() ;
+                }else if (workshop.getOutputProduct().equals("packetMilk")){
+                    product = new Product.PacketMilk() ;
+                }else if (workshop.getOutputProduct().equals("bread")){
+                    product = new Product.Bread() ;
+                }else if (workshop.getOutputProduct().equals("clothing")){
+                    product = new Product.Clothing() ;
+                }else if (workshop.getOutputProduct().equals("iceCream")){
+                    product = new Product.IceCream() ;
+                }
+                addProductToMap(product);
+            }
+        }
+    }
+
+    public void doTurnTruck (Truck truck){
+        if (truck.getTime() >= 0){
+            truck.setTime(truck.getTime() + 1);
+        }
+    }
+
+    public int checkWinLoss (){// 0 = not win 1= win
+        boolean  win = true ;
+        if (level.getGoalCoins() > 0){
+            if (coins < level.getGoalCoins()){
+                win = false ;
+            }
+        }
+        for (Map.Entry achievement : level.getAnimalAchievement().entrySet() ){
+            String name = (String)achievement.getKey() ;
+            int num = (int) achievement.getValue() ;
+            if (getNumAnimal(name) < num){
+                win = false ;
+                break;
+            }
+        }
+        for (Map.Entry achievement : level.getProductAchievement().entrySet()){
+            String name = (String)achievement.getKey() ;
+            int num = (int) achievement.getValue() ;
+            if (productHistory.get(name) < num){
+                win = false ;
+                break;
+            }
+        }
+        if (win){
+            return 1 ;
+        }else {
+            return 0 ;
+        }
+    }
+
+    public void addProductToMap(Product product){
+        int x = 0 ;
+        int y = 0 ;
+        for (int i = 0 ; i < 6 ; i++){
+            for (int j = 0 ; j < 6 ; j++){
+                if (productMap[i][j] == null){
+                    x = i+1 ;
+                    y = j+1 ;
+                    break;
+                }
+            }
+            if (x > 0){
+                break;
+            }
+        }
+        product.setX(x);
+        product.setX(y);
+        products.add(product);
+        productMap[x-1][y-1] = product ;
+    }
+
     public Workshop getWorkShopByName(String name){
         for (Workshop workshop : workshops){
             if (workshop.getName().equals(name)){
@@ -281,5 +426,26 @@ public class Game {
         }
         return null ;
     }
+    public int getNumAnimal (String name){
+        int num =0 ;
+        for (Domestic domestic : domestics){
+            if (domestic.getName().equals(name)){
+                num = num + 1 ;
+            }
+        }
+        return num ;
+    }
 
+    public Level getLevel() {
+        return level;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
 }
+
