@@ -94,7 +94,7 @@ public class Game {
                 break ;
             }
         }
-        if (done == false){
+        if (!done){
             for (Predator predator : predators){
                 if (predator.getX() == x && predator.getY() == y){
                     if (predator.getSizeInWarehouse()<=warehouse.remainingSpace()) {
@@ -109,7 +109,7 @@ public class Game {
                 }
             }
         }
-        if (done == false){
+        if (!done){
             return 2 ;
         }else {
             return 0;
@@ -180,7 +180,7 @@ public class Game {
         if (predator == null){
             return 1 ;
         }else {
-            if (predator.isCaptured()== false){
+            if (!predator.isCaptured()){
                 predator.getCage().setStrength(predator.getCage().getStrength() + 1);
                 if (predator.getCage().getStrength() == predator.getCageToStop()){
                     predator.setCaptured(true);
@@ -395,7 +395,7 @@ public class Game {
             }
         }
         product.setX(x);
-        product.setX(y);
+        product.setY(y);
         products.add(product);
         productMap[x-1][y-1] = product ;
     }
