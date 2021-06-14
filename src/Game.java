@@ -447,5 +447,67 @@ public class Game {
     public int getCoins() {
         return coins;
     }
+    public void walkCat()
+    {
+        int mindistance=100;
+        int x;
+        int y;
+        int targetx=0;
+        int targety=0;
+        for(Defender d : this.defenders)
+        {
+            if(d.getName().equals("Cat"))
+            {
+                x=d.getX();
+                y=d.getY();
+                for(int i=0;i<6;i++)
+                    for(int j=0;j<6;j++)
+                    {
+                        if(productMap[i][j] != null)
+                        {
+                            if(mindistance > abs(productMap[i][j].getX() - x) + abs(productMap[i][j].getY() - y))
+                            {
+                                mindistance = abs(productMap[i][j].getX() - x) + abs(productMap[i][j].getY() - y);
+                                targetx=i+1;
+                                targety=j+1;
+                            }
+
+                        }
+                    }
+                d.setX(targetx);
+                d.setY(targety);
+            }
+        }
+    }
+
+    public void walkDomestic()
+    {
+        int mindistance=100;
+        int x;
+        int y;
+        int targetx=0;
+        int targety=0;
+        for(Domestic d : this.domestics)
+        {
+                x=d.getX();
+                y=d.getY();
+                for(int i=0;i<6;i++)
+                    for(int j=0;j<6;j++)
+                    {
+                        if(grassMap[i][j] != null)
+                        {
+                            if(mindistance > abs(grassMap[i][j].getX() - x) + abs(grassMap[i][j].getY() - y))
+                            {
+                                mindistance = abs(grassMap[i][j].getX() - x) + abs(grassMap[i][j].getY() - y);
+                                targetx=i+1;
+                                targety=j+1;
+                            }
+
+                        }
+                    }
+                d.setX(targetx);
+                d.setY(targety);
+        }
+    }
 }
 
