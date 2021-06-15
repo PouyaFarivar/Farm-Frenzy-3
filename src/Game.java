@@ -1,5 +1,3 @@
-import javax.xml.namespace.QName;
-import java.time.Period;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -10,7 +8,6 @@ public class Game {
     private int turn ;
     private int coins ;
     private LinkedList<Product> products ;
-    private LinkedList<Grass> grasses ;
     private LinkedList<Workshop> workshops ;
     private LinkedList<Defender> defenders ;
     private LinkedList<Domestic> domestics ;
@@ -19,13 +16,11 @@ public class Game {
     private Well well ;
     private Warehouse warehouse ;
     private Truck truck ;
-    private Product [][] productMap ;
-    private Grass [][] grassMap ;
+    private int [][] grassMap ;
 
     Game (Level level){
         this.level = level ;
         products = new LinkedList<>() ;
-        grasses = new LinkedList<>() ;
         workshops = new LinkedList<>() ;
         defenders = new LinkedList<>() ;
         domestics = new LinkedList<>() ;
@@ -35,9 +30,8 @@ public class Game {
         warehouse = new Warehouse() ;
         truck = new Truck() ;
         turn = 0 ;
-        coins = 0 ;
-        productMap = new Product[6][6] ;
-        grassMap = new Grass[6][6] ;
+        coins = level.getStartingCoins() ;
+        grassMap = new int [6][6] ;
         for (Workshop workshop : this.level.getWorkshops()){
             this.workshops.add(workshop);
         }
@@ -85,7 +79,6 @@ public class Game {
                     warehouse.getProducts().add(product);
                     warehouse.setCounter(warehouse.getCounter() + product.getSize());
                     products.remove(product);
-                    productMap[x-1][y-1] = null;
                     productHistory.put(product.getName() , productHistory.get(product.getName()) + 1);
                 }else {
                     return 1;
@@ -116,20 +109,22 @@ public class Game {
         }
     }
 
-    public int fillWell(){//0 = done 1 = not empty
-        if (well.getAmount_left() == 0){
-            well.fill();
-            return 0 ;
+    public int fillWell(){//0 = done 1 = not empty 2 = already filling
+        if (well.getTimer() > 0){
+            return 2 ;
         }else {
-            return 1 ;
+            if (well.getAmount_left() == 0) {
+                well.fill();
+                return 0;
+            } else {
+                return 1;
+            }
         }
     }
 
-    public int plantGrass(int x , int y){// 0 = done 1 = coordinate not free
-        if (grassMap[x-1][y-1] == null || grassMap[x-1][y-1].getHealth() == 0){
-            Grass grass = new Grass(x , y);
-            grasses.add(grass) ;
-            grassMap[x-1][y-1] = grass ;
+    public int plantGrass(int x , int y){// 0 = done 1 = not enough water
+        if (well.getAmount_left() > 0){
+            grassMap[x-1][y-1] = grassMap [x-1][y-1] + 1 ;
             return 0 ;
         }else {
             return 1 ;
@@ -142,7 +137,7 @@ public class Game {
             return 1 ;
         } else if (workshop.getLevel() == 0){
             if (workshop.getPrice() <= coins){
-                coins = coins = workshop.getPrice() ;
+                coins = coins - workshop.getPrice() ;
                 workshop.setLevel(1);
                 return 0 ;
             }else {
@@ -291,52 +286,121 @@ public class Game {
             doTurnWorkShop(workshop);
         }
         doTurnTruck(truck);
+        doTurnWell(well);
+        spawnPredators(level);
         return checkWinLoss();
     }
 
     public void doTurnDomestic(Domestic domestic){
-        //TODO
+        if (domestic.getProductTimer() < domestic.getTimeProduce()) {
+            domestic.setProductTimer(domestic.getProductTimer() + 1);
+        }
+        if (domestic.getProductTimer() == domestic.getTimeProduce()) {
+            Product product = domestic.produce() ;
+            products.add(product) ;
+        }
+        if (domestic.getLives() <= 5) {
+            if (checkCoordinateGrass(domestic.getX() , domestic.getY()) == 1){
+                grassMap[domestic.getX()][domestic.getY()] = grassMap[domestic.getX()][domestic.getY()] - 1 ;
+                domestic.setLives(10);
+            }else {
+                walkDomestic(domestic);
+            }
+        }else{
+            move(domestic);
+        }
+        domestic.setLives(domestic.getLives() - 1);
+        if(domestic.getLives() == 0){
+            domestics.remove(domestic);
+        }
     }
 
     public void doTurnPredator(Predator predator){
-        //TODO
-
+        move(predator);
+        if (predator.getTime_captured() >= 0){
+            if (predator.isCaptured() == false) {
+                Domestic domestic = checkCoordinateDomestic(predator.getX(), predator.getY());
+                if (domestic != null) {
+                    domestics.remove(domestic);
+                }
+            }
+            predator.setTime_captured(predator.getTime_captured() + 1);
+            if (predator.getTime_captured() == predator.timeToRun){
+                predators.remove(predator);
+            }
+        }
     }
 
-    public void doTurnDefender(Defender defender){
-        //TODO
-
+    public void doTurnDefender(Defender defender) {
+        if (defender.getName().equals("cat")) {
+            if (defender.getProduct() == null) {
+                Product product = checkCoordinateProduct(defender.getX(), defender.getY());
+                if (product == null) {
+                    if (products.size() == 0) {
+                        move(defender);
+                    } else {
+                        walkDefender(defender);
+                    }
+                }else {
+                    products.remove(product);
+                    defender.setProduct(product);
+                    product.setAvailable(2);
+                }
+            }else {
+                if (defender.getX() == 3 && defender.getY() == 6){//coordinate of warehouse
+                    if (defender.getProduct().getSize() < warehouse.remainingSpace()){
+                        warehouse.getProducts().add(defender.getProduct());
+                        defender.getProduct().setAvailable(0);
+                        defender.setProduct(null);
+                    }else {
+                    }
+                }
+            }
+        }
+        if (defender.getName().equals("dog")){
+            if (predators.size() == 0){
+                move(defender);
+            }else {
+                Predator predator = checkCoordinatePredator(defender.getX() , defender.getY()) ;
+                if (predator == null) {
+                    walkDefender(defender);
+                }else {
+                    defenders.remove(defender);
+                    predators.remove(predator);
+                }
+            }
+        }
     }
 
     public void doTurnProduct(Product product){
         if (product.getTime_present() < product.getGivenTime()){
             product.setTime_present(product.getTime_present() + 1);
-        }else if (product.getTime_present() == product.givenTime){
+        }
+        if (product.getTime_present() == product.getGivenTime()){
             products.remove(product);
-            productMap[product.getX()-1][product.getY()-1] = null ;
         }
     }
 
     public void doTurnWorkShop (Workshop workshop){
         if (workshop.getLevel() > 0){
-            if (workshop.getWorking() < workshop.getOperation_time()){
+            if (workshop.getWorking() >= 0){
                 workshop.setWorking(workshop.getWorking() + 1);
             }
             if (workshop.getWorking() == workshop.getOperation_time()){
                 Product product = new Product() ;
                 workshop.setWorking(-1);
                 if (workshop.getOutputProduct().equals("flour")){
-                    product = new Product.Flour() ;
+                    product = new Product.Flour(0 , 0) ;
                 }else if (workshop.getOutputProduct().equals("fabric")){
-                    product = new Product.Fabric() ;
+                    product = new Product.Fabric(0 , 0) ;
                 }else if (workshop.getOutputProduct().equals("packetMilk")){
-                    product = new Product.PacketMilk() ;
+                    product = new Product.PacketMilk(0 , 0) ;
                 }else if (workshop.getOutputProduct().equals("bread")){
-                    product = new Product.Bread() ;
+                    product = new Product.Bread(0 , 0) ;
                 }else if (workshop.getOutputProduct().equals("clothing")){
-                    product = new Product.Clothing() ;
+                    product = new Product.Clothing(0 , 0) ;
                 }else if (workshop.getOutputProduct().equals("iceCream")){
-                    product = new Product.IceCream() ;
+                    product = new Product.IceCream(0 , 0) ;
                 }
                 addProductToMap(product);
             }
@@ -346,6 +410,46 @@ public class Game {
     public void doTurnTruck (Truck truck){
         if (truck.getTime() >= 0){
             truck.setTime(truck.getTime() + 1);
+        }
+        if (truck.getTime() == truck.operation_time){
+            int cash = 0 ;
+            for (Product product : truck.getProducts()){
+                cash = cash + product.getPrice();
+            }
+            truck.getProducts().clear();
+            for (Predator predator : predators){
+                cash = cash + predator.getPrice_for_purchase();
+            }
+            truck.getProducts().clear();
+            truck.setCounter(0);
+            truck.setTime(-1);
+            coins = coins + cash ;
+        }
+    }
+
+    public void doTurnWell (Well well){
+        if (well.getTimer() >= 0){
+            well.setTimer(well.getTimer() + 1);
+            if (well.getTimer() == well.operationTime){
+                well.setAmount_left(well.capacity);
+                well.setTimer(-1);
+            }
+        }
+    }
+
+    public void spawnPredators(Level level){
+        for (Map.Entry incoming : level.getPredators().entrySet()){
+            if ((int)incoming.getValue() == turn){
+                Predator predator = new Predator();
+                if (((String)incoming.getKey()).equals("lion")){
+                    predator = new Predator.Lion(3 , 2) ;
+                }else if (((String)incoming.getKey()).equals("bear")){
+                    predator = new Predator.Bear(3 , 2) ;
+                }else if (((String)incoming.getKey()).equals("tiger")){
+                    predator = new Predator.Tiger(3 , 2) ;
+                }
+                predators.add(predator);
+            }
         }
     }
 
@@ -367,7 +471,7 @@ public class Game {
         for (Map.Entry achievement : level.getProductAchievement().entrySet()){
             String name = (String)achievement.getKey() ;
             int num = (int) achievement.getValue() ;
-            if (productHistory.get(name) < num){
+            if (productHistory.get(name) == null || productHistory.get(name) < num){
                 win = false ;
                 break;
             }
@@ -384,7 +488,7 @@ public class Game {
         int y = 0 ;
         for (int i = 0 ; i < 6 ; i++){
             for (int j = 0 ; j < 6 ; j++){
-                if (productMap[i][j] == null){
+                if (checkCoordinateProduct(i+1 , j+1) == null){
                     x = i+1 ;
                     y = j+1 ;
                     break;
@@ -397,7 +501,6 @@ public class Game {
         product.setX(x);
         product.setY(y);
         products.add(product);
-        productMap[x-1][y-1] = product ;
     }
 
     public Workshop getWorkShopByName(String name){
@@ -447,67 +550,221 @@ public class Game {
     public int getCoins() {
         return coins;
     }
-    public void walkCat()
+    public void walkDefender(Defender d)
     {
         int mindistance=100;
         int x;
         int y;
         int targetx=0;
         int targety=0;
-        for(Defender d : this.defenders)
+        boolean movement = false ;
+        if(d.getName().equals("cat"))
         {
-            if(d.getName().equals("Cat"))
-            {
-                x=d.getX();
-                y=d.getY();
-                for(int i=0;i<6;i++)
-                    for(int j=0;j<6;j++)
-                    {
-                        if(productMap[i][j] != null)
-                        {
-                            if(mindistance > abs(productMap[i][j].getX() - x) + abs(productMap[i][j].getY() - y))
-                            {
-                                mindistance = abs(productMap[i][j].getX() - x) + abs(productMap[i][j].getY() - y);
-                                targetx=i+1;
-                                targety=j+1;
-                            }
-
-                        }
+            x=d.getX();
+            y=d.getY();
+                for(Product product : products)
+                {
+                    if (mindistance > Math.abs(product.getX() - x) + Math.abs(product.getY() - y)) {
+                        mindistance = Math.abs(product.getX() - x) + Math.abs(product.getY() - y);
+                        targetx = product.getX() ;
+                        targety = product.getY() ;
                     }
-                d.setX(targetx);
-                d.setY(targety);
+                }
+        }else if (d.getName().equals("dog")) {
+            x = d.getX();
+            y = d.getY();
+            for (Domestic domestic : domestics) {
+                if (mindistance > Math.abs(domestic.getX() - x) + Math.abs(domestic.getY() - y)) {
+                    mindistance = Math.abs(domestic.getX() - x) + Math.abs(domestic.getY() - y);
+                    targetx = domestic.getX();
+                    targety = domestic.getY();
+                }
+            }
+        }
+        if (d.getX() < targetx) {
+            d.setX(d.getX() + 1);
+            movement = true;
+        } else if (d.getX() > targetx) {
+            d.setX(d.getX() - 1);
+            movement = true;
+        }
+        if (movement == false) {
+            if (d.getY() < targety) {
+                d.setY(d.getY() + 1);
+                movement = true;
+            } else if (d.getY() > targety) {
+                d.setY(d.getY() - 1);
+                movement = true;
+            }
+        }
+
+    }
+
+    public void walkDomestic(Domestic d)
+    {
+        int mindistance=100;
+        int x;
+        int y;
+        int targetx=0;
+        int targety=0;
+        boolean movement = false ;
+        x=d.getX();
+        y=d.getY();
+        for(int i=0;i<6;i++) {
+            for (int j = 0; j < 6; j++) {
+                if (grassMap[i][j] > 0) {
+                    if (mindistance > Math.abs(i + 1 - x) + Math.abs(j + 1 - y)) {
+                        mindistance = Math.abs(i + 1 - x) + Math.abs(j + 1 - y);
+                        targetx = i + 1;
+                        targety = j + 1;
+                    }
+                }
+            }
+        }
+        d.setX(targetx);
+        d.setY(targety);
+        if (d.getX() < targetx) {
+            d.setX(d.getX() + 1);
+            movement = true;
+        } else if (d.getX() > targetx) {
+            d.setX(d.getX() - 1);
+            movement = true;
+        }
+        if (movement == false) {
+            if (d.getY() < targety) {
+                d.setY(d.getY() + 1);
+                movement = true;
+            } else if (d.getY() > targety) {
+                d.setY(d.getY() - 1);
+                movement = true;
             }
         }
     }
 
-    public void walkDomestic()
-    {
-        int mindistance=100;
-        int x;
-        int y;
-        int targetx=0;
-        int targety=0;
-        for(Domestic d : this.domestics)
-        {
-                x=d.getX();
-                y=d.getY();
-                for(int i=0;i<6;i++)
-                    for(int j=0;j<6;j++)
-                    {
-                        if(grassMap[i][j] != null)
-                        {
-                            if(mindistance > abs(grassMap[i][j].getX() - x) + abs(grassMap[i][j].getY() - y))
-                            {
-                                mindistance = abs(grassMap[i][j].getX() - x) + abs(grassMap[i][j].getY() - y);
-                                targetx=i+1;
-                                targety=j+1;
-                            }
-
-                        }
+    public void move (Animal animal){
+        Random random = new Random() ;
+        int dor = animal.getSpeed() ;
+        while (dor > 0) {
+            int dir = random.nextInt(4) + 1; // 1= +x 2 = +y 3 = -x 4 = -y
+            switch (dir){
+                case 1 :
+                    if (animal.getX() <= 5) {
+                        animal.setX(animal.getX() + 1);
+                        dor = dor - 1 ;
                     }
-                d.setX(targetx);
-                d.setY(targety);
+                    break;
+                case 2 :
+                    if (animal.getY() <= 5){
+                        animal.setY(animal.getY() + 1);
+                        dor = dor - 1 ;
+                    }
+                    break;
+                case 3 :
+                    if (animal.getX() >= 1){
+                        animal.setX(animal.getX() - 1);
+                        dor = dor - 1 ;
+                    }
+                    break;
+                case 4 :
+                    if (animal.getY() >= 1){
+                        animal.setY(animal.getY() - 1);
+                        dor = dor - 1 ;
+                    }
+                    break;
+            }
+        }
+
+    }
+    public void plot () {
+        boolean grasses = false ;
+        System.out.println("Turn : " + turn);
+        System.out.println("Grasses : ");
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                System.out.print(grassMap[i][j] + " ");
+                if (grassMap[i][j] > 0){
+                    grasses = true ;
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("Domestic animals : ");
+        for (Domestic domestic : domestics){
+            System.out.println(domestic.getName() + " " + domestic.getLives()*10 + "%" + " [" + domestic.getX() + " " + domestic.getY() + "]");
+        }
+        System.out.println("Predator animals : ");
+        for (Predator predator : predators){
+            System.out.println(predator.getName() + " " + (predator.getCageToStop() - predator.getCage().getStrength()) + " [" + predator.getX() + " " + predator.getY() + "]");
+        }
+        System.out.println("Defender animals : ");
+        for (Defender defender : defenders){
+            System.out.println(defender.getName() + " [" + defender.getX() + " " + defender.getY() + "]");
+        }
+        System.out.println("Products : ");
+        for (Product product : products){
+            System.out.println(product.getName() + " [" + product.getX() + " " + product.getY() + "]");
+        }
+        System.out.println("Achievements : ");
+        for (Map.Entry achievement : level.getAnimalAchievement().entrySet()){
+            System.out.println(achievement.getKey() + ":" + getNumAnimal((String)achievement.getKey()) + "/" +achievement.getValue());
+        }
+        for (Map.Entry achievement : level.getProductAchievement().entrySet()){
+            System.out.println(achievement.getKey() + ":" + productHistory.get((String)achievement.getKey()) + "/" +achievement.getValue());
+        }
+        if (level.getGoalCoins()>0){
+            System.out.println("Coins : " + coins + "/" + level.getGoalCoins());
+        }
+        if (grasses == false){
+            System.out.println("WARNING : No grass on the field.");
+        }
+
+    }
+
+    public Product checkCoordinateProduct(int x , int y){
+        for (Product product : products){
+            if (product.getY() == x && product.getY() == y){
+                return product ;
+            }
+        }
+        return null ;
+    }
+
+    public Predator checkCoordinatePredator(int x , int y){
+        for (Predator predator : predators){
+            if (predator.getY() == x && predator.getY() == y){
+                return predator ;
+            }
+        }
+        return null ;
+    }
+
+    public Domestic checkCoordinateDomestic(int x , int y){
+        for (Domestic domestic : domestics){
+            if (domestic.getY() == x && domestic.getY() == y){
+                return domestic ;
+            }
+        }
+        return null ;
+    }
+
+    public int checkCoordinateGrass (int x , int y) {//0 = no grass 1 = grass
+        if (grassMap[x][y] > 0) {
+            return 1;
+        }else {
+            return 0 ;
         }
     }
+
+    public int giveMedal (){// 1=gold 2= silver 3=bronze 4= none
+        int prize = 4 ;
+        for (int i = 0 ; i < 3 ; i++){
+            if (turn < level.getRewardTimes().get(i)){
+                prize = i + 1 ;
+            }
+        }
+        return prize ;
+    }
+
+
 }
 

@@ -8,5 +8,49 @@
       "levelTime": {}
     }
   ],
-  "levels": []
+  "levels": [
+    {
+      "levelNum": 1,
+      "startingCoins": 150,
+      "animalAchievement": {
+        "hen": 3
+      },
+      "productAchievement": {
+        "egg": 5
+      },
+      "predators": {},
+      "goalCoins": 0,
+      "rewardTimes": [
+        20,
+        30,
+        40
+      ],
+      "startingAnimals": [
+        {
+          "productName": "egg",
+          "lives": 10,
+          "timeProduce": 0,
+          "productTimer": 0,
+          "name": "hen",
+          "type": 1,
+          "SizeInWarehouse": 0,
+          "price_for_purchase": 100,
+          "price_for_sale": 0,
+          "speed": 1,
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "workshops": [
+        {
+          "level": 0,
+          "working": 0,
+          "operation_time": 0,
+          "price": 0,
+          "x": 0,
+          "y": 0
+        }
+      ]
+    }
+  ]
 }

@@ -2,18 +2,21 @@ import java.util.regex.Matcher;
 
 public class Product extends GamePlay
 {
-    String name  ;
-    int price;
-    int size;
-    int time_present;
-    boolean available;
-    final int givenTime = 10 ;
+    private String name  ;
+    private int price;
+    private int size;
+    private int time_present;
+    private int available;// 0 = warehouse 1 = ground 2 = cat
+    private int givenTime ;
 
-    Product(String name , int price ){
+    Product(String name , int price , int x , int y , int givenTime , int size){
+        super(x , y);
         this.name = name ;
         this.price = price ;
         time_present = 0 ;
-        available = true ;
+        available = 1 ;
+        this.givenTime = givenTime ;
+        this.size = size ;
     }
 
     Product(){}
@@ -34,53 +37,67 @@ public class Product extends GamePlay
         return givenTime;
     }
 
+    public int getAvailable() {
+        return available;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
     public void setTime_present(int time_present) {
         this.time_present = time_present;
     }
 
+    public void setAvailable(int available) {
+        this.available = available;
+    }
+
+
     static class Egg extends Product{
-        Egg(){
-            super("egg" , 15);
+        Egg(int x , int y){
+            super("egg" , 15 , x , y , 4 ,1);
         }
     }
     static class Feather extends Product{
-        Feather(){
-            super("feather" , 20);
+        Feather(int x , int y){
+            super("feather" , 20 , x , y , 4 ,1);
         }
     }
     static class Milk extends Product{
-        Milk(){
-            super("milk" , 25);
+        Milk(int x , int y){
+            super("milk" , 25 , x , y , 4 , 1);
         }
     }
     static class Flour extends Product{
-        Flour(){
-            super("flour" , 40);
+        Flour(int x , int y){
+            super("flour" , 40 , x , y , 5 , 2);
         }
     }
     static class Fabric extends Product{
-        Fabric(){
-            super("fabric" , 50);
-        }
-    }
-    static class Bread extends Product{
-        Bread(){
-            super("bread" , 80);
+        Fabric(int x , int y){
+            super("fabric" , 50 , x , y , 5 , 2);
         }
     }
     static class PacketMilk extends Product{
-        PacketMilk(){
-            super("packetMilk" , 60);
+    PacketMilk(int x , int y){
+        super("packetMilk" , 60 , x, y , 5 , 2);
+    }
+}
+    static class Bread extends Product{
+        Bread(int x , int y){
+            super("bread" , 80 , x ,y , 6 , 4);
         }
     }
+
     static class Clothing extends Product{
-        Clothing(){
-            super("clothing" , 100);
+        Clothing(int x , int y ){
+            super("clothing" , 100 , x , y , 6 , 4);
         }
     }
     static class IceCream extends Product{
-        IceCream(){
-            super("iceCream" , 120);
+        IceCream(int x ,  int y){
+            super("iceCream" , 120 , x , y , 6 , 4);
         }
     }
 }

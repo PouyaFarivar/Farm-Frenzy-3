@@ -8,20 +8,20 @@ public class Level {
     private HashMap <String , Integer> productAchievement ;//name of the product , number of it
     private HashMap <String , Integer> predators ;// name of the predator , turn when he comes in
     private int goalCoins ;
-    private LinkedList <Integer> rewardTimes ;
+    private LinkedList <Integer> rewardTimes ;// 0 = gold 1= silver 3= bronze
     private LinkedList <Domestic> startingAnimals ;
     private LinkedList <Workshop> workshops ;
 
-    Level ( int startingCoins , int goalCoins , int levelNum){
+    Level (int startingCoins , int goalCoins , int levelNum , HashMap<String , Integer> animalAchievement , HashMap<String , Integer>productAchievement , HashMap<String , Integer>predators , LinkedList<Domestic>startingAnimals , LinkedList<Workshop>workshops , LinkedList<Integer>rewardTimes){
         this.levelNum = levelNum ;
         this.startingCoins = startingCoins ;
         this.goalCoins = goalCoins ;
-        rewardTimes = new LinkedList<>() ;
-        animalAchievement = new HashMap<>() ;
-        productAchievement = new HashMap<>() ;
-        predators = new HashMap<>() ;
-        startingAnimals = new LinkedList<>() ;
-        workshops = new LinkedList<>() ;
+        this.rewardTimes = rewardTimes ;
+        this.animalAchievement =  animalAchievement;
+        this.productAchievement = productAchievement;
+        this.predators = predators;
+        this.startingAnimals =startingAnimals ;
+        this.workshops = workshops ;
     }
 
     Level(){}
@@ -48,5 +48,17 @@ public class Level {
 
     public HashMap<String, Integer> getProductAchievement() {
         return productAchievement;
+    }
+
+    public HashMap<String, Integer> getPredators() {
+        return predators;
+    }
+
+    public int getStartingCoins() {
+        return startingCoins;
+    }
+
+    public LinkedList<Integer> getRewardTimes() {
+        return rewardTimes;
     }
 }

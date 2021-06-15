@@ -15,8 +15,8 @@ public class Processor {
 
     public void run (){
         load();
+        User user = null ;
         while (true){
-            User user = new User() ;
             if (user == null) {
                 user = getUser();
             }
@@ -111,7 +111,7 @@ public class Processor {
             action = scanner.nextLine();
             if ((matcher = getCommandMatcher(action , "start (\\d+)")).find()) {
                 levelNum = Integer.parseInt(matcher.group(1));
-                if (levelNum + 1 >= user.getMaximumLevel()) {
+                if (levelNum  <= user.getMaximumLevel()+1) {
                     level = dataBase.getLevelByNum(levelNum);
                     if (level != null) {
                         done = true;
@@ -184,6 +184,9 @@ public class Processor {
                         case 1:
                             System.out.println("Well is not empty yet.");
                             break;
+                        case 2 :
+                            System.out.println("Well is being filled.");
+                            break;
                         default:
                             break;
                     }
@@ -196,7 +199,7 @@ public class Processor {
                             System.out.println("Operation successful.");
                             break;
                         case 1:
-                            System.out.println("Given coordinates already have grass.");
+                            System.out.println("Not enough water.");
                             break;
                         default:
                             break;
@@ -319,26 +322,81 @@ public class Processor {
                     turn = Integer.parseInt(matcher.group(1)) ;
                 }else if (action.contains("exit")){
                     break;
+                }else if (action.contains("inquiry")){
+                    game.plot();
+                }else{
+                    System.out.println("INVALID COMMAND.");
                 }
             }else {
                 int possible = game.goTurn();
                 if (possible == 0) {
                     turn = turn - 1;
+                    game.plot();
                     if (turn == 0) {
                         System.out.println("Time passed.");
                     }
                 }else {
+                    int medal = 0;
                     if (user.getLevelTime().containsKey(game.getLevel().getLevelNum())) {
                         if (user.getLevelTime().get(game.getLevel().getLevelNum()) > game.getTurn()) {
                             user.getLevelTime().put(game.getLevel().getLevelNum(), game.getTurn());
                             user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
+                            medal = game.giveMedal() ;
+                            if (medal != user.getLevelMedal().get(game.getLevel().getLevelNum())) {
+                                user.getLevelMedal().put(game.getLevel().getLevelNum(), medal);
+                                switch (medal) {
+                                    case 1:
+                                        user.setCoin(user.getCoin() + 300);
+                                        break;
+                                    case 2:
+                                        user.setCoin(user.getCoin() + 200);
+                                        break;
+                                    case 3:
+                                        user.setCoin(user.getCoin() + 100);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                         }
                     }else {
                         user.getLevelTime().put(game.getLevel().getLevelNum() , game.getTurn()) ;
                         user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
                         user.setMaximumLevel(game.getLevel().getLevelNum());
+                        medal = game.giveMedal() ;
+                        user.getLevelMedal().put(game.getLevel().getLevelNum() , medal);
+                        switch (medal) {
+                            case 1:
+                                user.setCoin(user.getCoin() + 300);
+                                break;
+                            case 2:
+                                user.setCoin(user.getCoin() + 200);
+                                break;
+                            case 3:
+                                user.setCoin(user.getCoin() + 100);
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                    System.out.println("Victory");
+                    System.out.print("Victory : ");
+                    switch (medal){
+                        case 1 :
+                            System.out.println("You got a Gold medal on level " + game.getLevel().getLevelNum());
+                            break;
+                        case 2 :
+                            System.out.println("You got a Silver medal on level " + game.getLevel().getLevelNum());
+                            break;
+                        case 3 :
+                            System.out.println("You got a Bronze medal on level " + game.getLevel().getLevelNum());
+                            break;
+                        case 4 :
+                            System.out.println("No medal.");
+                            break;
+                        default:
+                            break;
+                    }
+
                     break;
                 }
             }

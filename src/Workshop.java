@@ -21,6 +21,8 @@ public class Workshop extends GamePlay
         working = -1;
     }
 
+    Workshop(){}
+
     public Product work (){
         if (working < operation_time){
             working = working + 1 ;
@@ -29,17 +31,17 @@ public class Workshop extends GamePlay
             Product product = new Product() ;
             working = -1 ;
             if (outputProduct.equals("flour")){
-                product = new Product.Flour() ;
+                product = new Product.Flour(0 , 0) ;
             }else if (outputProduct.equals("fabric")){
-                product = new Product.Fabric() ;
+                product = new Product.Fabric(0 , 0) ;
             }else if (outputProduct.equals("packetMilk")){
-                product = new Product.PacketMilk() ;
+                product = new Product.PacketMilk(0 , 0) ;
             }else if (outputProduct.equals("bread")){
-                product = new Product.Bread() ;
+                product = new Product.Bread( 0 , 0 ) ;
             }else if (outputProduct.equals("clothing")){
-                product = new Product.Clothing() ;
+                product = new Product.Clothing(0 , 0) ;
             }else if (outputProduct.equals("iceCream")){
-                product = new Product.IceCream() ;
+                product = new Product.IceCream(0  ,0) ;
             }
             return product ;
         }else {

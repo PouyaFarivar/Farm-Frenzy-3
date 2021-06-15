@@ -7,6 +7,7 @@ public class User {
     private int coin ;
     private int maximumLevel ;
     private HashMap <Integer , Integer> levelTime ;// level num , turn
+    private HashMap <Integer , Integer> levelMedal ;// 0 = no medal 1 = gold 2 = silver 3 = bronze || prize bronze = 100 coin silver = 200 coin bronze = 300 coin
 
     User (String userName , String password ){
         this.userName = userName ;
@@ -14,6 +15,7 @@ public class User {
         coin = 0 ;
         maximumLevel = 0 ;
         levelTime = new HashMap<>() ;
+        levelMedal = new HashMap<>() ;
     }
 
     User (){}
@@ -36,6 +38,10 @@ public class User {
 
     public int getCoin() {
         return coin;
+    }
+
+    public HashMap<Integer, Integer> getLevelMedal() {
+        return levelMedal;
     }
 
     public void setCoin(int coin) {
