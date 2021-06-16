@@ -2,6 +2,7 @@ import java.util.regex.Matcher;
 
 public class Product extends GamePlay
 {
+    private int id ;
     private String name  ;
     private int price;
     private int size;
@@ -17,6 +18,7 @@ public class Product extends GamePlay
         available = 1 ;
         this.givenTime = givenTime ;
         this.size = size ;
+        id = 0 ;
     }
 
     Product(){}
@@ -41,6 +43,10 @@ public class Product extends GamePlay
         return available;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getPrice() {
         return price;
     }
@@ -53,6 +59,9 @@ public class Product extends GamePlay
         this.available = available;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     static class Egg extends Product{
         Egg(int x , int y){

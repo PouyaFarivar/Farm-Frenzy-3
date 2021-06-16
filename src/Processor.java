@@ -201,6 +201,9 @@ public class Processor {
                         case 1:
                             System.out.println("Not enough water.");
                             break;
+                        case 2 :
+                            System.out.println("Given coordinate is not on the map.");
+                            break;
                         default:
                             break;
                     }
@@ -279,6 +282,9 @@ public class Processor {
                         case 2:
                             System.out.println("Not enough space in Truck inventory.");
                             break;
+                        case 3 :
+                            System.out.println("Truck is moving.");
+                            break;
                         default:
                             break;
                     }
@@ -299,6 +305,9 @@ public class Processor {
                             break;
                         case 2:
                             System.out.println("Not enough space in Ware house.");
+                            break;
+                        case 3 :
+                            System.out.println("Truck is moving.");
                             break;
                         default:
                             break;
@@ -332,6 +341,7 @@ public class Processor {
                 if (possible == 0) {
                     turn = turn - 1;
                     game.plot();
+                    System.out.println();
                     if (turn == 0) {
                         System.out.println("Time passed.");
                     }

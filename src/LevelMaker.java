@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,16 +72,21 @@ public class LevelMaker {
                 }
             }
             System.out.println("Starting animals : ");
+            int x = 0 ;
+            int y = 0 ;
+            Random random = new Random();
             while (true){
                 String action = scanner.nextLine() ;
                 if ((matcher = getCommandMatcher(action , "([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
                     Domestic domestic = new Domestic() ;
+                    x = random.nextInt(6) + 1 ;
+                    y = random.nextInt(6) + 1 ;
                     if (matcher.group(1).equals("hen")){
-                        domestic = new Domestic.Hen(1, 1);
+                        domestic = new Domestic.Hen(x, y);
                     }else if (matcher.group(1).equals("ostrich")){
-                        domestic = new Domestic.Ostrich(2 , 2);
+                        domestic = new Domestic.Ostrich(x , y);
                     }else if (matcher.group(1).equals("buffalo")){
-                        domestic = new Domestic.Buffalo(3 ,3);
+                        domestic = new Domestic.Buffalo(x,y);
                     }else if (action.equals("done")){
                         break;
                     }

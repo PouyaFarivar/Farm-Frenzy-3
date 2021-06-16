@@ -23,16 +23,18 @@ public class Warehouse extends GamePlay
 
     public Product getProduct (String name){
         for (Product product : products){
-            product.getName().equals(name);
-            return product ;
+            if (product.getName().equals(name)) {
+                return product;
+            }
         }
         return null;
     }
 
     public Predator getPredator(String name){
         for (Predator predator : predators){
-            predator.getName().equals(name);
-            return predator ;
+            if (predator.getName().equals(name)) {
+                return predator;
+            }
         }
         return null;
     }

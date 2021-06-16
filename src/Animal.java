@@ -1,5 +1,6 @@
 public class Animal extends GamePlay
 {
+    private int id ;
     private String name ;
     private int type  ;//1 = DOMESTIC 2 = DEFENDER 3 = PREDATOR
     private int SizeInWarehouse;
@@ -14,6 +15,7 @@ public class Animal extends GamePlay
         this.price_for_purchase=pr_purchase;
         this.price_for_sale = price_for_sale ;
         this.speed = speed ;
+        id = 0 ;
     }
 
     public Animal(){}
@@ -38,6 +40,14 @@ public class Animal extends GamePlay
     public int getSpeed() {
         return speed;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
 class Domestic extends Animal{
     String productName;
@@ -50,6 +60,7 @@ class Domestic extends Animal{
         this.productName = productName;
         lives = 10;
         productTimer = 0 ;
+        this.timeProduce = timeProduce ;
 
     }
 
