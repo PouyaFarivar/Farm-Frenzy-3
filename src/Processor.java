@@ -15,8 +15,8 @@ public class Processor {
 
     public void run (){
         load();
-        User user = null ;
-        while (true){
+        while (true) {
+            User user = null;
             if (user == null) {
                 user = getUser();
             }
@@ -24,11 +24,15 @@ public class Processor {
                 break;
             }
             dataBase.save();
-            Level level = menu(user);
-            if (level !=  null){
-                play(user , level);
+            while (true) {
+                Level level = menu(user);
+                if (level != null) {
+                    play(user, level);
+                }else {
+                    break;
+                }
+                dataBase.save();
             }
-            dataBase.save();
         }
 
     }
