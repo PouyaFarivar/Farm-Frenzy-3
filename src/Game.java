@@ -31,11 +31,36 @@ public class Game {
         coins = level.getStartingCoins() ;
         grassMap = new int [6][6] ;
         idTracker = new HashMap<>() ;
-        for (Workshop workshop : this.level.getWorkshops()){
-            this.workshops.add(workshop);
+        for (String workshopName : this.level.getWorkshops()) {
+            Workshop workshop = new Workshop();
+            if (workshopName.equals("flourMill")) {
+                workshop = new Workshop.FlourMill(0, 0);
+            } else if (workshopName.equals("bakery")) {
+                workshop = new Workshop.Bakery(0, 0);
+            } else if (workshopName.equals("iceCreamShop")) {
+                workshop = new Workshop.IceCreamShop(0, 0);
+            } else if (workshopName.equals("milkPackaging")) {
+                workshop = new Workshop.MilkPackaging(0, 0);
+            } else if (workshopName.equals("sewingFactory")) {
+                workshop = new Workshop.SewingFactory(0, 0);
+            } else if (workshopName.equals("weavingFactory")) {
+                workshop = new Workshop.WeavingFactory(0, 0);
+            }
+            workshops.add(workshop);
         }
-        for (Domestic domestic : this.level.getStartingAnimals()){
-            this.domestics.add(domestic);
+        for (String domesticName : this.level.getStartingAnimals()){
+            Random random = new Random() ;
+            Domestic domestic = new Domestic() ;
+            int x = random.nextInt(6) + 1 ;
+            int y = random.nextInt(6) + 1 ;
+            if (domesticName.equals("hen")){
+                domestic = new Domestic.Hen(x, y);
+            }else if (domesticName.equals("ostrich")){
+                domestic = new Domestic.Ostrich(x , y);
+            }else if (domesticName.equals("buffalo")) {
+                domestic = new Domestic.Buffalo(x, y);
+            }
+            domestics.add(domestic) ;
             updateIdTracker(domestic.getName());
             domestic.setId(idTracker.get(domestic.getName()));
         }
@@ -74,7 +99,7 @@ public class Game {
         }
     }
 
-    public int pickup (int x , int y){// 0 = done 1 = not enough space 2 = no product in given coordinates ;
+    public int pickup (int x , int y){// 0 = done 1 = not enough space 2 = no product in given coordinates 3 = predator not captured
         boolean done = false ;
         for (Product product : products){
             if (product.getX() == x && product.getY() == y){
@@ -96,16 +121,20 @@ public class Game {
         }
         if (!done){
             for (Predator predator : predators){
-                if (predator.getX() == x && predator.getY() == y){
-                    if (predator.getSizeInWarehouse()<=warehouse.remainingSpace()) {
-                        warehouse.getPredators().add(predator);
-                        warehouse.setCounter(warehouse.getCounter() + predator.getSizeInWarehouse());
-                        predators.remove(predator);
+                if (predator.getX() == x && predator.getY() == y) {
+                    if (predator.isCaptured()) {
+                        if (predator.getSizeInWarehouse() <= warehouse.remainingSpace()) {
+                            warehouse.getPredators().add(predator);
+                            warehouse.setCounter(warehouse.getCounter() + predator.getSizeInWarehouse());
+                            predators.remove(predator);
+                        } else {
+                            return 1;
+                        }
+                        done = true;
+                        break;
                     }else {
-                        return 1 ;
+                        return 3 ;
                     }
-                    done = true ;
-                    break;
                 }
             }
         }
@@ -117,7 +146,7 @@ public class Game {
     }
 
     public int fillWell(){//0 = done 1 = not empty 2 = already filling
-        if (well.getTimer() > 0){
+        if (well.getTimer() >= 0){
             return 2 ;
         }else {
             if (well.getAmount_left() == 0) {
@@ -160,6 +189,25 @@ public class Game {
         }
     }
 
+    public int upgradeWorkShop (String name){// 0 = done 1 = cant build in dis level 2 = not enough coins 3 = already upgraded 4 = not level 1
+        Workshop workshop = getWorkShopByName(name);
+        if (workshop == null){
+            return 1 ;
+        } else if (workshop.getLevel() == 1){
+            if (workshop.getPrice()*2 <= coins){
+                coins = coins - workshop.getPrice()*2 ;
+                workshop.setLevel(2);
+                return 0 ;
+            }else {
+                return 2 ;
+            }
+        }else if (workshop.getLevel() == 2){
+            return 3 ;
+        }else {
+            return 4 ;
+        }
+    }
+
     public int work(String name){// 0 = done 1 = no such work shop 2 = workshop not built 3 = already working 4 = no entry product
         Workshop workshop = getWorkShopByName(name);
         if (workshop == null){
@@ -169,15 +217,38 @@ public class Game {
         }else if (workshop.getWorking() >= 0){
             return 3 ;
         }else {
-            Product product = getProductFromWareHouse(name) ;
-            if (product == null){
-                return 4 ;
+            if (workshop.getLevel() == 1) {
+                Product product = getProductFromWareHouse(workshop.getEntryProduct());
+                if (product == null) {
+                    return 4;
+                } else {
+                    workshop.setWorking(0);
+                    workshop.setNumInside(1);
+                    warehouse.getProducts().remove(product);
+                    warehouse.setCounter(warehouse.getCounter() - product.getSize());
+                    return 0;
+                }
             }else{
-                workshop.setWorking(0);
-                warehouse.getProducts().remove(product) ;
-                warehouse.setCounter(warehouse.getCounter() - product.getSize());
-                return 0 ;
-
+                if (findNumProductWarehouse(workshop.getEntryProduct()) == 0){
+                    return 4 ;
+                }else if (findNumProductWarehouse(workshop.getEntryProduct()) == 1){
+                    Product product = getProductFromWareHouse(workshop.getEntryProduct());
+                    products.remove(product);
+                    warehouse.setCounter(warehouse.getCounter() - product.getSize());
+                    workshop.setWorking(0);
+                    workshop.setNumInside(1);
+                    return 0 ;
+                }else{
+                    Product product = getProductFromWareHouse(workshop.getEntryProduct());
+                    products.remove(product);
+                    warehouse.setCounter(warehouse.getCounter() - product.getSize());
+                    product = getProductFromWareHouse(workshop.getEntryProduct());
+                    products.remove(product);
+                    warehouse.setCounter(warehouse.getCounter() - product.getSize());
+                    workshop.setWorking(0);
+                    workshop.setNumInside(2);
+                    return 0 ;
+                }
             }
         }
     }
@@ -191,6 +262,7 @@ public class Game {
                 predator.getCage().setStrength(predator.getCage().getStrength() + 1);
                 if (predator.getCage().getStrength() == predator.getCageToStop()){
                     predator.setCaptured(true);
+                    predator.setTime_captured(0);
                 }
                 return 0 ;
             }else {
@@ -309,17 +381,6 @@ public class Game {
         for (Domestic domestic : removalDomestics){
             domestics.remove(domestic);
         }
-        LinkedList<Predator> removalPredators = new LinkedList<>() ;
-        for (Predator predator : predators){
-            int check = doTurnPredator(predator);
-            if (check == 1){
-                removalPredators.add(predator);
-            }
-        }
-        for (Predator predator : removalPredators){
-            predators.remove(predator);
-        }
-
         LinkedList<Defender> removalDefenders = new LinkedList<>() ;
         for (Defender defender : defenders){
             int check = doTurnDefender(defender);
@@ -329,6 +390,16 @@ public class Game {
         }
         for (Defender defender : removalDefenders){
             defenders.remove(defender);
+        }
+        LinkedList<Predator> removalPredators = new LinkedList<>() ;
+        for (Predator predator : predators){
+            int check = doTurnPredator(predator);
+            if (check == 1){
+                removalPredators.add(predator);
+            }
+        }
+        for (Predator predator : removalPredators){
+            predators.remove(predator);
         }
 
         LinkedList<Product> removalProducts = new LinkedList<>();
@@ -364,11 +435,15 @@ public class Game {
             product.setId(idTracker.get(product.getName()));
         }
         if (domestic.getLives() <= 5) {
-            if (checkCoordinateGrass(domestic.getX() , domestic.getY()) == 1){
-                grassMap[domestic.getX() - 1][domestic.getY() - 1] = grassMap[domestic.getX() - 1][domestic.getY() - 1] - 1 ;
-                domestic.setLives(10);
+            if (anyGrass() == 1) {
+                if (checkCoordinateGrass(domestic.getX(), domestic.getY()) == 1) {
+                    grassMap[domestic.getX() - 1][domestic.getY() - 1] = grassMap[domestic.getX() - 1][domestic.getY() - 1] - 1;
+                    domestic.setLives(10);
+                } else {
+                    walkDomestic(domestic);
+                }
             }else {
-                walkDomestic(domestic);
+                move(domestic);
             }
         }else{
             move(domestic);
@@ -382,46 +457,48 @@ public class Game {
 
     public int doTurnPredator(Predator predator){// 0 = done 1= remove
         move(predator);
-        if (predator.getTime_captured() >= 0){
-            if (predator.isCaptured() == false) {
-                Domestic domestic = checkCoordinateDomestic(predator.getX(), predator.getY());
-                if (domestic != null) {
-                    domestics.remove(domestic);
-                }
+        if (predator.isCaptured() == false) {
+            Domestic domestic = checkCoordinateDomestic(predator.getX(), predator.getY());
+            if (domestic != null) {
+                domestics.remove(domestic);
             }
+        }else {
             predator.setTime_captured(predator.getTime_captured() + 1);
-            if (predator.getTime_captured() == predator.timeToRun){
-                return 1 ;
+            if (predator.getTime_captured() == predator.timeToRun) {
+                return 1;
             }
         }
+
         return 0 ;
     }
 
     public int doTurnDefender(Defender defender) {// 0 =none 1 = remove
         if (defender.getName().equals("cat")) {
-            if (defender.getProduct() == null) {
-                Product product = checkCoordinateProduct(defender.getX(), defender.getY());
-                if (product == null) {
-                    if (products.size() == 0) {
-                        move(defender);
-                    } else {
+            if (defender.getProducts().size() == 0) {
+                if (products.size() > 0) {
+                    Product product = checkCoordinateProduct(defender.getX(), defender.getY());
+                    if (product == null) {
                         walkDefender(defender);
+                    } else {
+                        defender.getProducts().add(product);
+                        products.remove(product);
+                        product.setAvailable(2);
                     }
                 }else {
-                    products.remove(product);
-                    defender.setProduct(product);
-                    product.setAvailable(2);
+                    move(defender);
                 }
             }else {
                 if (defender.getX() == 3 && defender.getY() == 6){//coordinate of warehouse
-                    if (defender.getProduct().getSize() < warehouse.remainingSpace()){
-                        warehouse.getProducts().add(defender.getProduct());
-                        defender.getProduct().setAvailable(0);
-                        defender.setProduct(null);
-                    }else {
+                    if (defender.getProducts().getFirst().getSize() < warehouse.remainingSpace()){
+                        defender.getProducts().getFirst().setAvailable(0);
+                        warehouse.getProducts().add(defender.getProducts().getFirst());
+                        defender.getProducts().removeFirst();
                     }
+                } else {
+                    goTo(defender , 3, 6);
                 }
             }
+            return 0 ;
         }
         if (defender.getName().equals("dog")){
             if (predators.size() == 0){
@@ -454,23 +531,56 @@ public class Game {
             if (workshop.getWorking() >= 0){
                 workshop.setWorking(workshop.getWorking() + 1);
             }
-            if (workshop.getWorking() == workshop.getOperation_time()){
-                Product product = new Product() ;
-                workshop.setWorking(-1);
-                if (workshop.getOutputProduct().equals("flour")){
-                    product = new Product.Flour(0 , 0) ;
-                }else if (workshop.getOutputProduct().equals("fabric")){
-                    product = new Product.Fabric(0 , 0) ;
-                }else if (workshop.getOutputProduct().equals("packetMilk")){
-                    product = new Product.PacketMilk(0 , 0) ;
-                }else if (workshop.getOutputProduct().equals("bread")){
-                    product = new Product.Bread(0 , 0) ;
-                }else if (workshop.getOutputProduct().equals("clothing")){
-                    product = new Product.Clothing(0 , 0) ;
-                }else if (workshop.getOutputProduct().equals("iceCream")){
-                    product = new Product.IceCream(0 , 0) ;
+            if (workshop.getWorking() >= workshop.getOperation_time()/(workshop.getLevel() - workshop.getNumInside() + 1)){
+                if (workshop.getNumInside() == 1) {
+                    Product product = new Product();
+                    workshop.setWorking(-1);
+                    if (workshop.getOutputProduct().equals("flour")) {
+                        product = new Product.Flour(0, 0);
+                    } else if (workshop.getOutputProduct().equals("fabric")) {
+                        product = new Product.Fabric(0, 0);
+                    } else if (workshop.getOutputProduct().equals("packetMilk")) {
+                        product = new Product.PacketMilk(0, 0);
+                    } else if (workshop.getOutputProduct().equals("bread")) {
+                        product = new Product.Bread(0, 0);
+                    } else if (workshop.getOutputProduct().equals("clothing")) {
+                        product = new Product.Clothing(0, 0);
+                    } else if (workshop.getOutputProduct().equals("iceCream")) {
+                        product = new Product.IceCream(0, 0);
+                    }
+                    updateIdTracker(product.getName());
+                    product.setId(idTracker.get(product.getName()));
+                    addProductToMap(product);
+                }else {
+                    Product product1 = new Product() ;
+                    Product product2 = new Product() ;
+                    if (workshop.getOutputProduct().equals("flour")) {
+                        product1 = new Product.Flour(0, 0);
+                        product2 = new Product.Flour(0, 0);
+                    } else if (workshop.getOutputProduct().equals("fabric")) {
+                        product1 = new Product.Fabric(0, 0);
+                        product2 = new Product.Fabric(0, 0);
+                    } else if (workshop.getOutputProduct().equals("packetMilk")) {
+                        product1 = new Product.PacketMilk(0, 0);
+                        product2 = new Product.PacketMilk(0, 0);
+                    } else if (workshop.getOutputProduct().equals("bread")) {
+                        product1 = new Product.Bread(0, 0);
+                        product2 = new Product.Bread(0, 0);
+                    } else if (workshop.getOutputProduct().equals("clothing")) {
+                        product1 = new Product.Clothing(0, 0);
+                        product2 = new Product.Clothing(0, 0);
+                    } else if (workshop.getOutputProduct().equals("iceCream")) {
+                        product1 = new Product.IceCream(0, 0);
+                        product2 = new Product.IceCream(0, 0);
+                    }
+                    addProductToMap(product1);
+                    updateIdTracker(product1.getName());
+                    product1.setId(idTracker.get(product1.getName()));
+                    addProductToMap(product2);
+                    updateIdTracker(product2.getName());
+                    product2.setId(idTracker.get(product2.getName()));
+                    workshop.setWorking(-1);
                 }
-                addProductToMap(product);
             }
         }
     }
@@ -486,9 +596,9 @@ public class Game {
             }
             truck.getProducts().clear();
             for (Predator predator : predators){
-                cash = cash + predator.getPrice_for_purchase();
+                cash = cash + predator.getPrice_for_sale();
             }
-            truck.getProducts().clear();
+            truck.getPredators().clear();
             truck.setCounter(0);
             truck.setTime(-1);
             coins = coins + cash ;
@@ -627,20 +737,17 @@ public class Game {
     public int getCoins() {
         return coins;
     }
-    public void walkDefender(Defender d)
-    {
+    public void walkDefender(Defender d) {
         int mindistance=100;
         int x;
         int y;
         int targetx=0;
         int targety=0;
         boolean movement = false ;
-        if(d.getName().equals("cat"))
-        {
+        if(d.getName().equals("cat")){
             x=d.getX();
             y=d.getY();
-                for(Product product : products)
-                {
+                for(Product product : products) {
                     if (mindistance > Math.abs(product.getX() - x) + Math.abs(product.getY() - y)) {
                         mindistance = Math.abs(product.getX() - x) + Math.abs(product.getY() - y);
                         targetx = product.getX() ;
@@ -650,11 +757,11 @@ public class Game {
         }else if (d.getName().equals("dog")) {
             x = d.getX();
             y = d.getY();
-            for (Domestic domestic : domestics) {
-                if (mindistance > Math.abs(domestic.getX() - x) + Math.abs(domestic.getY() - y)) {
-                    mindistance = Math.abs(domestic.getX() - x) + Math.abs(domestic.getY() - y);
-                    targetx = domestic.getX();
-                    targety = domestic.getY();
+            for (Predator predator : predators) {
+                if (mindistance > Math.abs(predator.getX() - x) + Math.abs(predator.getY() - y)) {
+                    mindistance = Math.abs(predator.getX() - x) + Math.abs(predator.getY() - y);
+                    targetx = predator.getX();
+                    targety = predator.getY();
                 }
             }
         }
@@ -698,8 +805,6 @@ public class Game {
                 }
             }
         }
-        d.setX(targetx);
-        d.setY(targety);
         if (d.getX() < targetx) {
             d.setX(d.getX() + 1);
             movement = true;
@@ -864,6 +969,48 @@ public class Game {
         }else {
             idTracker.put(name , 1);
         }
+    }
+
+    public int anyGrass (){// 0 = no grass on map 1 = grass on map
+        for (int i = 0 ; i < 6 ; i++){
+            for (int j = 0 ; j< 6 ; j++){
+                if (grassMap[i][j] > 0){
+                    return 1 ;
+                }
+            }
+        }
+        return 0 ;
+    }
+
+    public void goTo (Animal d, int x, int y){
+        boolean movement = false  ;
+        if (d.getX() < x) {
+            d.setX(d.getX() + 1);
+            movement = true;
+        } else if (d.getX() > x) {
+            d.setX(d.getX() - 1);
+            movement = true;
+        }
+        if (movement == false) {
+            if (d.getY() < y) {
+                d.setY(d.getY() + 1);
+                movement = true;
+            } else if (d.getY() > y) {
+                d.setY(d.getY() - 1);
+                movement = true;
+            }
+        }
+
+    }
+
+    public int findNumProductWarehouse (String name){
+        int num = 0 ;
+        for (Product product : warehouse.getProducts()){
+            if (product.getName().equals(name)){
+                num = num + 1 ;
+            }
+        }
+        return num ;
     }
 
 

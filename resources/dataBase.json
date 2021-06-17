@@ -3,66 +3,42 @@
     {
       "userName": "pouya",
       "password": "2020",
-      "coin": 0,
-      "maximumLevel": 0,
-      "levelTime": {}
-    },
-    {
-      "userName": "real",
-      "password": "2020",
-      "coin": 140,
+      "coin": 365,
       "maximumLevel": 1,
       "levelTime": {
-        "1": 15
+        "1": 22
       },
       "levelMedal": {
-        "1": 3
+        "1": 1
       }
     }
   ],
   "levels": [
     {
       "levelNum": 1,
-      "startingCoins": 150,
-      "animalAchievement": {
-        "hen": 3
-      },
+      "startingCoins": 500,
+      "animalAchievement": {},
       "productAchievement": {
-        "egg": 5
+        "egg": 10,
+        "flour": 4
       },
-      "predators": {},
+      "predators": {
+        "tiger": 3,
+        "lion": 2
+      },
       "goalCoins": 0,
       "rewardTimes": [
-        20,
         30,
-        40
+        40,
+        50
       ],
       "startingAnimals": [
-        {
-          "productName": "egg",
-          "lives": 7,
-          "timeProduce": 0,
-          "productTimer": 0,
-          "id": 1,
-          "name": "hen",
-          "type": 1,
-          "SizeInWarehouse": 0,
-          "price_for_purchase": 100,
-          "price_for_sale": 0,
-          "speed": 1,
-          "x": 5,
-          "y": 2
-        }
+        "hen",
+        "hen",
+        "hen"
       ],
       "workshops": [
-        {
-          "level": 0,
-          "working": 0,
-          "operation_time": 0,
-          "price": 0,
-          "x": 0,
-          "y": 0
-        }
+        "flourMill"
       ]
     }
   ]

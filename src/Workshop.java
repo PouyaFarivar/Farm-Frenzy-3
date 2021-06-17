@@ -6,19 +6,21 @@ public class Workshop extends GamePlay
     private String entryProduct;
     private String outputProduct;
     private int level ;// 0 = not build
-    private int working  ; // -1 = not working
+    private int working  ; // -1 = not working // 1 = one product inside 2 = 2 products inside
     private int operation_time;
     private int price;
+    private int numInside ;
 
-    public Workshop (String name , String entryProduct , String outputProduct , int operation_time , int price){
-        super(0 , 0);
-        level = 0 ;
+    public Workshop (String name , String entryProduct , String outputProduct , int operation_time , int price , int x , int y){
+        super(x , y);
         this.name = name ;
         this.entryProduct = entryProduct ;
         this.outputProduct = outputProduct ;
+        level = 0 ;
+        working = -1;
         this.operation_time = operation_time ;
         this.price = price ;
-        working = -1;
+        numInside = 0 ;
     }
 
     Workshop(){}
@@ -81,38 +83,46 @@ public class Workshop extends GamePlay
         return outputProduct;
     }
 
+    public int getNumInside() {
+        return numInside;
+    }
+
     public void setWorking(int working) {
         this.working = working;
     }
 
+    public void setNumInside(int numInside) {
+        this.numInside = numInside;
+    }
+
     static class FlourMill extends Workshop{
-        public FlourMill(){
-            super("flourMill", "egg" , "flour" , 4 , 150);
+        public FlourMill(int x , int y){
+            super("flourMill", "egg" , "flour" , 4 , 150 , x , y);
         }
     }
     static class Bakery extends Workshop{
-        public Bakery(){
-            super("bakery" , "flour" , "bread" , 5 , 250);
+        public Bakery(int x , int y){
+            super("bakery" , "flour" , "bread" , 5 , 250 , x , y);
         }
     }
     static class MilkPackaging extends Workshop{
-        public MilkPackaging(){
-            super("milkPacking" , "milk" , "packetMilk" , 6 , 400);
+        public MilkPackaging(int x , int y){
+            super("milkPacking" , "milk" , "packetMilk" , 6 , 400 , x , y);
         }
     }
     static class IceCreamShop extends Workshop{
-        public IceCreamShop(){
-            super("iceCreamShop" , "packetMilk" , "iceCream" , 7 , 550);
+        public IceCreamShop(int x , int y){
+            super("iceCreamShop" , "packetMilk" , "iceCream" , 7 , 550 , x , y);
         }
     }
     static class WeavingFactory extends Workshop{
-        public WeavingFactory(){
-            super("weavingFactory" , "feather" , "fabric" , 5 , 250);
+        public WeavingFactory(int x , int y){
+            super("weavingFactory" , "feather" , "fabric" , 5 , 250 , x , y);
         }
     }
     static class SewingFactory extends Workshop{
-        public SewingFactory(){
-            super("sewingFactory" , "fabric" , "clothing" , 6 , 400);
+        public SewingFactory(int x , int y){
+            super("sewingFactory" , "fabric" , "clothing" , 6 , 400 , x , y);
         }
     }
 

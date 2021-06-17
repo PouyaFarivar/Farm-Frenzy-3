@@ -9,10 +9,10 @@ public class Level {
     private HashMap <String , Integer> predators ;// name of the predator , turn when he comes in
     private int goalCoins ;
     private LinkedList <Integer> rewardTimes ;// 0 = gold 1= silver 3= bronze
-    private LinkedList <Domestic> startingAnimals ;
-    private LinkedList <Workshop> workshops ;
+    private LinkedList <String> startingAnimals ;
+    private LinkedList <String> workshops ;
 
-    Level (int startingCoins , int goalCoins , int levelNum , HashMap<String , Integer> animalAchievement , HashMap<String , Integer>productAchievement , HashMap<String , Integer>predators , LinkedList<Domestic>startingAnimals , LinkedList<Workshop>workshops , LinkedList<Integer>rewardTimes){
+    Level (int startingCoins , int goalCoins , int levelNum , HashMap<String , Integer> animalAchievement , HashMap<String , Integer>productAchievement , HashMap<String , Integer>predators , LinkedList<String>startingAnimals , LinkedList<String>workshops , LinkedList<Integer>rewardTimes){
         this.levelNum = levelNum ;
         this.startingCoins = startingCoins ;
         this.goalCoins = goalCoins ;
@@ -30,11 +30,11 @@ public class Level {
         return levelNum;
     }
 
-    public LinkedList<Workshop> getWorkshops() {
+    public LinkedList<String> getWorkshops() {
         return workshops;
     }
 
-    public LinkedList<Domestic> getStartingAnimals() {
+    public LinkedList<String> getStartingAnimals() {
         return startingAnimals;
     }
 

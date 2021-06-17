@@ -1,14 +1,16 @@
+import java.util.LinkedList;
+
 public class Animal extends GamePlay
 {
     private int id ;
     private String name ;
     private int type  ;//1 = DOMESTIC 2 = DEFENDER 3 = PREDATOR
-    private int SizeInWarehouse;
+    private int sizeInWarehouse;
     private int price_for_purchase;
     private int price_for_sale ;
     private int speed ;
 
-    public Animal(String name , int type , int pr_purchase , int price_for_sale , int x , int y , int speed) {
+    public Animal(String name , int type , int pr_purchase , int price_for_sale , int x , int y , int speed , int sizeInWarehouse) {
         super(x , y);
         this.name = name ;
         this.type = type ;
@@ -16,6 +18,7 @@ public class Animal extends GamePlay
         this.price_for_sale = price_for_sale ;
         this.speed = speed ;
         id = 0 ;
+        this.sizeInWarehouse = sizeInWarehouse ;
     }
 
     public Animal(){}
@@ -30,7 +33,11 @@ public class Animal extends GamePlay
     }
 
     public int getSizeInWarehouse() {
-        return SizeInWarehouse;
+        return sizeInWarehouse;
+    }
+
+    public int getPrice_for_sale() {
+        return price_for_sale;
     }
 
     public String getName() {
@@ -56,7 +63,7 @@ class Domestic extends Animal{
     int productTimer ;
 
     public Domestic(String name , String productName , int pr_purchase , int x , int y , int timeProduce) {
-        super(name, 1, pr_purchase, 0 , x , y , 1);
+        super(name, 1, pr_purchase, 0 , x , y , 1 , 0);
         this.productName = productName;
         lives = 10;
         productTimer = 0 ;
@@ -126,9 +133,9 @@ class Predator extends Animal{
     private boolean captured ;
     final int timeToRun = 5 ;
 
-    public Predator(String name , int pr_sell ,int x , int y , int speed , int cageToStop)
+    public Predator(String name , int pr_sell ,int x , int y , int speed , int cageToStop , int size)
     {
-        super(name , 3, 0 , pr_sell , x , y , speed);
+        super(name , 3, 0 , pr_sell , x , y , speed , size);
         this.cageToStop = cageToStop ;
         time_captured = -1 ;
         cage = new Cage() ;
@@ -168,20 +175,20 @@ class Predator extends Animal{
 
         public Lion(int x , int y)
         {
-            super("lion" , 150 , x ,y ,1 , 3);
+            super("lion" , 150 , x ,y ,1 , 3 , 5);
         }
     }
     static class Bear extends Predator{
         public Bear(int x ,int y)
         {
-            super("bear" , 200 , x , y , 1 , 4);
+            super("bear" , 200 , x , y , 1 , 4 , 6);
         }
     }
     static class Tiger extends Predator{
 
         public Tiger(int x , int y)
         {
-            super("tiger" , 250, x, y , 2 , 4);
+            super("tiger" , 250, x, y , 2 , 4 , 6);
 
         }
     }
@@ -190,19 +197,15 @@ class Predator extends Animal{
 
 }
 class Defender extends Animal{
-    private Product product ;
+    private LinkedList<Product> products ;
     public Defender(String name , int pr_purchase , int x , int y)
     {
-        super(name, 2 , pr_purchase , 0 ,x, y ,1 );
-        product = null ;
+        super(name, 2 , pr_purchase , 0 ,x, y ,1 , 0 );
+        products = new LinkedList<>() ;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
+    public LinkedList<Product> getProducts() {
+        return products;
     }
 
     static class Cat extends Defender{

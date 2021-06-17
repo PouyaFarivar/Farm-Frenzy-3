@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,8 +25,8 @@ public class LevelMaker {
             HashMap<String , Integer> animalAchievement = new HashMap<>() ;
             HashMap<String , Integer> productAchievement = new HashMap<>() ;
             HashMap<String , Integer> predators = new HashMap<>() ;
-            LinkedList<Domestic> startingAnimals = new LinkedList<>() ;
-            LinkedList<Workshop> workshops = new LinkedList<>() ;
+            LinkedList<String> startingAnimals = new LinkedList<>() ;
+            LinkedList<String> workshops = new LinkedList<>() ;
             LinkedList<Integer> rewardTimes = new LinkedList<>() ;
             Scanner scanner = new Scanner(System.in);
             System.out.println("Level num : " +levelNum);
@@ -72,50 +71,50 @@ public class LevelMaker {
                 }
             }
             System.out.println("Starting animals : ");
-            int x = 0 ;
-            int y = 0 ;
-            Random random = new Random();
             while (true){
                 String action = scanner.nextLine() ;
                 if ((matcher = getCommandMatcher(action , "([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
-                    Domestic domestic = new Domestic() ;
-                    x = random.nextInt(6) + 1 ;
-                    y = random.nextInt(6) + 1 ;
                     if (matcher.group(1).equals("hen")){
-                        domestic = new Domestic.Hen(x, y);
+                        startingAnimals.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (matcher.group(1).equals("ostrich")){
-                        domestic = new Domestic.Ostrich(x , y);
+                        startingAnimals.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (matcher.group(1).equals("buffalo")){
-                        domestic = new Domestic.Buffalo(x,y);
+                        startingAnimals.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (action.equals("done")){
                         break;
+                    }else {
+                        System.out.println("Wrong domestic name.");
                     }
-                    startingAnimals.add(domestic) ;
-                    System.out.println("added!");
                 }
             }
             System.out.println("WorkShops : ");
             while (true){
                 String action = scanner.nextLine() ;
-                if ((matcher = getCommandMatcher(action , "([A-Za-z0-9_]+[A-Za-z0-9_]*).")).find()){
-                    Workshop workshop = new Workshop() ;
+                if ((matcher = getCommandMatcher(action , "([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
                     if (matcher.group(1).equals("flourMill")){
-                        workshop = new Workshop.FlourMill() ;
+                        workshops.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (matcher.group(1).equals("bakery")){
-                        workshop = new Workshop.Bakery();
+                        workshops.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (matcher.group(1).equals("iceCreamShop")){
-                        workshop = new Workshop.IceCreamShop();
+                        workshops.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (matcher.group(1).equals("milkPackaging")){
-                        workshop = new Workshop.MilkPackaging();
+                        workshops.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (matcher.group(1).equals("sewingFactory")){
-                        workshop = new Workshop.SewingFactory();
+                        workshops.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (matcher.group(1).equals("weavingFactory")){
-                        workshop = new Workshop.WeavingFactory();
+                        workshops.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (action.equals("done")){
                         break;
                     }
-                    workshops.add(workshop) ;
-                    System.out.println("added!");
                 }
             }
             Level level = new Level(startingCoins ,  goalCoins ,  levelNum , animalAchievement , productAchievement , predators , startingAnimals , workshops , rewardTimes);
