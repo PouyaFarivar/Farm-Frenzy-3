@@ -519,7 +519,40 @@ public class Processor {
                         default:
                             break;
                     }
+                    LocalDateTime myObj = LocalDateTime.now();
+                    BufferedWriter bw = null;
+                    for (String str : logerText)
+                    {
+                        try
+                        {
+                            File f1 = new File(user.getUserName() + "Loger.txt");
+                            if (!f1.exists())
+                            {
+                                f1.createNewFile();
+                                FileWriter myWriter = new FileWriter(f1.getName());
+                                myWriter.write("Username:" + user.getUserName() +
+                                        "\n Date Created :" + String.valueOf(myObj) + "\n");
 
+                            }
+                            FileWriter fileWritter = new FileWriter(f1.getName(), true);
+                            bw = new BufferedWriter(fileWritter);
+                            bw.write(str);
+                            bw.newLine();
+
+                        } catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    try
+                    {
+                        bw.write("Date of last modification :" + String.valueOf(myObj));
+                        bw.newLine();
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
                     break;
                 }
             }
