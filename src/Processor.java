@@ -43,6 +43,8 @@ public class Processor {
     }
 
     public User getUser (){
+        LocalDateTime time = LocalDateTime.now() ;
+        String log = "" ;
         Scanner scanner = new Scanner(System.in);
         Matcher matcher ;
         String action = "";
@@ -81,12 +83,14 @@ public class Processor {
             }else if ((matcher = getCommandMatcher(action , "password ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
                 password = matcher.group(1) ;
                 if (sign == 0){
-                    System.out.println("First choose if you want to sign in or sign up .");
+                    System.out.println("First choose if you want to log in or sign up .");
                 }else if (sign == 1){
                     if (dataBase.getUserByUserName(userName).getPassword().equals(password)){
                         done = true ;
                     }else {
                         System.out.println("WRONG PASSWORD.");
+                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WRONG PASSWORD" ;
+                        writeLogger(log , userName);
                     }
                 }else if (sign == 2){
                     done = true ;
@@ -99,9 +103,14 @@ public class Processor {
             if (done == true){
                 if (sign == 1){
                     user = dataBase.getUserByUserName(userName);
+                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Logged in" ;
+                    writeLogger(log , userName);
                 }else if (sign == 2){
                     user = new User(userName , password);
                     dataBase.getUsers().add(user);
+                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Account created" ;
+                    writeLogger(log , userName);
+
                 }
             }
         }
@@ -109,6 +118,8 @@ public class Processor {
     }
 
     public Level menu (User user){
+        LocalDateTime  time  = LocalDateTime.now();
+        String log = "" ;
         Scanner scanner = new Scanner(System.in);
         Matcher matcher ;
         Level level = new Level() ;
@@ -126,50 +137,65 @@ public class Processor {
                         done = true;
                     } else {
                         System.out.println("No level with such level Number.");
+                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + "No level with such level Number " ;
+                        writeLogger(log , user.getUserName());
                     }
                 } else {
                     System.out.println("level not unlocked.\ncomplete the level before this level in order to unlock this one.");
+                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + "level not unlocked" ;
+                    writeLogger(log , user.getUserName());
+
                 }
             }else if (action.toLowerCase().contains("log out")){
                 level = null ;
                 done = true ;
+                log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + "logged out" ;
+                writeLogger(log , user.getUserName());
             }else if (action.toLowerCase().contains("settings")){
                 settings();
+
             }else {
                 System.out.println("Invalid Input.");
+                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Invalid Input" ;
+                writeLogger(log , user.getUserName());
             }
         }
         return level ;
     }
 
     public void play (User user , Level level){
-         LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now();
-        String inputLoger="";
-        ArrayList<String> logerText=new ArrayList<String>();
         Game game = new Game(level) ;
         Scanner scanner = new Scanner(System.in);
         Matcher matcher ;
         int turn = 0 ;
         String action = "" ;
-        while (true){
+        LocalDateTime time = LocalDateTime.now();
+        String log = "";
+        System.out.println("Level " + level.getLevelNum() + " started : ");
+        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + "Level " + level.getLevelNum() + " started" ;
+        writeLogger(log , user.getUserName());
+        while (true) {
             if (turn == 0) {
+                time = LocalDateTime.now() ;
                 action = scanner.nextLine();
                 if ((matcher = getCommandMatcher(action, "buy ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
                     String name = matcher.group(1);
                     int possible = game.buyAnimal(name);
-                   switch (possible) {
+                    switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Bought animal successfully.";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Bought " + name + " successfully.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("Wrong animal name.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) +" Wrong animal name.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Wrong animal name.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("Not enough coins.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough coins to buy the animal";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins to buy the animal";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
@@ -181,15 +207,18 @@ public class Processor {
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Picked up successfully";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Picked up successfully";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("Not enough space in ware House.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough space in ware House.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in ware House.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("Given coordinates is empty.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Given coordinates is empty.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinates is empty.";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
@@ -199,15 +228,18 @@ public class Processor {
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Well filled successfully";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Well filled successfully";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("Well is not empty yet.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Given coordinates is empty.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinates is empty.";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 2 :
+                        case 2:
                             System.out.println("Well is being filled.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Well is being filled.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Well is being filled.";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
@@ -219,15 +251,18 @@ public class Processor {
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Grass Planted successfully";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Grass Planted successfully";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("Not enough water.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough water.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough water.";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 2 :
+                        case 2:
                             System.out.println("Given coordinate is not on the map.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Given coordinate is not on the map.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinate is not on the map.";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
@@ -238,19 +273,23 @@ public class Processor {
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Built Workshop successfully";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Built Workshop successfully";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("You cant build this workShop in this level.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Workshop not available.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Workshop not available.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("You don't have enough coins");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough coins.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 3:
                             System.out.println("WorkShop already built.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " WorkShop already built.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already built.";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
@@ -261,23 +300,28 @@ public class Processor {
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Workshop working successfully";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Workshop working successfully";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("Wrong workShop name.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Wrong workShop name.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Wrong workShop name.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("WorkShop not built.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " WorkShop not built.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop not built.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 3:
                             System.out.println("WorkShop is working already.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " WorkShop is working already.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop is working already.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 4:
                             System.out.println("not enough entry product.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough entry product for the workshop.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough entry product for the workshop.";
+                            writeLogger(log , user.getUserName());
                         default:
                             break;
                     }
@@ -286,17 +330,20 @@ public class Processor {
                     int y = Integer.parseInt(matcher.group(2));
                     int possible = game.buildCage(x, y);
                     switch (possible) {
-                       case 0:
+                        case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Cage built successfully";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Cage built successfully";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("No predator at the given coordinates.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " No predator at the given coordinates.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No predator at the given coordinates.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("The Predator at the given coordinates is already captured.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Predator already captured.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Predator already captured.";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
@@ -312,19 +359,23 @@ public class Processor {
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Truck loaded successfully.";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck loaded successfully.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("No such product in ware house.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " No such product available.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product available.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("Not enough space in Truck inventory.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough space in Truck.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Truck.";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 3 :
+                        case 3:
                             System.out.println("Truck is moving.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Moving Truck.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
@@ -340,112 +391,97 @@ public class Processor {
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Truck unloaded successfully.";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck unloaded successfully.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("No such product in Truck.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " No such product in Truck.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product in Truck.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("Not enough space in Ware house.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough space in Ware house.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Ware house.";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 3 :
+                        case 3:
                             System.out.println("Truck is moving.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Moving Truck.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
                     }
-                }else if (action.contains("truck go")){
-                    int possible = game.truckGo() ;
-                    switch (possible){
-                         case 0 :
+                } else if (action.contains("truck go")) {
+                    int possible = game.truckGo();
+                    switch (possible) {
+                        case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Truck is moving successfully.";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving successfully.";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 1 :
+                        case 1:
                             System.out.println("Truck is empty.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Truck is empty.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is empty.";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 2 :
+                        case 2:
                             System.out.println("Truck is already in move.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Moving Truck.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
                     }
-                }else if ((matcher = getCommandMatcher(action , "upgrade ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()){
+                } else if ((matcher = getCommandMatcher(action, "upgrade ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
                     String name = matcher.group(1);
                     int possible = game.upgradeWorkShop(name);
                     switch (possible) {
                         case 0:
                             System.out.println("Operation successful.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Upgraded workshop successfully.";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Upgraded workshop successfully.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 1:
                             System.out.println("You can't build this workShop in this level.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Can't build workshop in this level.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Can't build workshop in this level.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 2:
                             System.out.println("You dont have enough coins");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " Not enough coins.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
+                            writeLogger(log , user.getUserName());
                             break;
                         case 3:
                             System.out.println("WorkShop already upgraded to level 2.");
-                            inputLoger="[Error] "+ String.valueOf(date) + " " + String.valueOf(time) + " WorkShop already upgraded.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already upgraded.";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 4 :
+                        case 4:
                             System.out.println("WorkShop should at least be level 1 to upgrade.");
-                            inputLoger="[Alarm] "+ String.valueOf(date) + " " + String.valueOf(time) + " WorkShop should at least be level 1 to upgrade.";
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop should at least be level 1 to upgrade.";
+                            writeLogger(log , user.getUserName());
                         default:
                             break;
                     }
-                }
-                else if ((matcher= getCommandMatcher(action, "turn (\\d+)")).find()) {
-                    turn = Integer.parseInt(matcher.group(1)) ;
-                }else if (action.contains("exit")){
-                    LocalDateTime myObj = LocalDateTime.now();
-                    BufferedWriter bw = null;
-                    for (String str : logerText)
-                    {
-                        try
-                        {
-                            File f1 = new File(user.getUserName() + "Loger.txt");
-                            if (!f1.exists())
-                            {
-                                f1.createNewFile();
-                                FileWriter myWriter = new FileWriter(f1.getName());
-                                myWriter.write("Username:" + user.getUserName() +
-                                        "\n Date Created :" + String.valueOf(myObj) + "\n");
-
-                            }
-                            FileWriter fileWritter = new FileWriter(f1.getName(), true);
-                            bw = new BufferedWriter(fileWritter);
-                            bw.write(str);
-                            bw.newLine();
-
-                        } catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                    }
-                    try
-                    {
-                        bw.write("Date of last modification :" + String.valueOf(myObj));
-                        bw.newLine();
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+                } else if ((matcher = getCommandMatcher(action, "turn (\\d+)")).find()) {
+                    turn = Integer.parseInt(matcher.group(1));
+                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " turn " + turn ;
+                    writeLogger(log , user.getUserName());
+                } else if (action.contains("exit")) {
+                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " exited level " + level.getLevelNum() ;
+                    writeLogger(log , user.getUserName());
                     break;
-                }else if (action.contains("inquiry")){
+                } else if (action.contains("inquiry")) {
                     game.plot();
-                }else{
+                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Requested inquiry " ;
+                    writeLogger(log , user.getUserName());
+                } else {
                     System.out.println("INVALID COMMAND.");
+                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Invalid Command " ;
+                    writeLogger(log , user.getUserName());
                 }
-            }else {
+            } else {
                 int possible = game.goTurn();
                 if (possible == 0) {
                     turn = turn - 1;
@@ -453,14 +489,16 @@ public class Processor {
                     System.out.println();
                     if (turn == 0) {
                         System.out.println("Time passed.");
+                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " turns passed " ;
+                        writeLogger(log , user.getUserName());
                     }
-                }else {
+                } else {
                     int medal = 0;
                     if (user.getLevelTime().containsKey(game.getLevel().getLevelNum())) {
                         if (user.getLevelTime().get(game.getLevel().getLevelNum()) > game.getTurn()) {
                             user.getLevelTime().put(game.getLevel().getLevelNum(), game.getTurn());
                             user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
-                            medal = game.giveMedal() ;
+                            medal = game.giveMedal();
                             if (medal != user.getLevelMedal().get(game.getLevel().getLevelNum())) {
                                 user.getLevelMedal().put(game.getLevel().getLevelNum(), medal);
                                 switch (medal) {
@@ -478,12 +516,12 @@ public class Processor {
                                 }
                             }
                         }
-                    }else {
-                        user.getLevelTime().put(game.getLevel().getLevelNum() , game.getTurn()) ;
+                    } else {
+                        user.getLevelTime().put(game.getLevel().getLevelNum(), game.getTurn());
                         user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
                         user.setMaximumLevel(game.getLevel().getLevelNum());
-                        medal = game.giveMedal() ;
-                        user.getLevelMedal().put(game.getLevel().getLevelNum() , medal);
+                        medal = game.giveMedal();
+                        user.getLevelMedal().put(game.getLevel().getLevelNum(), medal);
                         switch (medal) {
                             case 1:
                                 user.setCoin(user.getCoin() + 300);
@@ -499,65 +537,35 @@ public class Processor {
                         }
                     }
                     System.out.print("Victory : ");
-                    switch (medal){
-                         case 1 :
+                    switch (medal) {
+                        case 1:
                             System.out.println("You got a Gold medal on level " + game.getLevel().getLevelNum());
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Gold Medal ";
+                            log = "[Info] " +time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " with Gold Medal ";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 2 :
+                        case 2:
                             System.out.println("You got a Silver medal on level " + game.getLevel().getLevelNum());
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Silver Medal ";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " Silver Medal ";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 3 :
+                        case 3:
                             System.out.println("You got a Bronze medal on level " + game.getLevel().getLevelNum());
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " Bronze Medal ";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() +  " Finished level " + level.getLevelNum() + " Bronze Medal ";
+                            writeLogger(log , user.getUserName());
                             break;
-                        case 4 :
+                        case 4:
                             System.out.println("No medal.");
-                            inputLoger="[Info] "+ String.valueOf(date) + " " + String.valueOf(time) + " No Medal ";
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() +  " Finished level " + level.getLevelNum() + " No Medal ";
+                            writeLogger(log , user.getUserName());
                             break;
                         default:
                             break;
                     }
-                    LocalDateTime myObj = LocalDateTime.now();
-                    BufferedWriter bw = null;
-                    for (String str : logerText)
-                    {
-                        try
-                        {
-                            File f1 = new File(user.getUserName() + "Loger.txt");
-                            if (!f1.exists())
-                            {
-                                f1.createNewFile();
-                                FileWriter myWriter = new FileWriter(f1.getName());
-                                myWriter.write("Username:" + user.getUserName() +
-                                        "\n Date Created :" + String.valueOf(myObj) + "\n");
-
-                            }
-                            FileWriter fileWritter = new FileWriter(f1.getName(), true);
-                            bw = new BufferedWriter(fileWritter);
-                            bw.write(str);
-                            bw.newLine();
-
-                        } catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                    }
-                    try
-                    {
-                        bw.write("Date of last modification :" + String.valueOf(myObj));
-                        bw.newLine();
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
                     break;
                 }
             }
-            logerText.add(inputLoger);
         }
+
     }
 
     public void settings (){}
@@ -567,6 +575,48 @@ public class Processor {
         try {
             dataBase = gson.fromJson(new FileReader("resources\\dataBase.json") , dataBase.getClass());
         }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeLogger(String str , String userName){
+        try {
+            LocalDateTime time = LocalDateTime.now() ;
+            File f1 = new File("resources\\loggers\\Logger" + userName +".txt");
+            if (!f1.exists()) {
+                f1.createNewFile() ;
+                FileWriter myWriter = new FileWriter(f1);
+                myWriter.write("Date created : " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + System.lineSeparator());
+                myWriter.write("User name : " + userName + System.lineSeparator());
+                myWriter.write("Date of last modification : " + time.toString() + System.lineSeparator());
+                myWriter.write(str);
+                myWriter.write(System.lineSeparator());
+                myWriter.close();
+            }else {
+                Scanner scanner = new Scanner(f1);
+                StringBuffer bf = new StringBuffer() ;
+                String oldLine = "";
+                while (scanner.hasNextLine()){
+                    String trash = scanner.nextLine() ;
+                    bf.append(trash + System.lineSeparator());
+                    if (trash.contains("Date of last modification :")){
+                        oldLine = trash ;
+                    }
+                }
+                String newLine = "Date of last modification : " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() ;
+                String fileContent = bf.toString();
+                fileContent = fileContent.replace(oldLine , newLine);
+                FileWriter writer = new FileWriter(f1);
+                writer.append(fileContent);
+                writer.flush();
+                writer.close();
+                FileWriter fileWriter = new FileWriter(f1, true);
+                BufferedWriter bw = new BufferedWriter(fileWriter);
+                bw.write(str);
+                bw.write(System.lineSeparator());
+                bw.close();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -1,0 +1,109 @@
+Date created : 2021-06-18 _ 13:29:25.569731800
+User name : pouya
+Date of last modification : 2021-06-18 _ 16:18:51.161763400
+[Error] 2021-06-18 _ 13:29:12.507073700 WRONG PASSWORD
+[Info] 2021-06-18 _ 15:54:29.682126500 Logged in
+[Error] 2021-06-18 _ 15:54:41.265518500 Invalid Input
+[Info] 2021-06-18 _ 15:55:17.143606500Level 1 started
+[Info] 2021-06-18 _ 15:55:17.153602100 Requested inquiry 
+[Info] 2021-06-18 _ 15:55:23.987535400 Grass Planted successfully
+[Info] 2021-06-18 _ 16:04:42.815769900 Grass Planted successfully
+[Info] 2021-06-18 _ 16:04:45.865908300 Grass Planted successfully
+[Info] 2021-06-18 _ 16:04:48.591133700 Grass Planted successfully
+[Info] 2021-06-18 _ 16:04:51.216149 Grass Planted successfully
+[Info] 2021-06-18 _ 16:04:53.669313700 Well filled successfully
+[Info] 2021-06-18 _ 16:05:00.533538 Built Workshop successfully
+[Info] 2021-06-18 _ 16:05:09.400418100 Upgraded workshop successfully.
+[Error] 2021-06-18 _ 16:05:15.806287 Not enough entry product for the workshop.
+[Info] 2021-06-18 _ 16:05:27.168264400 turn 2
+[Info] 2021-06-18 _ 16:05:27.168264400 turns passed 
+[Info] 2021-06-18 _ 16:05:30.451439700 Picked up successfully
+[Error] 2021-06-18 _ 16:05:37.493217400 Given coordinates is empty.
+[Error] 2021-06-18 _ 16:05:43.050364700 Given coordinates is empty.
+[Info] 2021-06-18 _ 16:05:46.823888 Picked up successfully
+[Info] 2021-06-18 _ 16:05:50.254265400 Picked up successfully
+[Info] 2021-06-18 _ 16:05:55.602280800 Workshop working successfully
+[Info] 2021-06-18 _ 16:06:07.099766200 turn 1
+[Info] 2021-06-18 _ 16:06:07.099766200 turns passed 
+[Info] 2021-06-18 _ 16:06:09.134315 Cage built successfully
+[Info] 2021-06-18 _ 16:06:14.468911300 Cage built successfully
+[Info] 2021-06-18 _ 16:06:17.661067900 Cage built successfully
+[Info] 2021-06-18 _ 16:06:19.869027700 Picked up successfully
+[Info] 2021-06-18 _ 16:06:23.331991400 Grass Planted successfully
+[Info] 2021-06-18 _ 16:06:32.982674500 Grass Planted successfully
+[Info] 2021-06-18 _ 16:06:39.003412100 Grass Planted successfully
+[Info] 2021-06-18 _ 16:06:42.315912700 Grass Planted successfully
+[Info] 2021-06-18 _ 16:06:45.034698200 Grass Planted successfully
+[Info] 2021-06-18 _ 16:06:47.660232400 Well filled successfully
+[Info] 2021-06-18 _ 16:06:49.929065300 turn 2
+[Info] 2021-06-18 _ 16:06:49.929065300 turns passed 
+[Info] 2021-06-18 _ 16:06:57.203287800 Cage built successfully
+[Info] 2021-06-18 _ 16:07:07.665524 Cage built successfully
+[Info] 2021-06-18 _ 16:07:10.071788300 Cage built successfully
+[Info] 2021-06-18 _ 16:07:16.012779100 Cage built successfully
+[Info] 2021-06-18 _ 16:07:20.348678100 Picked up successfully
+[Error] 2021-06-18 _ 16:07:24.493002600 Invalid Command 
+[Info] 2021-06-18 _ 16:07:31.263149600 Truck loaded successfully.
+[Info] 2021-06-18 _ 16:07:39.369032200 Truck loaded successfully.
+[Info] 2021-06-18 _ 16:07:49.356468200 Truck is moving successfully.
+[Info] 2021-06-18 _ 16:07:53.710315500 Picked up successfully
+[Info] 2021-06-18 _ 16:08:05.929699600 Picked up successfully
+[Info] 2021-06-18 _ 16:08:08.867221300 Picked up successfully
+[Error] 2021-06-18 _ 16:08:15.228623400 Well is being filled.
+[Info] 2021-06-18 _ 16:08:22.676666200 turn 1
+[Info] 2021-06-18 _ 16:08:22.676666200 turns passed 
+[Info] 2021-06-18 _ 16:08:26.289434500 Picked up successfully
+[Info] 2021-06-18 _ 16:08:32.815265700 Picked up successfully
+[Info] 2021-06-18 _ 16:08:36.706472800 Workshop working successfully
+[Info] 2021-06-18 _ 16:08:43.182627400 Picked up successfully
+[Info] 2021-06-18 _ 16:08:50.962608200 Picked up successfully
+[Info] 2021-06-18 _ 16:08:54.730036500 Picked up successfully
+[Error] 2021-06-18 _ 16:09:01.832158100 Invalid Command 
+[Info] 2021-06-18 _ 16:09:11.048447400 Grass Planted successfully
+[Info] 2021-06-18 _ 16:09:14.457965700 Grass Planted successfully
+[Info] 2021-06-18 _ 16:09:17.652499800 Grass Planted successfully
+[Info] 2021-06-18 _ 16:09:21.107714400 Grass Planted successfully
+[Info] 2021-06-18 _ 16:09:24.739592400 Grass Planted successfully
+[Info] 2021-06-18 _ 16:09:27.493338100 Well filled successfully
+[Info] 2021-06-18 _ 16:09:32.329834400 turn 4
+[Info] 2021-06-18 _ 16:09:32.329834400 turns passed 
+[Info] 2021-06-18 _ 16:09:38.939247200 Picked up successfully
+[Info] 2021-06-18 _ 16:09:46.694838300 Picked up successfully
+[Info] 2021-06-18 _ 16:09:49.934253800 Picked up successfully
+[Info] 2021-06-18 _ 16:09:55.517156400 turn 1
+[Info] 2021-06-18 _ 16:09:55.517156400 Finished level 1 with Gold Medal 
+[Info] 2021-06-18 _ 16:15:55.575643300 Logged in
+[Info] 2021-06-18 _ 16:16:12.798235800Level 2 started
+[Error] 2021-06-18 _ 16:16:12.813862100 Invalid Command 
+[Info] 2021-06-18 _ 16:16:17.692603700 Requested inquiry 
+[Info] 2021-06-18 _ 16:16:21.354597800 Built Workshop successfully
+[Info] 2021-06-18 _ 16:16:32.239135100 Built Workshop successfully
+[Info] 2021-06-18 _ 16:16:38.738669900 Grass Planted successfully
+[Info] 2021-06-18 _ 16:16:44.460709800 Grass Planted successfully
+[Info] 2021-06-18 _ 16:16:46.677904 Grass Planted successfully
+[Info] 2021-06-18 _ 16:16:49.146957 Grass Planted successfully
+[Info] 2021-06-18 _ 16:16:51.146979600 Grass Planted successfully
+[Info] 2021-06-18 _ 16:16:53.637866200 Well filled successfully
+[Info] 2021-06-18 _ 16:16:55.658010600 turn 2
+[Info] 2021-06-18 _ 16:16:55.658010600 turns passed 
+[Info] 2021-06-18 _ 16:16:58.470508400 Picked up successfully
+[Info] 2021-06-18 _ 16:17:09.774420800 Picked up successfully
+[Info] 2021-06-18 _ 16:17:14.758984600 Picked up successfully
+[Info] 2021-06-18 _ 16:17:19.771351500 Workshop working successfully
+[Info] 2021-06-18 _ 16:17:31.771750200 turn 4
+[Info] 2021-06-18 _ 16:17:31.771750200 turns passed 
+[Info] 2021-06-18 _ 16:17:38.449014600 Picked up successfully
+[Info] 2021-06-18 _ 16:17:46.394191800 Picked up successfully
+[Error] 2021-06-18 _ 16:17:50.672326300 Given coordinates is empty.
+[Error] 2021-06-18 _ 16:17:55.632332900 Given coordinates is empty.
+[Info] 2021-06-18 _ 16:17:59.214061300 Picked up successfully
+[Info] 2021-06-18 _ 16:18:08.887885300 Picked up successfully
+[Info] 2021-06-18 _ 16:18:12.115277900 Workshop working successfully
+[Info] 2021-06-18 _ 16:18:21.124849 Workshop working successfully
+[Info] 2021-06-18 _ 16:18:25.803096700 turn 5
+[Info] 2021-06-18 _ 16:18:25.803096700 turns passed 
+[Info] 2021-06-18 _ 16:18:29.227074400 Picked up successfully
+[Info] 2021-06-18 _ 16:18:36.385629 Picked up successfully
+[Info] 2021-06-18 _ 16:18:41.955351800 turn 1
+[Info] 2021-06-18 _ 16:18:41.955351800 Finished level 2 with Gold Medal 
+[Info] 2021-06-18 _ 16:18:44.783506600logged out
