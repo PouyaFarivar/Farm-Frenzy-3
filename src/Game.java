@@ -39,8 +39,8 @@ public class Game {
                 workshop = new Workshop.Bakery(0, 0);
             } else if (workshopName.equals("iceCreamShop")) {
                 workshop = new Workshop.IceCreamShop(0, 0);
-            } else if (workshopName.equals("milkPackaging")) {
-                workshop = new Workshop.MilkPackaging(0, 0);
+            } else if (workshopName.equals("milkPacking")) {
+                workshop = new Workshop.MilkPacking(0, 0);
             } else if (workshopName.equals("sewingFactory")) {
                 workshop = new Workshop.SewingFactory(0, 0);
             } else if (workshopName.equals("weavingFactory")) {
@@ -594,10 +594,10 @@ public class Game {
             for (Product product : truck.getProducts()){
                 cash = cash + product.getPrice();
             }
-            truck.getProducts().clear();
-            for (Predator predator : predators){
+            for (Predator predator : truck.getPredators()){
                 cash = cash + predator.getPrice_for_sale();
             }
+            truck.getProducts().clear();
             truck.getPredators().clear();
             truck.setCounter(0);
             truck.setTime(-1);

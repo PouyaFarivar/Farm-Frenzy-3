@@ -103,7 +103,7 @@ public class LevelMaker {
                     }else if (matcher.group(1).equals("iceCreamShop")){
                         workshops.add(matcher.group(1));
                         System.out.println("added!");
-                    }else if (matcher.group(1).equals("milkPackaging")){
+                    }else if (matcher.group(1).equals("milkPacking")){
                         workshops.add(matcher.group(1));
                         System.out.println("added!");
                     }else if (matcher.group(1).equals("sewingFactory")){
