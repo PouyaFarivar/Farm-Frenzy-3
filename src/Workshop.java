@@ -105,8 +105,8 @@ public class Workshop extends GamePlay
             super("bakery" , "flour" , "bread" , 5 , 250 , x , y);
         }
     }
-    static class MilkPackaging extends Workshop{
-        public MilkPackaging(int x , int y){
+    static class MilkPacking extends Workshop{
+        public MilkPacking(int x , int y){
             super("milkPacking" , "milk" , "packetMilk" , 6 , 400 , x , y);
         }
     }
