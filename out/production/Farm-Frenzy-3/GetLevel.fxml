@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <Button layoutX="427.0" layoutY="50.0" mnemonicParsing="false" onAction="#play" prefHeight="44.0" prefWidth="83.0" text="Play" />
+      <Label layoutX="26.0" layoutY="63.0" prefHeight="18.0" prefWidth="209.0" text="Enter the level you want to play : " />
+      <Button layoutX="279.0" layoutY="200.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="83.0" text="Settings" />
+      <Button layoutX="279.0" layoutY="279.0" mnemonicParsing="false" onAction="#goStart" prefHeight="44.0" prefWidth="83.0" text="Logout" />
+      <Label fx:id="getLevelState" alignment="CENTER" layoutX="216.0" layoutY="129.0" prefHeight="18.0" prefWidth="209.0" text="No level chosen yet" />
+      <TextField fx:id="levelNumText" layoutX="246.0" layoutY="59.0" />
+   </children>
+</AnchorPane>
