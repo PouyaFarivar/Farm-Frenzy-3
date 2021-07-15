@@ -31,22 +31,26 @@ public class Game {
         coins = level.getStartingCoins() ;
         grassMap = new int [6][6] ;
         idTracker = new HashMap<>() ;
+        int num = 1 ;
         for (String workshopName : this.level.getWorkshops()) {
             Workshop workshop = new Workshop();
             if (workshopName.equals("flourMill")) {
-                workshop = new Workshop.FlourMill(0, 0);
+                workshop = new Workshop.FlourMill(0, 0 , num);
             } else if (workshopName.equals("bakery")) {
-                workshop = new Workshop.Bakery(0, 0);
+                workshop = new Workshop.Bakery(0, 0, num);
             } else if (workshopName.equals("iceCreamShop")) {
-                workshop = new Workshop.IceCreamShop(0, 0);
+                workshop = new Workshop.IceCreamShop(0, 0, num);
             } else if (workshopName.equals("milkPacking")) {
-                workshop = new Workshop.MilkPacking(0, 0);
+                workshop = new Workshop.MilkPacking(0, 0, num);
             } else if (workshopName.equals("sewingFactory")) {
-                workshop = new Workshop.SewingFactory(0, 0);
+                workshop = new Workshop.SewingFactory(0, 0, num);
             } else if (workshopName.equals("weavingFactory")) {
-                workshop = new Workshop.WeavingFactory(0, 0);
+                workshop = new Workshop.WeavingFactory(0, 0, num);
+            } else if (workshopName.equals("henMaker")) {
+                workshop = new Workshop.HenMaker(0, 0, num);
             }
             workshops.add(workshop);
+            num = num + 1 ;
         }
         for (String domesticName : this.level.getStartingAnimals()){
             Random random = new Random() ;
@@ -533,53 +537,79 @@ public class Game {
             }
             if (workshop.getWorking() >= workshop.getOperation_time()/(workshop.getLevel() - workshop.getNumInside() + 1)){
                 if (workshop.getNumInside() == 1) {
-                    Product product = new Product();
                     workshop.setWorking(-1);
-                    if (workshop.getOutputProduct().equals("flour")) {
-                        product = new Product.Flour(0, 0);
-                    } else if (workshop.getOutputProduct().equals("fabric")) {
-                        product = new Product.Fabric(0, 0);
-                    } else if (workshop.getOutputProduct().equals("packetMilk")) {
-                        product = new Product.PacketMilk(0, 0);
-                    } else if (workshop.getOutputProduct().equals("bread")) {
-                        product = new Product.Bread(0, 0);
-                    } else if (workshop.getOutputProduct().equals("clothing")) {
-                        product = new Product.Clothing(0, 0);
-                    } else if (workshop.getOutputProduct().equals("iceCream")) {
-                        product = new Product.IceCream(0, 0);
+                    if (!workshop.getOutputProduct().equals("hen")) {
+                        Product product = new Product();
+                        if (workshop.getOutputProduct().equals("flour")) {
+                            product = new Product.Flour(0, 0);
+                        } else if (workshop.getOutputProduct().equals("fabric")) {
+                            product = new Product.Fabric(0, 0);
+                        } else if (workshop.getOutputProduct().equals("packetMilk")) {
+                            product = new Product.PacketMilk(0, 0);
+                        } else if (workshop.getOutputProduct().equals("bread")) {
+                            product = new Product.Bread(0, 0);
+                        } else if (workshop.getOutputProduct().equals("clothing")) {
+                            product = new Product.Clothing(0, 0);
+                        } else if (workshop.getOutputProduct().equals("iceCream")) {
+                            product = new Product.IceCream(0, 0);
+                        }
+                        updateIdTracker(product.getName());
+                        product.setId(idTracker.get(product.getName()));
+                        addWorkshopOutputToMap(workshop , product);
+                        addProductToMap(product);
+                    }    else {
+                        Domestic domestic = new Domestic.Hen(0 , 0 );
+                        updateIdTracker("hen");
+                        domestic.setId(idTracker.get(domestic.getName()));
+                        addWorkshopOutputToMap(workshop , domestic);
+                        domestics.add(domestic);
                     }
-                    updateIdTracker(product.getName());
-                    product.setId(idTracker.get(product.getName()));
-                    addProductToMap(product);
+
                 }else {
-                    Product product1 = new Product() ;
-                    Product product2 = new Product() ;
-                    if (workshop.getOutputProduct().equals("flour")) {
-                        product1 = new Product.Flour(0, 0);
-                        product2 = new Product.Flour(0, 0);
-                    } else if (workshop.getOutputProduct().equals("fabric")) {
-                        product1 = new Product.Fabric(0, 0);
-                        product2 = new Product.Fabric(0, 0);
-                    } else if (workshop.getOutputProduct().equals("packetMilk")) {
-                        product1 = new Product.PacketMilk(0, 0);
-                        product2 = new Product.PacketMilk(0, 0);
-                    } else if (workshop.getOutputProduct().equals("bread")) {
-                        product1 = new Product.Bread(0, 0);
-                        product2 = new Product.Bread(0, 0);
-                    } else if (workshop.getOutputProduct().equals("clothing")) {
-                        product1 = new Product.Clothing(0, 0);
-                        product2 = new Product.Clothing(0, 0);
-                    } else if (workshop.getOutputProduct().equals("iceCream")) {
-                        product1 = new Product.IceCream(0, 0);
-                        product2 = new Product.IceCream(0, 0);
+                    if (!workshop.getOutputProduct().equals("hen")) {
+                        Product product1 = new Product();
+                        Product product2 = new Product();
+                        if (workshop.getOutputProduct().equals("flour")) {
+                            product1 = new Product.Flour(0, 0);
+                            product2 = new Product.Flour(0, 0);
+                        } else if (workshop.getOutputProduct().equals("fabric")) {
+                            product1 = new Product.Fabric(0, 0);
+                            product2 = new Product.Fabric(0, 0);
+                        } else if (workshop.getOutputProduct().equals("packetMilk")) {
+                            product1 = new Product.PacketMilk(0, 0);
+                            product2 = new Product.PacketMilk(0, 0);
+                        } else if (workshop.getOutputProduct().equals("bread")) {
+                            product1 = new Product.Bread(0, 0);
+                            product2 = new Product.Bread(0, 0);
+                        } else if (workshop.getOutputProduct().equals("clothing")) {
+                            product1 = new Product.Clothing(0, 0);
+                            product2 = new Product.Clothing(0, 0);
+                        } else if (workshop.getOutputProduct().equals("iceCream")) {
+                            product1 = new Product.IceCream(0, 0);
+                            product2 = new Product.IceCream(0, 0);
+                        }
+                        addProductToMap(product1);
+                        updateIdTracker(product1.getName());
+                        product1.setId(idTracker.get(product1.getName()));
+                        addWorkshopOutputToMap(workshop , product1);
+                        addProductToMap(product2);
+                        updateIdTracker(product2.getName());
+                        product2.setId(idTracker.get(product2.getName()));
+                        addWorkshopOutputToMap(workshop , product2);
+                    }else {
+                        Domestic domestic1 = new Domestic.Hen(0 , 0);
+                        Domestic domestic2 = new Domestic.Hen(0 , 0);
+                        updateIdTracker("hen");
+                        domestic1.setId(idTracker.get("hen"));
+                        addWorkshopOutputToMap(workshop , domestic1);
+                        domestics.add(domestic1);
+                        updateIdTracker("hen");
+                        domestic2.setId(idTracker.get("hen"));
+                        domestics.add(domestic2);
+                        addWorkshopOutputToMap(workshop , domestic2);
                     }
-                    addProductToMap(product1);
-                    updateIdTracker(product1.getName());
-                    product1.setId(idTracker.get(product1.getName()));
-                    addProductToMap(product2);
-                    updateIdTracker(product2.getName());
-                    product2.setId(idTracker.get(product2.getName()));
                     workshop.setWorking(-1);
+
                 }
             }
         }
@@ -1011,6 +1041,35 @@ public class Game {
             }
         }
         return num ;
+    }
+
+    public void addWorkshopOutputToMap (Workshop workshop, GamePlay gamePlay){
+        switch (workshop.getId()){
+            case 1 :
+                gamePlay.setX(1);
+                gamePlay.setY(1);
+                break;
+            case 2 :
+                gamePlay.setX(1);
+                gamePlay.setY(3);
+                break;
+            case 3 :
+                gamePlay.setX(1);
+                gamePlay.setY(5);
+                break;
+            case 4 :
+                gamePlay.setX(6);
+                gamePlay.setY(1);
+                break;
+            case 5 :
+                gamePlay.setX(6);
+                gamePlay.setY(3);
+                break;
+            case 6 :
+                gamePlay.setX(6);
+                gamePlay.setY(5);
+                break;
+        }
     }
 
 

@@ -112,6 +112,9 @@ public class LevelMaker {
                     }else if (matcher.group(1).equals("weavingFactory")){
                         workshops.add(matcher.group(1));
                         System.out.println("added!");
+                    } else if (matcher.group(1).equals("henMaker")){
+                        workshops.add(matcher.group(1));
+                        System.out.println("added!");
                     }else if (action.equals("done")){
                         break;
                     }

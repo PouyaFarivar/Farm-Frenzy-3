@@ -2,6 +2,7 @@ import java.util.SplittableRandom;
 
 public class Workshop extends GamePlay
 {
+    private int id ;
     private String name ;
     private String entryProduct;
     private String outputProduct;
@@ -11,11 +12,12 @@ public class Workshop extends GamePlay
     private int price;
     private int numInside ;
 
-    public Workshop (String name , String entryProduct , String outputProduct , int operation_time , int price , int x , int y){
+    public Workshop (int id , String name , String entryProduct , String outputProduct , int operation_time , int price , int x , int y){
         super(x , y);
         this.name = name ;
         this.entryProduct = entryProduct ;
         this.outputProduct = outputProduct ;
+        this.id = id ;
         level = 0 ;
         working = -1;
         this.operation_time = operation_time ;
@@ -95,34 +97,43 @@ public class Workshop extends GamePlay
         this.numInside = numInside;
     }
 
+    public int getId() {
+        return id;
+    }
+
     static class FlourMill extends Workshop{
-        public FlourMill(int x , int y){
-            super("flourMill", "egg" , "flour" , 4 , 150 , x , y);
+        public FlourMill(int x , int y , int id){
+            super(id , "flourMill", "egg" , "flour" , 4 , 150 , x , y);
         }
     }
     static class Bakery extends Workshop{
-        public Bakery(int x , int y){
-            super("bakery" , "flour" , "bread" , 5 , 250 , x , y);
+        public Bakery(int x , int y, int id){
+            super(id , "bakery" , "flour" , "bread" , 5 , 250 , x , y);
         }
     }
     static class MilkPacking extends Workshop{
-        public MilkPacking(int x , int y){
-            super("milkPacking" , "milk" , "packetMilk" , 6 , 400 , x , y);
+        public MilkPacking(int x , int y, int id){
+            super(id , "milkPacking" , "milk" , "packetMilk" , 6 , 400 , x , y);
         }
     }
     static class IceCreamShop extends Workshop{
-        public IceCreamShop(int x , int y){
-            super("iceCreamShop" , "packetMilk" , "iceCream" , 7 , 550 , x , y);
+        public IceCreamShop(int x , int y, int id){
+            super(id , "iceCreamShop" , "packetMilk" , "iceCream" , 7 , 550 , x , y);
         }
     }
     static class WeavingFactory extends Workshop{
-        public WeavingFactory(int x , int y){
-            super("weavingFactory" , "feather" , "fabric" , 5 , 250 , x , y);
+        public WeavingFactory(int x , int y, int id){
+            super(id , "weavingFactory" , "feather" , "fabric" , 5 , 250 , x , y);
         }
     }
     static class SewingFactory extends Workshop{
-        public SewingFactory(int x , int y){
-            super("sewingFactory" , "fabric" , "clothing" , 6 , 400 , x , y);
+        public SewingFactory(int x , int y, int id){
+            super(id , "sewingFactory" , "fabric" , "clothing" , 6 , 400 , x , y);
+        }
+    }
+    static class HenMaker extends Workshop{
+        public HenMaker(int x , int y, int id){
+            super(id , "henMaker" , "egg" , "hen" , 5 , 300 , x , y);
         }
     }
 
