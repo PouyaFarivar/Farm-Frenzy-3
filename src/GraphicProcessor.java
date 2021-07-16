@@ -169,13 +169,14 @@ public class GraphicProcessor
         button_warehouse.setGraphic(imageView_warehouse);
         button_warehouse.setLayoutX(600);button_warehouse.setLayoutY(650); button_warehouse.setPrefSize(100,50);
         Button build = new Button ("Build");
-        build.setLayoutX(350);build.setLayoutY(0); build.setPrefSize(70,70);
-        GridPane pane = new GridPane();
+        build.setLayoutX(350);build.setLayoutY(0); build.setPrefSize(70,35);
+        Button upgrade = new Button ("Upgrade");
+        build.setLayoutX(350);build.setLayoutY(35); build.setPrefSize(70,35);
 
         Scanner scanner = new Scanner(System.in);
         Matcher matcher ;
         int turn = 0 ;
-        String action = "" ;
+
         LocalDateTime time = LocalDateTime.now();
         String log = "";
         log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + "Level " + level.getLevelNum() + " started" ;
@@ -228,7 +229,6 @@ public class GraphicProcessor
                 button_hen.setOnMouseClicked(handler_buy);
                 button_buffalo.setOnMouseClicked(handler_buy);
                 time = LocalDateTime.now() ;
-                action = scanner.nextLine();
 
                 EventHandler<MouseEvent> handler_well = new EventHandler<MouseEvent>(){
                     @Override
@@ -275,6 +275,7 @@ public class GraphicProcessor
                     {
                         if(mouseEvent.getSource()==build)
                         {
+                            GridPane pane = new GridPane();
                             String name;
                             Button b= new Button("done");
                             Label workshop=new Label("Workshop name:");
@@ -298,7 +299,7 @@ public class GraphicProcessor
                             int possible = game.buildWorkShop(name);
                             switch (possible) {
                                 case 0:
-                                    a.setAlertType(AlertType.ERROR);
+                                    a.setAlertType(AlertType.CONFIRMATION);
                                     a.setContentText("Operation successful.");
                                     log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Built Workshop successfully";
                                     writeLogger(log , user.getUserName());
@@ -326,9 +327,68 @@ public class GraphicProcessor
                             }
                             a.show();
                         }
+                        if(mouseEvent.getSource() == upgrade)
+                        {
+                            GridPane pane = new GridPane();
+                            String name;
+                            Button b= new Button("done");
+                            Label workshop=new Label("Workshop name:");
+                            TextField tf1=new TextField();
+                            tf1.setLayoutX(350); tf1.setLayoutY(70);
+                            pane.addRow(0, workshop, tf1);
+                            pane.addRow(1,b);
+                            root.getChildren().addAll(pane);
+                            EventHandler<MouseEvent> handler_upgrade= new EventHandler<MouseEvent>()
+                            {
+                                @Override
+                                public void handle(MouseEvent mouseEvent)
+                                {
+                                    name = tf1.getText();
+                                    root.getChildren().remove(pane);
+                                }
+                            };
+                            b.setOnMouseClicked(handler_upgrade);
+                            Alert a = new Alert(AlertType.NONE);
+                            int possible = game.upgradeWorkShop(name);
+                            switch (possible) {
+                                case 0:
+                                    a.setAlertType(AlertType.CONFIRMATION);
+                                    a.setContentText("Operation successful.");
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Upgraded workshop successfully.";
+                                    writeLogger(log , user.getUserName());
+                                    break;
+                                case 1:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("You can't build this workShop in this level.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Can't build workshop in this level.";
+                                    writeLogger(log , user.getUserName());
+                                    break;
+                                case 2:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("You don't have enough coins");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
+                                    writeLogger(log , user.getUserName());
+                                    break;
+                                case 3:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("WorkShop already upgraded to level 2.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already upgraded.";
+                                    writeLogger(log , user.getUserName());
+                                    break;
+                                case 4:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("WorkShop should at least be level 1 to upgrade.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop should at least be level 1 to upgrade.";
+                                    writeLogger(log , user.getUserName());
+                                default:
+                                    break;
+                            }
+                        a.show();
+                        }
                     }
                 };
                 build.setOnMouseClicked(handler_build);
+                upgrade.setOnMouseClicked(handler_build);
 
 
                 EventHandler<MouseEvent> handler_work = new EventHandler<MouseEvent>(){
@@ -379,149 +439,151 @@ public class GraphicProcessor
                             default:
                                 break;
                         }
+                        a.show();
                     }
                 };
+                imageView_bakery.setOnMouseClicked(handler_work);
+                imageView_mill.setOnMouseClicked(handler_work);
+                imageView_sewingfct.setOnMouseClicked(handler_work);
+                imageView_weavingfct.setOnMouseClicked(handler_work);
+                imageView_poultry.setOnMouseClicked(handler_work);
+                imageView_icecreamfct.setOnMouseClicked(handler_work);
+                imageView_milkfct.setOnMouseClicked(handler_work);
 
-                 else if ((matcher = getCommandMatcher(action, "cage (\\d+) (\\d+)")).find()) {
-                    int x = Integer.parseInt(matcher.group(1));
-                    int y = Integer.parseInt(matcher.group(2));
-                    int possible = game.buildCage(x, y);
-                    switch (possible) {
-                        case 0:
-                            System.out.println("Operation successful.");
-                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Cage built successfully";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 1:
-                            System.out.println("No predator at the given coordinates.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No predator at the given coordinates.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 2:
-                            System.out.println("The Predator at the given coordinates is already captured.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Predator already captured.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        default:
-                            break;
+                EventHandler<MouseEvent> handler_warehouse = new EventHandler<MouseEvent>()
+                {
+                    @Override
+                    public void handle(MouseEvent mouseEvent)
+                    {
+                        if(mouseEvent.getSource() == imageView_warehouse)
+                        {
+                            Alert a = new Alert(AlertType.NONE);
+                            GridPane pane = new GridPane();
+                            String str;
+                            String action = "" ;
+                            Button b= new Button("done");
+                            Label command=new Label("Command:");
+                            TextField tf1=new TextField();
+                           // tf1.setLayoutX(350); tf1.setLayoutY(70);
+                            pane.addRow(0, command, tf1);
+                            pane.addRow(1,b);
+                            root.getChildren().addAll(pane);
+                            EventHandler<MouseEvent> handler_truck= new EventHandler<MouseEvent>()
+                            {
+                                @Override
+                                public void handle(MouseEvent mouseEvent)
+                                {
+                                    action = tf1.getText();
+                                    root.getChildren().remove(pane);
+                                }
+                            };
+                            b.setOnMouseClicked(handler_truck);
+                            if((matcher = getCommandMatcher(action, "truck load ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find())
+                            {
+
+                                String name = matcher.group(1);
+                                int possible = -1;
+                                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
+                                    possible = game.moveToTruckPredator(name);
+                                } else {
+                                    possible = game.moveToTruckProduct(name);
+                                }
+                                switch (possible) {
+                                    case 0:
+                                        a.setAlertType(AlertType.CONFIRMATION);
+                                        a.setContentText("Operation successful.");
+                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck loaded successfully.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 1:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("No such product in ware house.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product available.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 2:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Not enough space in Truck inventory.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Truck.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 3:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Truck is moving.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else if ((matcher = getCommandMatcher(action, "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
+                                String name = matcher.group(1);
+                                int possible = -1;
+                                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
+                                    possible = game.unloadFromTruckPredator(name);
+                                } else {
+                                    possible = game.unloadFromTruckProduct(name);
+                                }
+                                switch (possible) {
+                                    case 0:
+                                        a.setAlertType(AlertType.CONFIRMATION);
+                                        a.setContentText("Operation successful.");
+                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck unloaded successfully.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 1:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("No such product in Truck.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product in Truck.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 2:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Not enough space in Warehouse.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Ware house.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 3:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Truck is moving.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else if (action.equals("truck go")) {
+                                int possible = game.truckGo();
+                                switch (possible) {
+                                    case 0:
+                                        a.setAlertType(AlertType.CONFIRMATION);
+                                        a.setContentText("Operation successful.");
+                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving successfully.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 1:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Truck is empty.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is empty.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 2:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Truck is already in move.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        a.show();
+                        }
                     }
-                } else if ((matcher = getCommandMatcher(action, "truck load ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
-                    String name = matcher.group(1);
-                    int possible = -1;
-                    if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
-                        possible = game.moveToTruckPredator(name);
-                    } else {
-                        possible = game.moveToTruckProduct(name);
-                    }
-                    switch (possible) {
-                        case 0:
-                            System.out.println("Operation successful.");
-                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck loaded successfully.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 1:
-                            System.out.println("No such product in ware house.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product available.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 2:
-                            System.out.println("Not enough space in Truck inventory.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Truck.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 3:
-                            System.out.println("Truck is moving.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        default:
-                            break;
-                    }
-                } else if ((matcher = getCommandMatcher(action, "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
-                    String name = matcher.group(1);
-                    int possible = -1;
-                    if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
-                        possible = game.unloadFromTruckPredator(name);
-                    } else {
-                        possible = game.unloadFromTruckProduct(name);
-                    }
-                    switch (possible) {
-                        case 0:
-                            System.out.println("Operation successful.");
-                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck unloaded successfully.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 1:
-                            System.out.println("No such product in Truck.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product in Truck.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 2:
-                            System.out.println("Not enough space in Ware house.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Ware house.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 3:
-                            System.out.println("Truck is moving.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        default:
-                            break;
-                    }
-                } else if (action.contains("truck go")) {
-                    int possible = game.truckGo();
-                    switch (possible) {
-                        case 0:
-                            System.out.println("Operation successful.");
-                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving successfully.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 1:
-                            System.out.println("Truck is empty.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is empty.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 2:
-                            System.out.println("Truck is already in move.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        default:
-                            break;
-                    }
-                } else if ((matcher = getCommandMatcher(action, "upgrade ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
-                    String name = matcher.group(1);
-                    int possible = game.upgradeWorkShop(name);
-                    switch (possible) {
-                        case 0:
-                            System.out.println("Operation successful.");
-                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Upgraded workshop successfully.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 1:
-                            System.out.println("You can't build this workShop in this level.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Can't build workshop in this level.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 2:
-                            System.out.println("You don't have enough coins");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 3:
-                            System.out.println("WorkShop already upgraded to level 2.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already upgraded.";
-                            writeLogger(log , user.getUserName());
-                            break;
-                        case 4:
-                            System.out.println("WorkShop should at least be level 1 to upgrade.");
-                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop should at least be level 1 to upgrade.";
-                            writeLogger(log , user.getUserName());
-                        default:
-                            break;
-                    }
-                } else if ((matcher = getCommandMatcher(action, "turn (\\d+)")).find()) {
+                };
+else if ((matcher = getCommandMatcher(action, "turn (\\d+)")).find()) {
                     turn = Integer.parseInt(matcher.group(1));
                     log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " turn " + turn ;
                     writeLogger(log , user.getUserName());
