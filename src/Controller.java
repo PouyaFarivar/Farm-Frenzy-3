@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class Controller {
     private DataBase dataBase = load() ;
     Stage stage ;
+    GraphicProcessor gp = new GraphicProcessor() ;
 
     @FXML
     TextField loginUsername ;
@@ -106,7 +107,7 @@ public class Controller {
         stage.close();
     }
 
-    public void play (javafx.event.ActionEvent e){
+    public void play (javafx.event.ActionEvent e) throws FileNotFoundException {
         User user = dataBase.getUserByUserName(loadUser());
         int level = 0 ;
         level = Integer.parseInt(levelNumText.getText());
@@ -115,6 +116,8 @@ public class Controller {
                 saveLevel(String.valueOf(level));
                 getLevelState.setText("Launching level " + level);
                 saveLevel(String.valueOf(level));
+                gp.play(user , dataBase.getLevelByNum(level)) ;
+                stage.close();
             }else {
                 getLevelState.setText("Level not unlocked yet : your at level " + (user.getMaximumLevel()+1));
             }
