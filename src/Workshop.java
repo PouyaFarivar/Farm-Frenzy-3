@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.SplittableRandom;
 
 public class Workshop extends GamePlay
@@ -27,7 +28,8 @@ public class Workshop extends GamePlay
 
     Workshop(){}
 
-    public Product work (){
+    public Product work () throws FileNotFoundException
+    {
         if (working < operation_time){
             working = working + 1 ;
         }
