@@ -59,14 +59,10 @@ public class GraphicProcessor
 
 
 
-    public Group play (User user , Level level) throws FileNotFoundException
+    public void play (User user , Level level) throws FileNotFoundException
     {
         Game game = new Game(level) ;
-        Group root = new Group();
         Stage stage = new Stage() ;
-        Scene scene = new Scene(root) ;
-        stage.setScene(scene);
-        stage.show();
         stage.setTitle("Farm Frenzy 3");
         //Images
         Image image= new Image(new FileInputStream("resources/Graphic/background 2.jpg"));
@@ -148,6 +144,10 @@ public class GraphicProcessor
         //Setting the preserve ratio of the image view
         imageView.setPreserveRatio(false);
 
+        //Group
+        Group root = new Group(imageView);
+
+        //Buttons
         Image turn_im = new Image(new FileInputStream("resources/Graphic/download.jpg"));
         ImageView imageView_turn = new ImageView(turn_im);
         Button btnturn = new Button();
@@ -169,10 +169,10 @@ public class GraphicProcessor
         Button build = new Button ("Build");
         build.setLayoutX(350);build.setLayoutY(0); build.setPrefSize(70,35);
         Button upgrade = new Button ("Upgrade");
-        build.setLayoutX(350);build.setLayoutY(35); build.setPrefSize(70,35);
+        upgrade.setLayoutX(350);upgrade.setLayoutY(35); upgrade.setPrefSize(70,35);
+         Button exit = new Button ("Exit");
+        exit.setLayoutX(1200);exit.setLayoutY(0); exit.setPrefSize(80,30);
 
-        Scanner scanner = new Scanner(System.in);
-        Matcher matcher ;
         int turn = 0 ;
 
         LocalDateTime time = LocalDateTime.now();
@@ -270,6 +270,51 @@ public class GraphicProcessor
                     }
                 };
                 imageView_well.setOnMouseClicked(handler_well);
+
+                EventHandler<MouseEvent> handler_plant = new EventHandler<MouseEvent>()
+                {
+                    @Override
+                    public void handle(MouseEvent mouseEvent)
+                    {
+                        String log = "" ;
+                        LocalDateTime time = LocalDateTime.now() ;
+                        if(mouseEvent.getSource() == imageView)
+                        {
+                            double x= mouseEvent.getX();
+                            double y= mouseEvent.getY();
+                            if( x>300 && x<1110 && y>210 && y<650)
+                            {
+                                int grass_x = (int) ((x-300)/133 + 1);
+                                int grass_y = (int) ((y-210)/73 + 1);
+                                int possible = game.plantGrass(grass_x,grass_y);
+                                Alert a = new Alert(AlertType.NONE);
+                                switch (possible) {
+                                    case 0:
+                                        a.setAlertType(AlertType.CONFIRMATION);
+                                        a.setContentText("Operation successful.");
+                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Grass Planted successfully";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 1:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Not enough water.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough water.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    case 2:
+                                        a.setAlertType(AlertType.ERROR);
+                                        a.setContentText("Given coordinate is not on the map.");
+                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinate is not on the map.";
+                                        writeLogger(log , user.getUserName());
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                };
+                imageView.setOnMouseClicked(handler_plant);
 
                 EventHandler<MouseEvent> handler_build = new EventHandler<MouseEvent>(){
 
@@ -730,6 +775,13 @@ public class GraphicProcessor
                 btnturn.setOnMouseClicked(handler_turn);
 
             }
+            root.getChildren().addAll(button_cat,button_dog,button_hen,button_turkey,button_buffalo,btnturn
+                    ,imageView_sewingfct,imageView_well,imageView_icecreamfct,imageView_mill,
+                    imageView_weavingfct,imageView_bakery,imageView_poultry,imageView_milkfct,button_warehouse,
+                    build,upgrade);
+            Scene scene = new Scene(root,1400,700);
+            stage.setScene(scene);
+            stage.show();
         }
 
     }
