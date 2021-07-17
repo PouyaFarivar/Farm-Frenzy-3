@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Game {
@@ -16,7 +17,8 @@ public class Game {
     private Truck truck ;
     private int [][] grassMap ;
 
-    Game (Level level){
+    Game (Level level) throws FileNotFoundException
+    {
         this.level = level ;
         products = new LinkedList<>() ;
         workshops = new LinkedList<>() ;
@@ -70,7 +72,8 @@ public class Game {
         }
     }
 
-    public int buyAnimal (String name){//0 = done 1= wrong name 2 = not enough coins
+    public int buyAnimal (String name) throws FileNotFoundException
+    {//0 = done 1= wrong name 2 = not enough coins
         Animal animal = new Animal() ;
         Random random = new Random() ;
         int x = random.nextInt(6) + 1;
@@ -373,7 +376,8 @@ public class Game {
         }
     }
 
-    public int goTurn(){
+    public int goTurn() throws FileNotFoundException
+    {
         LinkedList<Domestic> removalDomestics = new LinkedList<>() ;
         for (Domestic domestic : domestics){
             int check = doTurnDomestic(domestic) ;
@@ -427,7 +431,8 @@ public class Game {
         return checkWinLoss();
     }
 
-    public int doTurnDomestic(Domestic domestic){// 0 = none 1= remove
+    public int doTurnDomestic(Domestic domestic) throws FileNotFoundException
+    {// 0 = none 1= remove
         if (domestic.getProductTimer() < domestic.getTimeProduce()) {
             domestic.setProductTimer(domestic.getProductTimer() + 1);
         }
@@ -530,7 +535,8 @@ public class Game {
         return 0 ;
     }
 
-    public void doTurnWorkShop (Workshop workshop){
+    public void doTurnWorkShop (Workshop workshop) throws FileNotFoundException
+    {
         if (workshop.getLevel() > 0){
             if (workshop.getWorking() >= 0){
                 workshop.setWorking(workshop.getWorking() + 1);
@@ -647,7 +653,8 @@ public class Game {
         }
     }
 
-    public void spawnPredators(Level level){
+    public void spawnPredators(Level level) throws FileNotFoundException
+    {
         int x = 0 ;
         int y = 0 ;
         Random random = new Random();
@@ -1074,4 +1081,6 @@ public class Game {
 
 
 }
+
+
 
