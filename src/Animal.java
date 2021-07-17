@@ -1,3 +1,8 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
 public class Animal extends GamePlay
@@ -9,8 +14,11 @@ public class Animal extends GamePlay
     private int price_for_purchase;
     private int price_for_sale ;
     private int speed ;
+    private Image image;
+    private ImageView imageView;
 
-    public Animal(String name , int type , int pr_purchase , int price_for_sale , int x , int y , int speed , int sizeInWarehouse) {
+    public Animal(String name , int type , int pr_purchase , int price_for_sale , int x , int y , int speed , int sizeInWarehouse) throws FileNotFoundException
+    {
         super(x , y);
         this.name = name ;
         this.type = type ;
@@ -19,6 +27,9 @@ public class Animal extends GamePlay
         this.speed = speed ;
         id = 0 ;
         this.sizeInWarehouse = sizeInWarehouse ;
+        this.image= new Image(new FileInputStream("D:/project files/" + this.name + ".png"));
+        this.imageView = new ImageView(this.image);
+
     }
 
     public Animal(){}
@@ -62,7 +73,8 @@ class Domestic extends Animal{
     int timeProduce ;
     int productTimer ;
 
-    public Domestic(String name , String productName , int pr_purchase , int x , int y , int timeProduce) {
+    public Domestic(String name , String productName , int pr_purchase , int x , int y , int timeProduce) throws FileNotFoundException
+    {
         super(name, 1, pr_purchase, 0 , x , y , 1 , 0);
         this.productName = productName;
         lives = 10;
@@ -73,7 +85,8 @@ class Domestic extends Animal{
 
     Domestic(){}
 
-    public Product produce(){
+    public Product produce() throws FileNotFoundException
+    {
         Product product = new Product() ;
         if (getName().equals("hen")){
             product = new Product.Egg(getX() , getY()) ;
@@ -107,20 +120,23 @@ class Domestic extends Animal{
 
     static class Hen extends Domestic{
 
-        public  Hen(int x , int y){
+        public  Hen(int x , int y) throws FileNotFoundException
+        {
             super("hen" , "egg" , 100 , x , y , 2);
         }
     }
    static class Ostrich extends Domestic{
 
-        public Ostrich(int x , int y){
+        public Ostrich(int x , int y) throws FileNotFoundException
+        {
             super("ostrich" , "feather" , 200 , x , y , 3);
         }
     }
 
     static class Buffalo extends Domestic{
 
-        public Buffalo(int x ,int y){
+        public Buffalo(int x ,int y) throws FileNotFoundException
+        {
             super("buffalo" , "milk" , 400 ,x ,y , 5);
         }
     }
@@ -133,7 +149,7 @@ class Predator extends Animal{
     private boolean captured ;
     final int timeToRun = 5 ;
 
-    public Predator(String name , int pr_sell ,int x , int y , int speed , int cageToStop , int size)
+    public Predator(String name , int pr_sell ,int x , int y , int speed , int cageToStop , int size) throws FileNotFoundException
     {
         super(name , 3, 0 , pr_sell , x , y , speed , size);
         this.cageToStop = cageToStop ;
@@ -173,20 +189,20 @@ class Predator extends Animal{
 
     static class Lion extends Predator{
 
-        public Lion(int x , int y)
+        public Lion(int x , int y) throws FileNotFoundException
         {
             super("lion" , 150 , x ,y ,1 , 3 , 5);
         }
     }
     static class Bear extends Predator{
-        public Bear(int x ,int y)
+        public Bear(int x ,int y) throws FileNotFoundException
         {
             super("bear" , 200 , x , y , 1 , 4 , 6);
         }
     }
     static class Tiger extends Predator{
 
-        public Tiger(int x , int y)
+        public Tiger(int x , int y) throws FileNotFoundException
         {
             super("tiger" , 250, x, y , 2 , 4 , 6);
 
@@ -198,7 +214,7 @@ class Predator extends Animal{
 }
 class Defender extends Animal{
     private LinkedList<Product> products ;
-    public Defender(String name , int pr_purchase , int x , int y)
+    public Defender(String name , int pr_purchase , int x , int y) throws FileNotFoundException
     {
         super(name, 2 , pr_purchase , 0 ,x, y ,1 , 0 );
         products = new LinkedList<>() ;
@@ -210,14 +226,14 @@ class Defender extends Animal{
 
     static class Cat extends Defender{
 
-        public Cat(int x , int y)
+        public Cat(int x , int y) throws FileNotFoundException
         {
             super("cat" , 150 , x , y);
         }
 
     };
     static class Dog extends Defender{
-        public Dog(int x , int y)
+        public Dog(int x , int y) throws FileNotFoundException
         {
             super("dog", 100 , x, y);
         }
@@ -225,3 +241,4 @@ class Defender extends Animal{
     };
 
 }
+
