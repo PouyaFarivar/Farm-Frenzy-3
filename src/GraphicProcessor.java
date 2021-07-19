@@ -42,66 +42,73 @@ import java.io.FileInputStream;
 
 public class GraphicProcessor
 {
-    private DataBase dataBase ;
-    private User realUser ;
-    private Level realLevel ;
+    private DataBase dataBase;
+    private User realUser;
+    private Level realLevel;
 
-    GraphicProcessor (){
-        dataBase = new DataBase() ;
-        realLevel = new Level() ;
-        realUser = new User() ;
+    GraphicProcessor()
+    {
+        dataBase = new DataBase();
+        realLevel = new Level();
+        realUser = new User();
     }
 
-    public void run () throws IOException {
+    public void run() throws IOException
+    {
         load();
         goStart(new ActionEvent());
     }
 
 
-
-    public void play (User user , Level level) throws FileNotFoundException
+    public void play(User user, Level level) throws FileNotFoundException
     {
-        Game game = new Game(level) ;
-        Stage stage = new Stage() ;
+        Game game = new Game(level);
+        Stage stage = new Stage();
         stage.setTitle("Farm Frenzy 3");
         //Images
-        Image image= new Image(new FileInputStream("resources/Graphic/background 2.jpg"));
-        Image truck= new Image(new FileInputStream("resources/Graphic/truck.png"));
-        Image icecream_fct= new Image(new FileInputStream("resources/Graphic/ice cream fct.png"));
-        Image sewing_fct= new Image(new FileInputStream("resources/Graphic/sewing.png"));
-        Image weaving_fct= new Image(new FileInputStream("resources/Graphic/weaving.png"));
-        Image bakery= new Image(new FileInputStream("resources/Graphic/bakery.png"));
-        Image milk_fct= new Image(new FileInputStream("resources/Graphic/milkfct.png"));
-        Image warehouse= new Image(new FileInputStream("resources/Graphic/warehouse.png"));
-        Image poultry= new Image(new FileInputStream("resources/Graphic/poultry.png"));
-        Image mill= new Image(new FileInputStream("resources/Graphic/mill.png"));
-        Image well= new Image(new FileInputStream("resources/Graphic/well.png"));
+        Image image = new Image(new FileInputStream("D:/project files/background 2.jpg"));
+        Image poultry = new Image(new FileInputStream("D:/project files/poultry.png"));
+        Image icecream_fct = new Image(new FileInputStream("D:/project files/ice cream fct.png"));
+        Image sewing_fct = new Image(new FileInputStream("D:/project files/sewing.png"));
+        Image weaving_fct = new Image(new FileInputStream("D:/project files/weaving.png"));
+        Image bakery = new Image(new FileInputStream("D:/project files/bakery.png"));
+        Image milk_fct = new Image(new FileInputStream("D:/project files/milkfct.png"));
+        Image warehouse = new Image(new FileInputStream("D:/project files/warehouse.png"));
+        Image mill = new Image(new FileInputStream("D:/project files/mill.png"));
+        Image well = new Image(new FileInputStream("D:/project files/well.png"));
 
-        Image dog= new Image(new FileInputStream("resources/Graphic/dog.png"));
-        Image bear= new Image(new FileInputStream("resources/Graphic/bear.png"));
-        Image cat= new Image(new FileInputStream("resources/Graphic/cat.png"));
-        Image lion= new Image(new FileInputStream("resources/Graphic/lion.png"));
-        Image turkey= new Image(new FileInputStream("resources/Graphic/turkey.png"));
-        Image buffalo= new Image(new FileInputStream("resources/Graphic/buffalo.png"));
-        Image tiger= new Image(new FileInputStream("resources/Graphic/tiger.png"));
-        Image hen= new Image(new FileInputStream("resources/Graphic/hen.png"));
-        Image milk_bucket= new Image(new FileInputStream("resources/Graphic/bucket of milk.png"));
-        Image milk_packet= new Image(new FileInputStream("resources/Graphic/packetmilk.png"));
-        Image egg= new Image(new FileInputStream("resources/Graphic/egg.png"));
-        Image icecream= new Image(new FileInputStream("resources/Graphic/icecream.png"));
-        Image flour= new Image(new FileInputStream("resources/Graphic/flour.png"));
-        Image fabric= new Image(new FileInputStream("resources/Graphic/fabric.png"));
-        Image feather= new Image(new FileInputStream("resources/Graphic/feather.png"));
-        Image clothes= new Image(new FileInputStream("resources/Graphic/clothes.png"));
-        Image grass= new Image(new FileInputStream("resources/Graphic/grass.png"));
+        Image dog = new Image(new FileInputStream("D:/project files/dog.png"));
+        Image bear = new Image(new FileInputStream("D:/project files/bear.png"));
+        Image cat = new Image(new FileInputStream("D:/project files/cat.png"));
+        Image lion = new Image(new FileInputStream("D:/project files/lion.png"));
+        Image turkey = new Image(new FileInputStream("D:/project files/ostrich.png"));
+        Image buffalo = new Image(new FileInputStream("D:/project files/buffalo.png"));
+        Image tiger = new Image(new FileInputStream("D:/project files/tiger.png"));
+        Image hen = new Image(new FileInputStream("D:/project files/hen.png"));
 
+        Image milk_bucket = new Image(new FileInputStream("D:/project files/milk.png"));
+        Image milk_packet = new Image(new FileInputStream("D:/project files/packetMilk.png"));
+        Image egg = new Image(new FileInputStream("D:/project files/egg.png"));
+        Image icecream = new Image(new FileInputStream("D:/project files/iceCream.png"));
+        Image flour = new Image(new FileInputStream("D:/project files/flour.png"));
+        Image fabric = new Image(new FileInputStream("D:/project files/fabric.png"));
+        Image feather = new Image(new FileInputStream("D:/project files/feather.png"));
+        Image clothes = new Image(new FileInputStream("D:/project files/clothing.png"));
+
+        Image grass = new Image(new FileInputStream("D:/project files/grass.png"));
+        Image cage = new Image(new FileInputStream("D:/project files/cage.png"));
+        Image henButton = new Image(new FileInputStream("D:/project files/henButton.jpg"));
+        Image turkeyButton = new Image(new FileInputStream("D:/project files/turkeyButton.jpg"));
+        Image dogButton = new Image(new FileInputStream("D:/project files/dogButton.jpg"));
+        Image catButton = new Image(new FileInputStream("D:/project files/catButton.jpg"));
+        Image buffaloButton = new Image(new FileInputStream("D:/project files/buffaloButton.jpg"));
 
 
         //Setting the image view
         ImageView imageView = new ImageView(image);
         ImageView imageView_mill = new ImageView(mill);
         ImageView imageView_icecreamfct = new ImageView(icecream_fct);
-        ImageView imageView_sewingfct  = new ImageView(sewing_fct);
+        ImageView imageView_sewingfct = new ImageView(sewing_fct);
         ImageView imageView_weavingfct = new ImageView(weaving_fct);
         ImageView imageView_milkfct = new ImageView(milk_fct);
         ImageView imageView_bakery = new ImageView(bakery);
@@ -126,20 +133,38 @@ public class GraphicProcessor
         ImageView imageView_egg = new ImageView(egg);
         ImageView imageView_flour = new ImageView(flour);
         ImageView imageView_grass = new ImageView(grass);
+        ImageView imageView_cage = new ImageView(cage);
+        ImageView imageView_hb = new ImageView(henButton);
+        ImageView imageView_tb = new ImageView(turkeyButton);
+        ImageView imageView_bb = new ImageView(buffaloButton);
+        ImageView imageView_cb = new ImageView(catButton);
+        ImageView imageView_db = new ImageView(dogButton);
 
+
+        ArrayList<ImageView> grass_views = new ArrayList<ImageView>();
         //Setting the position of the image
-        imageView.setX(0); imageView.setY(0);
-        imageView_icecreamfct.setX(10); imageView_icecreamfct.setY(60);
-        imageView_milkfct.setX(10); imageView_milkfct.setY(300);
-        imageView_mill.setX(10); imageView_mill.setY(490);
-        imageView_sewingfct.setX(1110); imageView_sewingfct.setY(20);
-        imageView_weavingfct.setX(1110); imageView_weavingfct.setY(250);
-        imageView_poultry.setX(900); imageView_poultry.setY(8);
-        imageView_bakery.setX(1140); imageView_bakery.setY(450);
-        imageView_well.setX(550); imageView_well.setY(30);
+        imageView.setX(0);
+        imageView.setY(0);
+        imageView_icecreamfct.setX(10);
+        imageView_icecreamfct.setY(60);
+        imageView_milkfct.setX(10);
+        imageView_milkfct.setY(300);
+        imageView_mill.setX(10);
+        imageView_mill.setY(490);
+        imageView_sewingfct.setX(1110);
+        imageView_sewingfct.setY(20);
+        imageView_weavingfct.setX(1110);
+        imageView_weavingfct.setY(250);
+        imageView_poultry.setX(900);
+        imageView_poultry.setY(8);
+        imageView_bakery.setX(1140);
+        imageView_bakery.setY(450);
+        imageView_well.setX(550);
+        imageView_well.setY(30);
 
         //setting the fit height and width of the image view
-        imageView.setFitHeight(700); imageView.setFitWidth(1400);
+        imageView.setFitHeight(700);
+        imageView.setFitWidth(1400);
 
         //Setting the preserve ratio of the image view
         imageView.setPreserveRatio(false);
@@ -152,639 +177,819 @@ public class GraphicProcessor
         ImageView imageView_turn = new ImageView(turn_im);
         Button btnturn = new Button();
         btnturn.setGraphic(imageView_turn);
-        btnturn.setLayoutX(420);btnturn.setLayoutY(0);
-        Button button_hen= new Button ("Hen");
-        button_hen.setLayoutX(0);button_hen.setLayoutY(0); button_hen.setPrefSize(70,70);
-        Button button_turkey= new Button ("Turkey");
-        button_turkey.setLayoutX(70);button_turkey.setLayoutY(0); button_turkey.setPrefSize(70,70);
-        Button button_buffalo= new Button ("Buffalo");
-        button_buffalo.setLayoutX(140);button_buffalo.setLayoutY(0); button_buffalo.setPrefSize(70,70);
-        Button button_dog= new Button ("Dog");
-        button_dog.setLayoutX(210);button_dog.setLayoutY(0); button_dog.setPrefSize(70,70);
-        Button button_cat= new Button ("Cat");
-        button_cat.setLayoutX(280);button_cat.setLayoutY(0); button_cat.setPrefSize(70,70);
-        Button button_warehouse= new Button ();
+        btnturn.setLayoutX(440);
+        btnturn.setLayoutY(0);
+        Button button_hen = new Button();
+        button_hen.setGraphic(imageView_hb);
+        button_hen.setLayoutX(0);
+        button_hen.setLayoutY(0);
+        button_hen.setPrefSize(70, 70);
+        Button button_turkey = new Button();
+        button_turkey.setGraphic(imageView_tb);
+        button_turkey.setLayoutX(80);
+        button_turkey.setLayoutY(0);
+        button_turkey.setPrefSize(70, 70);
+        Button button_buffalo = new Button();
+        button_buffalo.setGraphic(imageView_bb);
+        button_buffalo.setLayoutX(150);
+        button_buffalo.setLayoutY(0);
+        button_buffalo.setPrefSize(70, 70);
+        Button button_dog = new Button();
+        button_dog.setGraphic(imageView_db);
+        button_dog.setLayoutX(220);
+        button_dog.setLayoutY(0);
+        button_dog.setPrefSize(70, 70);
+        Button button_cat = new Button();
+        button_cat.setGraphic(imageView_cb);
+        button_cat.setLayoutX(290);
+        button_cat.setLayoutY(0);
+        button_cat.setPrefSize(70, 70);
+        Button button_warehouse = new Button();
         button_warehouse.setGraphic(imageView_warehouse);
-        button_warehouse.setLayoutX(600);button_warehouse.setLayoutY(650); button_warehouse.setPrefSize(100,50);
-        Button build = new Button ("Build");
-        build.setLayoutX(350);build.setLayoutY(0); build.setPrefSize(70,35);
-        Button upgrade = new Button ("Upgrade");
-        upgrade.setLayoutX(350);upgrade.setLayoutY(35); upgrade.setPrefSize(70,35);
-         Button exit = new Button ("Exit");
-        exit.setLayoutX(1200);exit.setLayoutY(0); exit.setPrefSize(80,30);
+        button_warehouse.setLayoutX(600);
+        button_warehouse.setLayoutY(650);
+        button_warehouse.setPrefSize(100, 50);
+        Button build = new Button("Build");
+        build.setLayoutX(370);
+        build.setLayoutY(0);
+        build.setPrefSize(50, 35);
+        Button upgrade = new Button("Upgrade");
+        upgrade.setLayoutX(370);
+        upgrade.setLayoutY(35);
+        upgrade.setPrefSize(50, 35);
+        Button exit = new Button("Exit");
+        exit.setLayoutX(1200);
+        exit.setLayoutY(0);
+        exit.setPrefSize(80, 30);
+        Image coin = new Image(new FileInputStream("D:/project files/coin.png"));
+        ImageView imageView_coin = new ImageView(coin);
+        Button btn_coin = new Button();
+        btn_coin.setGraphic(imageView_coin);
+        btn_coin.setLayoutX(1280);
+        btn_coin.setLayoutY(0);
 
-        int turn = 0 ;
+        int turn = 0;
 
         LocalDateTime time = LocalDateTime.now();
         String log = "";
-        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + "Level " + level.getLevelNum() + " started" ;
-        writeLogger(log , user.getUserName());
+        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + "Level " + level.getLevelNum() + " started";
+        writeLogger(log, user.getUserName());
         while (true) {
-            if (turn == 0) {
-                time = LocalDateTime.now() ;
-                EventHandler<MouseEvent> handler_buy = new EventHandler<MouseEvent>(){
-                    @Override
-                    public void handle(MouseEvent mouseEvent)
-                    {
-                        String name="";
-                        if(mouseEvent.getSource()==button_cat)
-                            name="cat";
-                        if(mouseEvent.getSource()==button_dog)
-                            name="dog";
-                        if(mouseEvent.getSource()==button_hen)
-                            name="hen";
-                        if(mouseEvent.getSource()==button_buffalo)
-                            name="buffalo";
-                        if(mouseEvent.getSource()==button_turkey)
-                            name="ostrich";
-                        int possible = game.buyAnimal(name);
-                        Alert a = new Alert(AlertType.NONE);
-                        String log = "" ;
-                        LocalDateTime time = LocalDateTime.now() ;
-                        switch (possible) {
+        if (turn == 0)
+        {
+            time = LocalDateTime.now();
+            //WalkAnimation walkAnimation= new WalkAnimation(game);
+            //walkAnimation.play();
+            EventHandler<MouseEvent> handler_coin = new EventHandler<MouseEvent>()
+            {
 
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    if(mouseEvent.getSource() == btn_coin)
+                    {
+                        Alert a = new Alert(AlertType.NONE);
+                        a.setAlertType(AlertType.INFORMATION);
+                        a.setContentText("You have " + String.valueOf(game.getCoins()) + "coins.");
+                        a.show();
+                    }
+                }
+            };
+            btn_coin.setOnMouseClicked(handler_coin);
+            EventHandler<MouseEvent> handler_buy = new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    String name = "";
+                    if (mouseEvent.getSource() == button_cat)
+                        name = "cat";
+                    if (mouseEvent.getSource() == button_dog)
+                        name = "dog";
+                    if (mouseEvent.getSource() == button_hen)
+                        name = "hen";
+                    if (mouseEvent.getSource() == button_buffalo)
+                        name = "buffalo";
+                    if (mouseEvent.getSource() == button_turkey)
+                        name = "ostrich";
+                    int possible = 0;
+                    try
+                    {
+                        possible = game.buyAnimal(name);
+                    } catch (FileNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    Alert a = new Alert(AlertType.NONE);
+                    String log = "";
+                    LocalDateTime time = LocalDateTime.now();
+                    switch (possible)
+                    {
+
+                        case 0:
+                            log = "[Info] " + LocalDateTime.now().toLocalDate().toString() + " _ " + LocalDateTime.now().toLocalTime().toString() + " Bought " + name + " successfully.";
+                            writeLogger(log, user.getUserName());
+                            break;
+                        case 2:
+                            // set alert type
+                            a.setAlertType(AlertType.ERROR);
+
+                            // set content text
+                            a.setContentText("You don't have enough coins!");
+
+                            // show the dialog
+                            a.show();
+                            log = "[Error] " + LocalDateTime.now().toLocalDate().toString() + " _ " + LocalDateTime.now().toLocalTime().toString() + " Not enough coins to buy the animal";
+                            writeLogger(log, user.getUserName());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            };
+            button_turkey.setOnMouseClicked(handler_buy);
+            button_dog.setOnMouseClicked(handler_buy);
+            button_cat.setOnMouseClicked(handler_buy);
+            button_hen.setOnMouseClicked(handler_buy);
+            button_buffalo.setOnMouseClicked(handler_buy);
+            time = LocalDateTime.now();
+
+            EventHandler<MouseEvent> handler_well = new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    Alert a = new Alert(AlertType.NONE);
+                    String log = "";
+                    LocalDateTime time = LocalDateTime.now();
+
+                    if (mouseEvent.getSource() == imageView_well)
+                    {
+                        int possible = game.fillWell();
+                        switch (possible)
+                        {
                             case 0:
-                                log = "[Info] " + LocalDateTime.now().toLocalDate().toString() + " _ " + LocalDateTime.now().toLocalTime().toString() + " Bought " + name + " successfully.";
-                                writeLogger(log , user.getUserName());
+                                a.setAlertType(AlertType.CONFIRMATION);
+                                a.setContentText("Well filled successfully");
+                                log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Well filled successfully";
+                                writeLogger(log, user.getUserName());
                                 break;
-                            case 2:
+                            case 1:
                                 // set alert type
                                 a.setAlertType(AlertType.ERROR);
-
-                                // set content text
-                                a.setContentText("You don't have enough coins!");
-
-                                // show the dialog
-                                a.show();
-                                log = "[Error] " + LocalDateTime.now().toLocalDate().toString() + " _ " + LocalDateTime.now().toLocalTime().toString() + " Not enough coins to buy the animal";
-                                writeLogger(log , user.getUserName());
+                                a.setContentText("Well is not empty yet.");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinates is empty.";
+                                writeLogger(log, user.getUserName());
+                                break;
+                            case 2:
+                                a.setAlertType(AlertType.ERROR);
+                                a.setContentText("Well is being filled.");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Well is being filled.";
+                                writeLogger(log, user.getUserName());
                                 break;
                             default:
                                 break;
                         }
-                    }
-                };
-                button_turkey.setOnMouseClicked(handler_buy);
-                button_dog.setOnMouseClicked(handler_buy);
-                button_cat.setOnMouseClicked(handler_buy);
-                button_hen.setOnMouseClicked(handler_buy);
-                button_buffalo.setOnMouseClicked(handler_buy);
-                time = LocalDateTime.now() ;
-
-                EventHandler<MouseEvent> handler_well = new EventHandler<MouseEvent>(){
-                    @Override
-                    public void handle(MouseEvent mouseEvent)
-                    {
-                        Alert a = new Alert(AlertType.NONE);
-                        String log = "" ;
-                        LocalDateTime time = LocalDateTime.now() ;
-
-                        if(mouseEvent.getSource() == imageView_well)
-                        {
-                            int possible = game.fillWell();
-                            switch (possible) {
-                                case 0:
-                                    a.setAlertType(AlertType.CONFIRMATION);
-                                    a.setContentText("Well filled successfully");
-                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Well filled successfully";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 1:
-                                    // set alert type
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("Well is not empty yet.");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinates is empty.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 2:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("Well is being filled.");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Well is being filled.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                default:
-                                    break;
-                            }
-                            a.show();
-                        }
-                    }
-                };
-                imageView_well.setOnMouseClicked(handler_well);
-
-                EventHandler<MouseEvent> handler_plant = new EventHandler<MouseEvent>()
-                {
-                    @Override
-                    public void handle(MouseEvent mouseEvent)
-                    {
-                        String log = "" ;
-                        LocalDateTime time = LocalDateTime.now() ;
-                        if(mouseEvent.getSource() == imageView)
-                        {
-                            double x= mouseEvent.getX();
-                            double y= mouseEvent.getY();
-                            if( x>300 && x<1110 && y>210 && y<650)
-                            {
-                                int grass_x = (int) ((x-300)/133 + 1);
-                                int grass_y = (int) ((y-210)/73 + 1);
-                                int possible = game.plantGrass(grass_x,grass_y);
-                                Alert a = new Alert(AlertType.NONE);
-                                switch (possible) {
-                                    case 0:
-                                        a.setAlertType(AlertType.CONFIRMATION);
-                                        a.setContentText("Operation successful.");
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Grass Planted successfully";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 1:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Not enough water.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough water.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 2:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Given coordinate is not on the map.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinate is not on the map.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                };
-                imageView.setOnMouseClicked(handler_plant);
-
-                EventHandler<MouseEvent> handler_build = new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent mouseEvent)
-                    {
-                        if(mouseEvent.getSource()==build)
-                        {
-                            GridPane pane = new GridPane();
-                            final String[] name = new String[1];
-                            Button b= new Button("done");
-                            Label workshop=new Label("Workshop name:");
-                            TextField tf1=new TextField();
-                            tf1.setLayoutX(350); tf1.setLayoutY(70);
-                            pane.addRow(0, workshop, tf1);
-                            pane.addRow(1,b);
-
-                            root.getChildren().addAll(pane);
-                            EventHandler<MouseEvent> handler_build2= new EventHandler<MouseEvent>()
-                            {
-                                @Override
-                                public void handle(MouseEvent mouseEvent)
-                                {
-                                    name[0] = tf1.getText();
-                                    root.getChildren().remove(pane);
-                                }
-                            };
-                            b.setOnMouseClicked(handler_build2);
-                            Alert a = new Alert(AlertType.NONE);
-                            int possible = game.buildWorkShop(name[0]);
-                            String log = "" ;
-                            LocalDateTime time = LocalDateTime.now() ;
-                            switch (possible) {
-                                case 0:
-                                    a.setAlertType(AlertType.CONFIRMATION);
-                                    a.setContentText("Operation successful.");
-                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Built Workshop successfully";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 1:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("You cant build this workShop in this level.");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Workshop not available.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 2:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("You don't have enough coins");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 3:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("WorkShop already built.");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already built.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                default:
-                                    break;
-                            }
-                            a.show();
-                        }
-                        if(mouseEvent.getSource() == upgrade)
-                        {
-                            GridPane pane = new GridPane();
-                            final String[] name = new String[1];
-                            Button b= new Button("done");
-                            Label workshop=new Label("Workshop name:");
-                            TextField tf1=new TextField();
-                            tf1.setLayoutX(350); tf1.setLayoutY(70);
-                            pane.addRow(0, workshop, tf1);
-                            pane.addRow(1,b);
-                            root.getChildren().addAll(pane);
-                            EventHandler<MouseEvent> handler_upgrade= new EventHandler<MouseEvent>()
-                            {
-                                @Override
-                                public void handle(MouseEvent mouseEvent)
-                                {
-                                    name[0] = tf1.getText();
-                                    root.getChildren().remove(pane);
-                                }
-                            };
-                            b.setOnMouseClicked(handler_upgrade);
-                            Alert a = new Alert(AlertType.NONE);
-                            int possible = game.upgradeWorkShop(name[0]);
-                            String log = "" ;
-                            LocalDateTime time = LocalDateTime.now() ;
-                            switch (possible) {
-                                case 0:
-                                    a.setAlertType(AlertType.CONFIRMATION);
-                                    a.setContentText("Operation successful.");
-                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Upgraded workshop successfully.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 1:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("You can't build this workShop in this level.");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Can't build workshop in this level.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 2:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("You don't have enough coins");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 3:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("WorkShop already upgraded to level 2.");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already upgraded.";
-                                    writeLogger(log , user.getUserName());
-                                    break;
-                                case 4:
-                                    a.setAlertType(AlertType.ERROR);
-                                    a.setContentText("WorkShop should at least be level 1 to upgrade.");
-                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop should at least be level 1 to upgrade.";
-                                    writeLogger(log , user.getUserName());
-                                default:
-                                    break;
-                            }
                         a.show();
+                    }
+                }
+            };
+            imageView_well.setOnMouseClicked(handler_well);
+
+            EventHandler<MouseEvent> handler_plant = new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    String log = "";
+                    LocalDateTime time = LocalDateTime.now();
+                    if (mouseEvent.getSource() == imageView)
+                    {
+                        double x = mouseEvent.getX();
+                        double y = mouseEvent.getY();
+                        if (x > 300 && x < 1110 && y > 210 && y < 650)
+                        {
+                            int grass_x = (int) ((x - 300) / 133 + 1);
+                            int grass_y = (int) ((y - 210) / 73 + 1);
+                            int possible = game.plantGrass(grass_x, grass_y);
+                            Alert a = new Alert(AlertType.NONE);
+                            switch (possible)
+                            {
+                                case 0:
+                                    a.setAlertType(AlertType.CONFIRMATION);
+                                    a.setContentText("Operation successful.");
+
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Grass Planted successfully";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 1:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Not enough water.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough water.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 2:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Given coordinate is not on the map.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Given coordinate is not on the map.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
-                };
-                build.setOnMouseClicked(handler_build);
-                upgrade.setOnMouseClicked(handler_build);
+                }
+            };
+            imageView.setOnMouseClicked(handler_plant);
 
+            EventHandler<MouseEvent> handler_build = new EventHandler<MouseEvent>()
+            {
 
-                EventHandler<MouseEvent> handler_work = new EventHandler<MouseEvent>(){
-                    @Override
-                    public void handle(MouseEvent mouseEvent)
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    if (mouseEvent.getSource() == build)
                     {
-                        String name = "";
-                        String log = "" ;
-                        LocalDateTime time = LocalDateTime.now() ;
+                        GridPane pane = new GridPane();
+                        final String[] name = new String[1];
+                        Button b = new Button("done");
+                        Label workshop = new Label("Workshop name:");
+                        TextField tf1 = new TextField();
+                        tf1.setLayoutX(350);
+                        tf1.setLayoutY(70);
+                        pane.addRow(0, workshop, tf1);
+                        pane.addRow(1, b);
+
+                        root.getChildren().addAll(pane);
+                        EventHandler<MouseEvent> handler_build2 = new EventHandler<MouseEvent>()
+                        {
+                            @Override
+                            public void handle(MouseEvent mouseEvent)
+                            {
+                                name[0] = tf1.getText();
+                                root.getChildren().remove(pane);
+                            }
+                        };
+                        b.setOnMouseClicked(handler_build2);
                         Alert a = new Alert(AlertType.NONE);
-                        if(mouseEvent.getSource() == imageView_bakery)
-                            name="bakery";
-                        if(mouseEvent.getSource() == imageView_mill)
-                            name="flourmill";
-                        if(mouseEvent.getSource() == imageView_milkfct)
-                            name="milkPacking";
-                        if(mouseEvent.getSource() == imageView_sewingfct)
-                            name="sewingFactory";
-                        if(mouseEvent.getSource() == imageView_weavingfct)
-                            name="weavingFactory";
-                        if(mouseEvent.getSource() == imageView_icecreamfct)
-                            name="iceCreamShop";
-                        if(mouseEvent.getSource() == imageView_poultry)
-                            name="henMaker";
-                        int possible = game.work(name);
-                        switch (possible) {
+                        int possible = game.buildWorkShop(name[0]);
+                        String log = "";
+                        LocalDateTime time = LocalDateTime.now();
+                        switch (possible)
+                        {
                             case 0:
                                 a.setAlertType(AlertType.CONFIRMATION);
                                 a.setContentText("Operation successful.");
-                                log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Workshop working successfully";
-                                writeLogger(log , user.getUserName());
+                                log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Built Workshop successfully";
+                                writeLogger(log, user.getUserName());
+                                break;
+                            case 1:
+                                a.setAlertType(AlertType.ERROR);
+                                a.setContentText("You cant build this workShop in this level.");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Workshop not available.";
+                                writeLogger(log, user.getUserName());
                                 break;
                             case 2:
                                 a.setAlertType(AlertType.ERROR);
-                                a.setContentText("WorkShop not built.");
-                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop not built.";
-                                writeLogger(log , user.getUserName());
+                                a.setContentText("You don't have enough coins");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
+                                writeLogger(log, user.getUserName());
                                 break;
                             case 3:
                                 a.setAlertType(AlertType.ERROR);
-                                a.setContentText("WorkShop is working already.");
-                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop is working already.";
-                                writeLogger(log , user.getUserName());
+                                a.setContentText("WorkShop already built.");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already built.";
+                                writeLogger(log, user.getUserName());
                                 break;
-                            case 4:
-                                a.setAlertType(AlertType.ERROR);
-                                a.setContentText("not enough entry product.");
-                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough entry product for the workshop.";
-                                writeLogger(log , user.getUserName());
                             default:
                                 break;
                         }
                         a.show();
                     }
-                };
-                imageView_bakery.setOnMouseClicked(handler_work);
-                imageView_mill.setOnMouseClicked(handler_work);
-                imageView_sewingfct.setOnMouseClicked(handler_work);
-                imageView_weavingfct.setOnMouseClicked(handler_work);
-                imageView_poultry.setOnMouseClicked(handler_work);
-                imageView_icecreamfct.setOnMouseClicked(handler_work);
-                imageView_milkfct.setOnMouseClicked(handler_work);
-
-                EventHandler<MouseEvent> handler_warehouse = new EventHandler<MouseEvent>()
-                {
-                    @Override
-                    public void handle(MouseEvent mouseEvent)
+                    if (mouseEvent.getSource() == upgrade)
                     {
-                        if(mouseEvent.getSource() == imageView_warehouse)
+                        GridPane pane = new GridPane();
+                        final String[] name = new String[1];
+                        Button b = new Button("done");
+                        Label workshop = new Label("Workshop name:");
+                        TextField tf1 = new TextField();
+                        tf1.setLayoutX(350);
+                        tf1.setLayoutY(70);
+                        pane.addRow(0, workshop, tf1);
+                        pane.addRow(1, b);
+                        root.getChildren().addAll(pane);
+                        EventHandler<MouseEvent> handler_upgrade = new EventHandler<MouseEvent>()
+                        {
+                            @Override
+                            public void handle(MouseEvent mouseEvent)
+                            {
+                                name[0] = tf1.getText();
+                                root.getChildren().remove(pane);
+                            }
+                        };
+                        b.setOnMouseClicked(handler_upgrade);
+                        Alert a = new Alert(AlertType.NONE);
+                        int possible = game.upgradeWorkShop(name[0]);
+                        String log = "";
+                        LocalDateTime time = LocalDateTime.now();
+                        switch (possible)
+                        {
+                            case 0:
+                                a.setAlertType(AlertType.CONFIRMATION);
+                                a.setContentText("Operation successful.");
+                                log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Upgraded workshop successfully.";
+                                writeLogger(log, user.getUserName());
+                                break;
+                            case 1:
+                                a.setAlertType(AlertType.ERROR);
+                                a.setContentText("You can't build this workShop in this level.");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Can't build workshop in this level.";
+                                writeLogger(log, user.getUserName());
+                                break;
+                            case 2:
+                                a.setAlertType(AlertType.ERROR);
+                                a.setContentText("You don't have enough coins");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough coins.";
+                                writeLogger(log, user.getUserName());
+                                break;
+                            case 3:
+                                a.setAlertType(AlertType.ERROR);
+                                a.setContentText("WorkShop already upgraded to level 2.");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop already upgraded.";
+                                writeLogger(log, user.getUserName());
+                                break;
+                            case 4:
+                                a.setAlertType(AlertType.ERROR);
+                                a.setContentText("WorkShop should at least be level 1 to upgrade.");
+                                log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop should at least be level 1 to upgrade.";
+                                writeLogger(log, user.getUserName());
+                            default:
+                                break;
+                        }
+                        a.show();
+                    }
+                }
+            };
+            build.setOnMouseClicked(handler_build);
+            upgrade.setOnMouseClicked(handler_build);
+
+
+            EventHandler<MouseEvent> handler_work = new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    String name = "";
+                    String log = "";
+                    LocalDateTime time = LocalDateTime.now();
+                    Alert a = new Alert(AlertType.NONE);
+                    if (mouseEvent.getSource() == imageView_bakery)
+                        name = "bakery";
+                    if (mouseEvent.getSource() == imageView_mill)
+                        name = "flourmill";
+                    if (mouseEvent.getSource() == imageView_milkfct)
+                        name = "milkPacking";
+                    if (mouseEvent.getSource() == imageView_sewingfct)
+                        name = "sewingFactory";
+                    if (mouseEvent.getSource() == imageView_weavingfct)
+                        name = "weavingFactory";
+                    if (mouseEvent.getSource() == imageView_icecreamfct)
+                        name = "iceCreamShop";
+                    if (mouseEvent.getSource() == imageView_poultry)
+                        name = "henMaker";
+                    int possible = game.work(name);
+                    switch (possible)
+                    {
+                        case 0:
+                            a.setAlertType(AlertType.CONFIRMATION);
+                            a.setContentText("Operation successful.");
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Workshop working successfully";
+                            writeLogger(log, user.getUserName());
+                            break;
+                        case 2:
+                            a.setAlertType(AlertType.ERROR);
+                            a.setContentText("WorkShop not built.");
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop not built.";
+                            writeLogger(log, user.getUserName());
+                            break;
+                        case 3:
+                            a.setAlertType(AlertType.ERROR);
+                            a.setContentText("WorkShop is working already.");
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " WorkShop is working already.";
+                            writeLogger(log, user.getUserName());
+                            break;
+                        case 4:
+                            a.setAlertType(AlertType.ERROR);
+                            a.setContentText("not enough entry product.");
+                            log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough entry product for the workshop.";
+                            writeLogger(log, user.getUserName());
+                        default:
+                            break;
+                    }
+                    a.show();
+                }
+            };
+            imageView_bakery.setOnMouseClicked(handler_work);
+            imageView_mill.setOnMouseClicked(handler_work);
+            imageView_sewingfct.setOnMouseClicked(handler_work);
+            imageView_weavingfct.setOnMouseClicked(handler_work);
+            imageView_poultry.setOnMouseClicked(handler_work);
+            imageView_icecreamfct.setOnMouseClicked(handler_work);
+            imageView_milkfct.setOnMouseClicked(handler_work);
+
+            EventHandler<MouseEvent> handler_pickup = new EventHandler<MouseEvent>()
+            {
+
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    String log = "";
+                    LocalDateTime time = LocalDateTime.now();
+                    for (Product p : game.getProducts())
+                    {
+                        if (mouseEvent.getSource() == p.getImageView())
                         {
                             Alert a = new Alert(AlertType.NONE);
-                            GridPane pane = new GridPane();
-                            String str;
-                            final String[] action = {""};
-                            Button b= new Button("done");
-                            Label command=new Label("Command:");
-                            TextField tf1=new TextField();
-                           // tf1.setLayoutX(350); tf1.setLayoutY(70);
-                            pane.addRow(0, command, tf1);
-                            pane.addRow(1,b);
-                            root.getChildren().addAll(pane);
-                            EventHandler<MouseEvent> handler_truck= new EventHandler<MouseEvent>()
+                            int possible = game.pickup(p.getX(), p.getY());
+                            switch (possible)
                             {
-                                @Override
-                                public void handle(MouseEvent mouseEvent)
-                                {
-                                    action[0] = tf1.getText();
-                                    root.getChildren().remove(pane);
-                                }
-                            };
-                            b.setOnMouseClicked(handler_truck);
-                            Matcher matcher ;
-                            if((matcher = getCommandMatcher(action[0], "truck load ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find())
-                            {
-
-                                String name = matcher.group(1);
-                                int possible = -1;
-                                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
-                                    possible = game.moveToTruckPredator(name);
-                                } else {
-                                    possible = game.moveToTruckProduct(name);
-                                }
-                                String log = "" ;
-                                LocalDateTime time = LocalDateTime.now() ;
-                                switch (possible) {
-                                    case 0:
-                                        a.setAlertType(AlertType.CONFIRMATION);
-                                        a.setContentText("Operation successful.");
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck loaded successfully.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 1:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("No such product in ware house.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product available.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 2:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Not enough space in Truck inventory.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Truck.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 3:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Truck is moving.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                case 0:
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Picked up successfully";
+                                    writeLogger(log, user.getUserName());
+                                    root.getChildren().remove(p.getImageView());
+                                    break;
+                                case 1:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Not enough space in ware House.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in ware House.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                default:
+                                    break;
                             }
-                            else if ((matcher = getCommandMatcher(action[0], "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find()) {
-                                String name = matcher.group(1);
-                                int possible = -1;
-                                if (name.equals("lion") || name.equals("bear") || name.equals("tiger")) {
-                                    possible = game.unloadFromTruckPredator(name);
-                                } else {
-                                    possible = game.unloadFromTruckProduct(name);
-                                }
-                                String log = "" ;
-                                LocalDateTime time = LocalDateTime.now() ;
-                                switch (possible) {
-                                    case 0:
-                                        a.setAlertType(AlertType.CONFIRMATION);
-                                        a.setContentText("Operation successful.");
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck unloaded successfully.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 1:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("No such product in Truck.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product in Truck.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 2:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Not enough space in Warehouse.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Ware house.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 3:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Truck is moving.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            else if (action[0].equals("truck go")) {
-                                String log = "" ;
-                                LocalDateTime time = LocalDateTime.now() ;
-                                int possible = game.truckGo();
-                                switch (possible) {
-                                    case 0:
-                                        a.setAlertType(AlertType.CONFIRMATION);
-                                        a.setContentText("Operation successful.");
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving successfully.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 1:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Truck is empty.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is empty.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    case 2:
-                                        a.setAlertType(AlertType.ERROR);
-                                        a.setContentText("Truck is already in move.");
-                                        log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
-                                        writeLogger(log , user.getUserName());
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        a.show();
                         }
                     }
-                };
-                imageView_warehouse.setOnMouseClicked(handler_warehouse);
-                EventHandler<MouseEvent> handler_exit = new EventHandler<MouseEvent>()
-                {
 
-                    @Override
-                    public void handle(MouseEvent mouseEvent)
-                    {
-                        String log = "" ;
-                        LocalDateTime time = LocalDateTime.now() ;
-                        if (/*mouseEvent.getSource() == exit*/true)
-                        {
-                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " exited level " + level.getLevelNum();
-                            writeLogger(log, user.getUserName());
-                        }
-
-                    }
-                };
-                //exit.setOnMouseClicked(handler_exit);
-
-            } else
+                }
+            };
+            for (Product p : game.getProducts())
             {
-                EventHandler<MouseEvent> handler_turn = new EventHandler<MouseEvent>()
+                p.getImageView().setOnMouseClicked(handler_pickup);
+            }
+            for (Predator p : game.getPredators())
+            {
+                p.getImageView().setOnMouseClicked(new EventHandler<MouseEvent>()
                 {
-
                     @Override
                     public void handle(MouseEvent mouseEvent)
                     {
-                        if (mouseEvent.getSource() == btnturn)
+                        if (mouseEvent.getSource() == p.getImageView())
                         {
-                            int possible = game.goTurn();
-                            if (possible == 0)
+                            int possible = game.buildCage(p.getX(), p.getY());
+                            if (p.isCaptured())
                             {
-                                String log = "" ;
-                                LocalDateTime time = LocalDateTime.now() ;
-                                Alert a = new Alert(Alert.AlertType.NONE);
-                                a.setAlertType(AlertType.INFORMATION);
-                                a.setContentText("Time Passed");
-                                a.show();
-                                log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " turns passed ";
-                                writeLogger(log, user.getUserName());
+                                imageView_cage.setX(p.getImageViewX());
+                                imageView_cage.setY(p.getImageViewY());
+                                root.getChildren().add(imageView_cage);
+                            }
+                        }
+
+                    }
+                });
+            }
+
+
+            EventHandler<MouseEvent> handler_warehouse = new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    if (mouseEvent.getSource() == imageView_warehouse)
+                    {
+                        Alert a = new Alert(AlertType.NONE);
+                        GridPane pane1 = new GridPane();
+                        final String[] action = {""};
+                        Button b = new Button("done");
+                        Label command = new Label("Command:");
+                        TextField tf1 = new TextField();
+                        tf1.setLayoutX(350); tf1.setLayoutY(70);
+                        pane1.addRow(0, command, tf1);
+                        pane1.addRow(1, b);
+                        root.getChildren().addAll(pane1);
+                        EventHandler<MouseEvent> handler_truck = new EventHandler<MouseEvent>()
+                        {
+                            @Override
+                            public void handle(MouseEvent mouseEvent)
+                            {
+                                action[0] = tf1.getText();
+                                root.getChildren().remove(pane1);
+                            }
+                        };
+                        b.setOnMouseClicked(handler_truck);
+                        Matcher matcher;
+                        if ((matcher = getCommandMatcher(action[0], "truck load ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find())
+                        {
+
+                            String name = matcher.group(1);
+                            int possible = -1;
+                            if (name.equals("lion") || name.equals("bear") || name.equals("tiger"))
+                            {
+                                possible = game.moveToTruckPredator(name);
                             } else
                             {
-                                int medal = 0;
-                                if (user.getLevelTime().containsKey(game.getLevel().getLevelNum()))
-                                {
-                                    if (user.getLevelTime().get(game.getLevel().getLevelNum()) > game.getTurn())
-                                    {
-                                        user.getLevelTime().put(game.getLevel().getLevelNum(), game.getTurn());
-                                        user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
-                                        medal = game.giveMedal();
-                                        if (medal != user.getLevelMedal().get(game.getLevel().getLevelNum()))
-                                        {
-                                            user.getLevelMedal().put(game.getLevel().getLevelNum(), medal);
-                                            switch (medal)
-                                            {
-                                                case 1:
-                                                    user.setCoin(user.getCoin() + 300);
-                                                    break;
-                                                case 2:
-                                                    user.setCoin(user.getCoin() + 200);
-                                                    break;
-                                                case 3:
-                                                    user.setCoin(user.getCoin() + 100);
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                } else
+                                possible = game.moveToTruckProduct(name);
+                            }
+                            String log = "";
+                            LocalDateTime time = LocalDateTime.now();
+                            switch (possible)
+                            {
+                                case 0:
+                                    a.setAlertType(AlertType.CONFIRMATION);
+                                    a.setContentText("Operation successful.");
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck loaded successfully.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 1:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("No such product in ware house.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product available.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 2:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Not enough space in Truck inventory.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Truck.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 3:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Truck is moving.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else if ((matcher = getCommandMatcher(action[0], "truck unload ([A-Za-z0-9_]+[A-Za-z0-9_]*)")).find())
+                        {
+                            String name = matcher.group(1);
+                            int possible = -1;
+                            if (name.equals("lion") || name.equals("bear") || name.equals("tiger"))
+                            {
+                                possible = game.unloadFromTruckPredator(name);
+                            } else
+                            {
+                                possible = game.unloadFromTruckProduct(name);
+                            }
+                            String log = "";
+                            LocalDateTime time = LocalDateTime.now();
+                            switch (possible)
+                            {
+                                case 0:
+                                    a.setAlertType(AlertType.CONFIRMATION);
+                                    a.setContentText("Operation successful.");
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck unloaded successfully.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 1:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("No such product in Truck.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " No such product in Truck.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 2:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Not enough space in Warehouse.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Not enough space in Ware house.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 3:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Truck is moving.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else if (action[0].equals("truck go"))
+                        {
+                            String log = "";
+                            LocalDateTime time = LocalDateTime.now();
+                            int possible = game.truckGo();
+                            switch (possible)
+                            {
+                                case 0:
+                                    a.setAlertType(AlertType.CONFIRMATION);
+                                    a.setContentText("Operation successful.");
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is moving successfully.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 1:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Truck is empty.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Truck is empty.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 2:
+                                    a.setAlertType(AlertType.ERROR);
+                                    a.setContentText("Truck is already in move.");
+                                    log = "[Error] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Moving Truck.";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        a.show();
+                    }
+                }
+            };
+            imageView_warehouse.setOnMouseClicked(handler_warehouse);
+            EventHandler<MouseEvent> handler_exit = new EventHandler<MouseEvent>()
+            {
+
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    String log = "";
+                    LocalDateTime time = LocalDateTime.now();
+                    if (mouseEvent.getSource() == exit)
+                    {
+                        try
+                        {
+                            changeLevel(mouseEvent);
+                        } catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " exited level " + level.getLevelNum();
+                        writeLogger(log, user.getUserName());
+                    }
+
+                }
+            };
+            exit.setOnMouseClicked(handler_exit);
+
+        } else
+        {
+            EventHandler<MouseEvent> handler_turn = new EventHandler<MouseEvent>()
+            {
+
+                @Override
+                public void handle(MouseEvent mouseEvent)
+                {
+                    if (mouseEvent.getSource() == btnturn)
+                    {
+                        int possible = 0;
+                        try
+                        {
+                            possible = game.goTurn();
+                        } catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        if (possible == 0)
+                        {
+                            String log = "";
+                            LocalDateTime time = LocalDateTime.now();
+                            Alert a = new Alert(Alert.AlertType.NONE);
+                            a.setAlertType(AlertType.INFORMATION);
+                            a.setContentText("Time Passed");
+                            a.show();
+                            log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " turns passed ";
+                            writeLogger(log, user.getUserName());
+                        } else
+                        {
+                            int medal = 0;
+                            if (user.getLevelTime().containsKey(game.getLevel().getLevelNum()))
+                            {
+                                if (user.getLevelTime().get(game.getLevel().getLevelNum()) > game.getTurn())
                                 {
                                     user.getLevelTime().put(game.getLevel().getLevelNum(), game.getTurn());
                                     user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
-                                    user.setMaximumLevel(game.getLevel().getLevelNum());
                                     medal = game.giveMedal();
-                                    user.getLevelMedal().put(game.getLevel().getLevelNum(), medal);
-                                    switch (medal)
+                                    if (medal != user.getLevelMedal().get(game.getLevel().getLevelNum()))
                                     {
-                                        case 1:
-                                            user.setCoin(user.getCoin() + 300);
-                                            break;
-                                        case 2:
-                                            user.setCoin(user.getCoin() + 200);
-                                            break;
-                                        case 3:
-                                            user.setCoin(user.getCoin() + 100);
-                                            break;
-                                        default:
-                                            break;
+                                        user.getLevelMedal().put(game.getLevel().getLevelNum(), medal);
+                                        switch (medal)
+                                        {
+                                            case 1:
+                                                user.setCoin(user.getCoin() + 300);
+                                                break;
+                                            case 2:
+                                                user.setCoin(user.getCoin() + 200);
+                                                break;
+                                            case 3:
+                                                user.setCoin(user.getCoin() + 100);
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                     }
                                 }
-                                Alert a = new Alert(Alert.AlertType.NONE);
-                                a.setAlertType(AlertType.INFORMATION);
-                                String str = "Victory : ";
-                                String log = "" ;
-                                LocalDateTime time = LocalDateTime.now() ;
+                            } else
+                            {
+                                user.getLevelTime().put(game.getLevel().getLevelNum(), game.getTurn());
+                                user.setCoin(user.getCoin() + game.getCoins() - game.getLevel().getGoalCoins());
+                                user.setMaximumLevel(game.getLevel().getLevelNum());
+                                medal = game.giveMedal();
+                                user.getLevelMedal().put(game.getLevel().getLevelNum(), medal);
                                 switch (medal)
                                 {
                                     case 1:
-                                        str += "You got a Gold medal on level " + String.valueOf(game.getLevel().getLevelNum());
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " with Gold Medal ";
-                                        writeLogger(log, user.getUserName());
+                                        user.setCoin(user.getCoin() + 300);
                                         break;
                                     case 2:
-                                        str += "You got a Silver medal on level " + game.getLevel().getLevelNum();
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " Silver Medal ";
-                                        writeLogger(log, user.getUserName());
+                                        user.setCoin(user.getCoin() + 200);
                                         break;
                                     case 3:
-                                        str += "You got a Bronze medal on level " + game.getLevel().getLevelNum();
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " Bronze Medal ";
-                                        writeLogger(log, user.getUserName());
-                                        break;
-                                    case 4:
-                                        str += "No medal.";
-                                        log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " No Medal ";
-                                        writeLogger(log, user.getUserName());
+                                        user.setCoin(user.getCoin() + 100);
                                         break;
                                     default:
                                         break;
                                 }
-                                a.setContentText(str);
-                                a.show();
                             }
-
+                            Alert a = new Alert(Alert.AlertType.NONE);
+                            a.setAlertType(AlertType.INFORMATION);
+                            String str = "Victory : ";
+                            String log = "";
+                            LocalDateTime time = LocalDateTime.now();
+                            switch (medal)
+                            {
+                                case 1:
+                                    str += "You got a Gold medal on level " + String.valueOf(game.getLevel().getLevelNum());
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " with Gold Medal ";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 2:
+                                    str += "You got a Silver medal on level " + game.getLevel().getLevelNum();
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " Silver Medal ";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 3:
+                                    str += "You got a Bronze medal on level " + game.getLevel().getLevelNum();
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " Bronze Medal ";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                case 4:
+                                    str += "No medal.";
+                                    log = "[Info] " + time.toLocalDate().toString() + " _ " + time.toLocalTime().toString() + " Finished level " + level.getLevelNum() + " No Medal ";
+                                    writeLogger(log, user.getUserName());
+                                    break;
+                                default:
+                                    break;
+                            }
+                            a.setContentText(str);
+                            a.show();
                         }
+
                     }
-                };
-                btnturn.setOnMouseClicked(handler_turn);
+                }
+            };
+            btnturn.setOnMouseClicked(handler_turn);
 
-            }
-            root.getChildren().addAll(button_cat,button_dog,button_hen,button_turkey,button_buffalo,btnturn
-                    ,imageView_sewingfct,imageView_well,imageView_icecreamfct,imageView_mill,
-                    imageView_weavingfct,imageView_bakery,imageView_poultry,imageView_milkfct,button_warehouse,
-                    build,upgrade);
-            Scene scene = new Scene(root,1400,700);
-            stage.setScene(scene);
-            stage.show();
         }
-
+        for (int i = 0; i < 6; i++)
+            for (int j = 0; j < 6; j++)
+            {
+                if (game.getGrassMap()[i][j] > 0)
+                {
+                    ImageView one = new ImageView(grass);
+                    one.setX(i * 133 + 300);
+                    one.setY(j * 73 + 210);
+                    grass_views.add(one);
+                }
+            }
+        for (ImageView x : grass_views)
+            root.getChildren().add(x);
+        for (Product p : game.getProducts())
+        {
+            root.getChildren().add(p.getImageView());
+        }
+        for (Predator p : game.getPredators())
+        {
+            root.getChildren().add(p.getImageView());
+        }
+        for (Defender d : game.getDefenders())
+        {
+            root.getChildren().add(d.getImageView());
+        }
+        for (Domestic d : game.getDomestics())
+        {
+            root.getChildren().add(d.getImageView());
+        }
+        root.getChildren().addAll(button_cat, button_dog, button_hen, button_turkey, button_buffalo, btnturn
+                , imageView_sewingfct, imageView_well, imageView_icecreamfct, imageView_mill,
+                imageView_weavingfct, imageView_bakery, imageView_poultry, imageView_milkfct, button_warehouse,
+                build, upgrade, exit, btn_coin);
+        Scene scene = new Scene(root, 1400, 700);
+        stage.setScene(scene);
+        stage.show();
     }
+
+}
     public void writeLogger(String str , String userName){
         try {
             LocalDateTime time = LocalDateTime.now() ;
@@ -896,6 +1101,14 @@ public class GraphicProcessor
 
     }
 
+    public void changeLevel(MouseEvent e) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("GetLevel.fxml"));
+        stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
     public void goSignup(javafx.event.ActionEvent e) throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("Signup.fxml"));
