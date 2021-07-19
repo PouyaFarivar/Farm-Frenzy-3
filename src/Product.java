@@ -33,6 +33,16 @@ public class Product extends GamePlay
 
     Product(){}
 
+    public void setImageViewXY(int x , int y)
+    {
+        double imageviewx = (x-1)*133 + 300;
+        double imageviewy = (y-1)*73 +210;
+        this.imageView.setX(imageviewx);
+        this.imageView.setY(imageviewy);
+    }
+    public double getImageViewX(){return this.imageView.getX();}
+    public double getImageViewY(){return this.imageView.getY();}
+    public ImageView getImageView(){return this.imageView;}
     public String getName() {
         return name;
     }
@@ -129,8 +139,5 @@ public class Product extends GamePlay
         }
     }
 }
-
-
-
 
 
